@@ -1,18 +1,15 @@
-import 
-express, 
-{
-  Request,
-  Response,
-  Router,
-} from 'express';
+import express, { Request, Response, Router } from 'express';
 import dotenv from 'dotenv';
 import { sortByDateTime, findImage } from './utils';
-import { TicketmasterApiData, EventCardData, EventCardSchema } from '../schemas/schemas';
-
+import {
+  TicketmasterApiData,
+  EventCardData,
+  EventCardSchema,
+} from '../schemas/schemas';
 
 /*
   Environment variables.
-*/ 
+*/
 dotenv.config();
 const TICKETMASTER_API_KEY = process.env.TICKETMASTER_API_KEY;
 const TICKETMASTER_EVENTS_API_URL = process.env.TICKETMASTER_EVENTS_API_URL;
@@ -40,7 +37,7 @@ router.get(
       }).toString();
 
       const currentPage: number = Number(request.query.page);
-    
+
       const res: globalThis.Response = await fetch(
         `${TICKETMASTER_EVENTS_API_URL}.json?${queryParams}`
       );
@@ -57,8 +54,9 @@ router.get(
       if (!parsedApiResponse.success) {
         throw new Error('Response data does not fit the desired schema.');
       }
-      
-      const numRetrieved: number = parsedApiResponse.data._embedded.events.length;
+
+      const numRetrieved: number =
+        parsedApiResponse.data._embedded.events.length;
 
       if (!numRetrieved) {
         throw new Error('No events found.');
@@ -66,14 +64,12 @@ router.get(
 
       /*
         Remove items that do not fit the schema.
-      */ 
+      */
       const validEvents: Array<EventCardData> =
         parsedApiResponse.data._embedded.events
           .map((item) => {
             const parsedEvent = EventCardSchema.safeParse(item);
-            return parsedEvent.success
-              ? parsedEvent.data
-              : null;
+            return parsedEvent.success ? parsedEvent.data : null;
           })
           .filter((item): item is EventCardData => item !== null);
 
@@ -100,48 +96,53 @@ router.get(
 /*
     GET individual event by passing in an id.
 */
-router.get('/events/:id', async (request, response) => {
-  try {  
-    if (typeof TICKETMASTER_API_KEY !== 'string') {
-      throw new Error('API key is not set.');
+router.get(
+  '/events/:id',
+  async (request: Request, response: Response): Promise<void> => {
+    try {
+      if (typeof TICKETMASTER_API_KEY !== 'string') {
+        throw new Error('API key is not set.');
+      }
+
+      const apiKey: string = TICKETMASTER_API_KEY;
+
+      const queryParams: string = new URLSearchParams({
+        apikey: apiKey,
+        ...request.query,
+      }).toString();
+
+      const eventId: string = request.params.id;
+
+      // Find the appropriately sized image for the info page header.
+
+      const res: globalThis.Response = await fetch(
+        `${TICKETMASTER_EVENTS_API_URL}/${eventId}.json?${queryParams}`
+      );
+
+      if (!res.ok) {
+        throw new Error(
+          `Internal server error ${res.status}: ${res.statusText}`
+        );
+      }
+
+      const responseData: unknown = await res.json();
+      const parsedApiResponse = EventCardSchema.safeParse(responseData);
+
+      if (!parsedApiResponse.success) {
+        throw new Error('Response data does not fit the desired schema.');
+      }
+
+      const event: EventCardData = parsedApiResponse.data;
+
+      // Find the appropriately sized image for the page header.
+      event.images = findImage(event.images);
+
+      response.json(event);
+    } catch (error) {
+      console.log('Error fetching data from Ticketmaster:\n', error);
+      response.status(500).json({ message: error });
     }
-
-    const apiKey: string = TICKETMASTER_API_KEY;
-
-    const queryParams: string = new URLSearchParams({
-      apikey: apiKey,
-      ...request.query,
-    }).toString();
-
-    const eventId: string = request.params.id;
-
-    // Find the appropriately sized image for the info page header.
-  
-    const res: globalThis.Response = await fetch(
-      `${TICKETMASTER_EVENTS_API_URL}/${eventId}.json?${queryParams}`
-    );
-
-    if (!res.ok) {
-      throw new Error(`Internal server error ${res.status}: ${res.statusText}`);
-    }
-
-    const responseData: unknown = await res.json();
-    const parsedApiResponse = EventCardSchema.safeParse(responseData);
-    
-    if (!parsedApiResponse.success) {
-      throw new Error('Response data does not fit the desired schema.');
-    }
-
-    const event: EventCardData = parsedApiResponse.data;
-
-    // Find the appropriately sized image for the page header.
-    event.images = findImage(event.images);
-    
-    response.json(event);
-  } catch(error) {
-    console.log('Error fetching data from Ticketmaster:\n', error);
-    response.status(500).json({ message: error });
   }
-});
+);
 
 export default router;
