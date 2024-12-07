@@ -31,4 +31,15 @@ const sortByDateTime = (a: EventCardData, b: EventCardData) => {
   return dateTimeA.getTime() - dateTimeB.getTime();
 };
 
+// const findImage = (images) => {
+//   const detailImage = images.find((image) =>
+//     image.url.includes('ARTIST_PAGE')
+//   );
+//   if (detailImage && detailImage.url) {
+//     return detailImage.url;
+//   }
+//   return null;
+// };
+
+
 export { formatDate, formatTime, sortByDateTime };

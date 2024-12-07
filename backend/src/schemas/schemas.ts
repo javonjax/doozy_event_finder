@@ -61,7 +61,17 @@ export const EventCardSchema = z.object({
     ),
     _embedded: z.object({
         venues: z.array(Venue)
-    })
+    }),
+    info: z.string().trim().optional(),
+    description: z.string().trim().optional(),
+    seatmap: z.object({
+        staticUrl: z.string()
+    }),
+    images: z.array(
+        z.object({
+            url: z.string()
+        })
+    )
 });
 
 export const ApiData = z.object({
@@ -70,6 +80,19 @@ export const ApiData = z.object({
             z.record(z.string(), z.unknown())
         )
     })
+});
+
+export const EventInfoSchema = EventCardSchema.extend({
+    info: z.string().trim().optional(),
+    description: z.string().trim().optional(),
+    seatmap: z.object({
+        staticUrl: z.string()
+    }).optional(),
+    images: z.array(
+        z.object({
+            url: z.string()
+        })
+    ).optional()
 });
 
 export type EventCardData = z.infer<typeof EventCardSchema>;
