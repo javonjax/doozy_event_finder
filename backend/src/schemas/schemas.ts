@@ -1,45 +1,22 @@
 import { z } from 'zod';
 
-export interface Event {
-    name: string,
-    id: string,
-    dates: {
-        start: {
-            localDate?: string,
-            localTime?: string,
-            dateTime?: string
-        }
-    },
-    priceRanges: {
-        currency?: string,
-        min?: number,
-        max?: number
-    },
-    _embedded:{
-        venues?: {
-            name?: string,
-            id?: string,
-            images?: any,
-            city: {
-                name?: string
-            },
-            state: {
-                name?: string
-            }
-        }[]
-    },
-    [index: string]: unknown
-}
-export const Venue = z.object({
+export const VenueSchema = z.object({
     name: z.string(),
     address: z.record(z.string(), z.string()),
     city: z.record(z.string(), z.string()),
     state: z.record(z.string(), z.string())
 });
 
+export const ImageSchema = z.object({
+  url: z.string()
+});
+  
+export type Image = z.infer<typeof ImageSchema>;
+
 /*
-    /events route
-    Contains general information about events to be displayed on cards
+    Contains general information about events to be displayed on cards.
+    Used in: 
+        /events dataRoute
 */ 
 export const EventCardSchema = z.object({
     name: z.string(),
@@ -60,7 +37,7 @@ export const EventCardSchema = z.object({
         })
     ),
     _embedded: z.object({
-        venues: z.array(Venue)
+        venues: z.array(VenueSchema)
     }),
     info: z.string().trim().optional(),
     description: z.string().trim().optional(),
@@ -68,33 +45,21 @@ export const EventCardSchema = z.object({
         staticUrl: z.string()
     }),
     images: z.array(
-        z.object({
-            url: z.string()
-        })
+        ImageSchema
     )
 });
 
-export const ApiData = z.object({
+export type EventCardData = z.infer<typeof EventCardSchema>;
+
+/*
+    Basic structure of Ticketmaster api responses.
+    Used in:
+        /events dataRoute
+*/
+export const TicketmasterApiData = z.object({
     _embedded: z.object({
         events: z.array(
             z.record(z.string(), z.unknown())
         )
     })
 });
-
-export const EventInfoSchema = EventCardSchema.extend({
-    info: z.string().trim().optional(),
-    description: z.string().trim().optional(),
-    seatmap: z.object({
-        staticUrl: z.string()
-    }).optional(),
-    images: z.array(
-        z.object({
-            url: z.string()
-        })
-    ).optional()
-});
-
-export type EventCardData = z.infer<typeof EventCardSchema>;
-
-
