@@ -1,3 +1,5 @@
+import { EventCardData } from "../schemas/schemas";
+
 // Converts date from YYYY-MM-DD to Weekday, Month DD.
 const formatDate = (dateString: string): string => {
   const [year, month, day]: number[] = dateString.split('-').map(Number);
@@ -22,4 +24,11 @@ const formatTime = (timeString: string): string => {
   return formattedTime;
 };
 
-export { formatDate, formatTime };
+const sortByDateTime = (a: EventCardData, b: EventCardData) => {
+  const dateTimeA = new Date(a.dates.start.localDate + 'T' + a.dates.start.localTime + 'Z');
+  const dateTimeB = new Date(b.dates.start.localDate + 'T' + b.dates.start.localTime + 'Z');
+
+  return dateTimeA.getTime() - dateTimeB.getTime();
+};
+
+export { formatDate, formatTime, sortByDateTime };
