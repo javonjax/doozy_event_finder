@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-// 
-
 export const VenueSchema = z.object({
     name: z.string(),
     address: z.record(z.string(), z.string()),
