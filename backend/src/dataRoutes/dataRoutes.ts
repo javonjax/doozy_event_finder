@@ -1,10 +1,14 @@
 import express, { Request, Response, Router } from 'express';
 import dotenv from 'dotenv';
-import { sortByDateTime, findImage } from './utils';
+import { sortByDateTime, findImage, findGenres } from './utils';
 import {
-  TicketmasterApiData,
+  TicketmasterEventsData,
+  TicketMasterClassificationData,
   EventCardData,
   EventCardSchema,
+  ClassificationSchema,
+  ClassificationData,
+  GenreData,
 } from '../schemas/schemas';
 
 /*
@@ -13,6 +17,7 @@ import {
 dotenv.config();
 const TICKETMASTER_API_KEY = process.env.TICKETMASTER_API_KEY;
 const TICKETMASTER_EVENTS_API_URL = process.env.TICKETMASTER_EVENTS_API_URL;
+const TICKETMASTER_CLASS_API_URL = process.env.TICKETMASTER_CLASS_API_URL;
 const TICKETMASTER_SUGGEST_API_URL = process.env.TICKETMASTER_SUGGEST_API_URL;
 
 const router: Router = express.Router();
@@ -49,7 +54,7 @@ router.get(
       }
 
       const responseData: unknown = await res.json();
-      const parsedApiResponse = TicketmasterApiData.safeParse(responseData);
+      const parsedApiResponse = TicketmasterEventsData.safeParse(responseData);
 
       if (!parsedApiResponse.success) {
         throw new Error('Response data does not fit the desired schema.');
@@ -88,7 +93,9 @@ router.get(
       });
     } catch (error) {
       console.log('Error fetching data from Ticketmaster:\n', error);
-      response.status(500).json({ message: error });
+      if (error instanceof Error) {
+        response.status(500).json({ message: error.message });
+      }
     }
   }
 );
@@ -140,7 +147,78 @@ router.get(
       response.json(event);
     } catch (error) {
       console.log('Error fetching data from Ticketmaster:\n', error);
-      response.status(500).json({ message: error });
+      if (error instanceof Error) {
+        response.status(500).json({ message: error.message });
+      }
+    }
+  }
+);
+
+/*
+  GET genres from specified classification.
+*/
+router.get(
+  '/genres/:route',
+  async (request: Request, response: Response): Promise<void> => {
+    try {
+      if (typeof TICKETMASTER_API_KEY !== 'string') {
+        throw new Error('API key is not set.');
+      }
+
+      const apiKey: string = TICKETMASTER_API_KEY;
+
+      const queryParams: string = new URLSearchParams({
+        apikey: apiKey,
+        ...request.query,
+      }).toString();
+
+      const routeName: string = request.params.route.toLowerCase();
+      console.log(routeName);
+
+      const res: globalThis.Response = await fetch(
+        `${TICKETMASTER_CLASS_API_URL}.json?${queryParams}`
+      );
+
+      if (!res.ok) {
+        throw new Error(`${res.status}: ${res.statusText}`);
+      }
+
+      const responseData: unknown = await res.json();
+      const parsedApiResponse =
+        TicketMasterClassificationData.safeParse(responseData);
+
+      if (!parsedApiResponse.success) {
+        throw new Error('Response data does not fit the desired schema.');
+      }
+
+      const classifications = parsedApiResponse.data._embedded.classifications;
+
+      const validClassifications: Array<ClassificationData> = classifications
+        .map((item) => {
+          const parsedClassification = ClassificationSchema.safeParse(item);
+          return parsedClassification.success
+            ? parsedClassification.data
+            : null;
+        })
+        .filter((item): item is ClassificationData => item !== null);
+
+      const genres: Array<GenreData> | undefined = findGenres(
+        validClassifications,
+        routeName
+      );
+
+      if (!genres) {
+        throw new Error(
+          `Could not find genres for classification type: ${routeName}.`
+        );
+      }
+
+      response.json(genres);
+    } catch (error) {
+      console.log('Error fetching data from Ticketmaster:\n', error);
+      if (error instanceof Error) {
+        response.status(500).json({ message: error.message });
+      }
     }
   }
 );

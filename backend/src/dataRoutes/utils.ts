@@ -1,4 +1,9 @@
-import { EventCardData, Image, ImageSchema } from "../schemas/schemas";
+import {
+  EventCardData,
+  ClassificationData,
+  Image,
+  ImageSchema,
+} from '../schemas/schemas';
 
 // Converts date from YYYY-MM-DD to Weekday, Month DD.
 export const formatDate = (dateString: string): string => {
@@ -25,13 +30,32 @@ export const formatTime = (timeString: string): string => {
 };
 
 export const sortByDateTime = (a: EventCardData, b: EventCardData) => {
-  const dateTimeA = new Date(a.dates.start.localDate + 'T' + a.dates.start.localTime + 'Z');
-  const dateTimeB = new Date(b.dates.start.localDate + 'T' + b.dates.start.localTime + 'Z');
+  const dateTimeA = new Date(
+    a.dates.start.localDate + 'T' + a.dates.start.localTime + 'Z'
+  );
+  const dateTimeB = new Date(
+    b.dates.start.localDate + 'T' + b.dates.start.localTime + 'Z'
+  );
 
   return dateTimeA.getTime() - dateTimeB.getTime();
 };
 
-
 export const findImage = (images: Array<Image>): Array<Image> => {
   return images.filter((image: Image) => image.url.includes('ARTIST_PAGE'));
+};
+
+export const findGenres = (
+  classifications: Array<ClassificationData>,
+  searchTerm: string
+) => {
+  const classification: ClassificationData | undefined = classifications.find(
+    (classification: ClassificationData) =>
+      classification.segment.name.toLowerCase().includes(searchTerm)
+  );
+
+  if (!classification) {
+    return undefined;
+  }
+
+  return classification.segment._embedded.genres;
 };

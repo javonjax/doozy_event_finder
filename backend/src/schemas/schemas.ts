@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+// 
+
 export const VenueSchema = z.object({
     name: z.string(),
     address: z.record(z.string(), z.string()),
@@ -52,13 +54,58 @@ export const EventCardSchema = z.object({
 export type EventCardData = z.infer<typeof EventCardSchema>;
 
 /*
-    Basic structure of Ticketmaster api responses.
+    Basic structure of Ticketmaster api responses containing events.
     Used in:
         /events dataRoute
 */
-export const TicketmasterApiData = z.object({
+export const TicketmasterEventsData = z.object({
     _embedded: z.object({
         events: z.array(
+            z.record(z.string(), z.unknown())
+        )
+    })
+});
+
+/*
+    Contains information about a genre.
+    Used in:
+         /genres/:route
+*/
+export const GenreSchema = z.object({
+    id: z.string(),
+    name: z.string()
+});
+
+export type GenreData = z.infer<typeof GenreSchema>;
+
+/*
+    Contains a list of genres under a classification.
+    Used in: 
+        /genres/:route
+*/
+export const ClassificationSchema = z.object({
+    segment: z.object({
+        id: z.string(),
+        name: z.string(),
+        _embedded: z.object({
+            genres: z.array(
+                GenreSchema
+            )
+        })
+    })
+});
+
+export type ClassificationData = z.infer<typeof ClassificationSchema>;
+
+
+/*
+    Basic structure of Ticketmaster api responses containing classifications.
+    Used in:
+        /genres/:route dataRoute
+*/
+export const TicketMasterClassificationData = z.object({
+    _embedded: z.object({
+        classifications: z.array(
             z.record(z.string(), z.unknown())
         )
     })
