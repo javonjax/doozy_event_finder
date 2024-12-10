@@ -3,7 +3,7 @@
 @tailwind utilities;
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 242, 100%, 12%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -61,7 +61,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply h-screen;
+    @apply text-foreground;
+    @apply bg-slate-900;
+    @apply font-nunito;
   }
 }
 

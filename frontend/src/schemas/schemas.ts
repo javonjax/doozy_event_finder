@@ -1,0 +1,1 @@
+export const categories: Array<string> = ['Sports', 'Music', 'Film', 'Arts', 'Misc'];

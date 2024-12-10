@@ -1,4 +1,5 @@
 import { MenubarTrigger } from '@/components/ui/menubar';
+import { NavLink } from 'react-router-dom';
 
 interface NavBarItemProps {
     path: string, 
@@ -7,11 +8,11 @@ interface NavBarItemProps {
 
 const NavBarItem = ({path, label}: NavBarItemProps): React.JSX.Element => {
   return (
-    <MenubarTrigger className='bg-black text-white mx-0 p-4'>
-      <a href={`/${path}`}>
-        {label}
-      </a>
-    </MenubarTrigger>
+    <NavLink to={`${path.toLowerCase()}`}>
+      <MenubarTrigger className='bg-black text-white mx-0 p-4'>
+          {label}
+      </MenubarTrigger>
+    </NavLink>
   );
 };
 

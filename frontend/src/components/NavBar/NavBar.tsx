@@ -1,8 +1,7 @@
 import { Menubar, MenubarMenu } from '@/components/ui/menubar';
 import { FaHome } from 'react-icons/fa';
 import NavBarItem from './NavBarItem';
-
-export const categories: Array<string> = ['Sports', 'Music', 'Film', 'Arts', 'Misc'];
+import { categories } from '@/schemas/schemas';
 
 const NavBar = (): React.JSX.Element => {
   return (
@@ -11,7 +10,13 @@ const NavBar = (): React.JSX.Element => {
         <MenubarMenu>
           <NavBarItem path='/' label={<FaHome size={24} />} />
           {categories.map((category: string): React.JSX.Element => {
-            return <NavBarItem path={`/${category}`} label={category} />;
+            return (
+              <NavBarItem
+                key={`${category}-nav`}
+                path={`/${category}`}
+                label={category}
+              />
+            );
           })}
         </MenubarMenu>
       </Menubar>
