@@ -1,7 +1,9 @@
 import { categories } from "@/schemas/schemas";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "@/components/NavBar/NavBar";
+import Footer from "@/components/Footer/Footer";
 import NotFound from "@/components/NotFound/NotFound";
+import Home from "@/components/Home/Home";
 
 const App = () => {
   return (
@@ -12,8 +14,7 @@ const App = () => {
           <Routes>
             <Route
               path='/'
-              element={<div className='w-full max-w-7xl border-solid border-2'>Hello world</div>
-              }
+              element={<Home/>}
             />
             {categories.map((cat: string): React.JSX.Element => (
               <Route
@@ -28,7 +29,7 @@ const App = () => {
             />
           </Routes>
         </main>
-        <footer>howdy</footer>
+        <Footer/>
       </BrowserRouter>
     </>
   );
