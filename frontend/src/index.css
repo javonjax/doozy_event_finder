@@ -3,6 +3,7 @@
 @tailwind utilities;
 @layer base {
   :root {
+    --text-color: 0, 100%, 100%;
     --background: 0, 0%, 0%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;

@@ -9,7 +9,7 @@ import Logo from '../Logo/Logo';
 
 const NavBar = (): React.JSX.Element => {
   return (
-    <div className='bg-black'>
+    <div className='bg-[hsl(var(--background))]'>
       <Menubar className='h-20 flex justify-between max-w-7xl mx-auto border-0 p-0 rounded-none'>
         <MenubarMenu>
           <div>
@@ -29,10 +29,10 @@ const NavBar = (): React.JSX.Element => {
               );
             })}
             <MenubarMenu>
-              <MenubarTrigger className='bg-black text-white mx-0 p-4 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground'>
+              <MenubarTrigger className='text-[hsl(var(--text-color))] mx-0 p-4 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground'>
                 <UserRound size={20}/>
               </MenubarTrigger>
-              <MenubarContent className='text-white hidden md:block'>
+              <MenubarContent className='text-[hsl(var(--text-color))] hidden md:block'>
                 <MenubarItem>
                   Login <MenubarShortcut><LogIn/></MenubarShortcut>
                 </MenubarItem>
@@ -46,20 +46,22 @@ const NavBar = (): React.JSX.Element => {
           {/* Hamburger menu for small screens. */}
           <div className='md:hidden'>
             <MenubarMenu>
-              <MenubarTrigger className='text-white mx-0 p-4 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground'>
+              <MenubarTrigger className='text-[hsl(var(--text-color))] mx-0 p-4 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground'>
                 <Menu />
               </MenubarTrigger>
-              <MenubarContent className='text-white md:hidden'>
+              <MenubarContent className='text-[hsl(var(--text-color))] md:hidden'>
                 {categories.map((cat) => {
                   return (
-                    <><NavLink
+                    <>
+                    <NavLink
                       key={`${cat}-nav`}
                       to={`/${cat}`}
                     >
                       <MenubarItem>
                         {cat}
                       </MenubarItem>
-                    </NavLink><MenubarSeparator /></>
+                    </NavLink><MenubarSeparator />
+                    </>
                   )
                 })}
                 <MenubarItem>

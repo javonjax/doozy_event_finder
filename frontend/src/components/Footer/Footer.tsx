@@ -5,8 +5,8 @@ const Footer = () => {
   const linkedin: string = import.meta.env.VITE_LINKEDIN;
 
   return (
-    <footer className='bg-black'>
-        <div className='h-20 flex justify-between bg-black items-center text-white text-2xl max-w-7xl mx-auto border-0 rounded-none'>
+    <footer className='bg-[hsl(var(--background))]'>
+        <div className='h-20 flex justify-between items-center text-[hsl(var(--text-color))] text-2xl max-w-7xl mx-auto border-0 rounded-none'>
             <p>Created by Javon Jackson</p>
             <div className='flex'>
                 <a className='cursor-pointer' target='_blank' href={githubLink}>
