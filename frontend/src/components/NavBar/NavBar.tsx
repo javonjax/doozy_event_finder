@@ -1,7 +1,7 @@
 import { categories } from '@/schemas/schemas';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarShortcut, MenubarTrigger } from '@/components/ui/menubar';
 import { NavLink } from 'react-router-dom';
-import { UserRound, LogIn, PenLine } from 'lucide-react';
+import { Menu, UserRound, LogIn, PenLine } from 'lucide-react';
 import NavBarItem from './NavBarItem';
 import Logo from '../Logo/Logo';
 
@@ -10,34 +10,64 @@ import Logo from '../Logo/Logo';
 const NavBar = (): React.JSX.Element => {
   return (
     <div className='bg-black'>
-      <Menubar className='h-20 flex justify-between bg-black max-w-7xl mx-auto border-0 p-0 rounded-none'>
+      <Menubar className='h-20 flex justify-between max-w-7xl mx-auto border-0 p-0 rounded-none'>
         <MenubarMenu>
           <div>
             <NavLink to='/'>
               <Logo/>
             </NavLink>
           </div>
-          <div className='flex items-center'>
-            {categories.map((category: string): React.JSX.Element => {
+          {/* Normal navbar for larger screens. */}
+          <div className='items-center hidden md:flex'>
+            {categories.map((cat: string): React.JSX.Element => {
               return (
                 <NavBarItem
-                  key={`${category}-nav`}
-                  path={`/${category}`}
-                  label={category}
+                  key={`${cat}-nav`}
+                  path={`/${cat}`}
+                  label={cat}
                 />
               );
             })}
             <MenubarMenu>
-              <MenubarTrigger className='bg-black text-white mx-0 p-4'>
+              <MenubarTrigger className='bg-black text-white mx-0 p-4 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground'>
                 <UserRound size={20}/>
               </MenubarTrigger>
-              <MenubarContent className='bg-black text-white'>
+              <MenubarContent className='text-white hidden md:block'>
                 <MenubarItem>
                   Login <MenubarShortcut><LogIn/></MenubarShortcut>
                 </MenubarItem>
                 <MenubarSeparator/>
                 <MenubarItem>
                   Sign up <MenubarShortcut><PenLine/></MenubarShortcut>
+                </MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+          </div>
+          {/* Hamburger menu for small screens. */}
+          <div className='md:hidden'>
+            <MenubarMenu>
+              <MenubarTrigger className='text-white mx-0 p-4 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground'>
+                <Menu />
+              </MenubarTrigger>
+              <MenubarContent className='text-white md:hidden'>
+                {categories.map((cat) => {
+                  return (
+                    <><NavLink
+                      key={`${cat}-nav`}
+                      to={`/${cat}`}
+                    >
+                      <MenubarItem>
+                        {cat}
+                      </MenubarItem>
+                    </NavLink><MenubarSeparator /></>
+                  )
+                })}
+                <MenubarItem>
+                  Login <MenubarShortcut><LogIn size={20}/></MenubarShortcut>
+                </MenubarItem>
+                <MenubarSeparator/>
+                <MenubarItem>
+                  Sign up <MenubarShortcut><PenLine size={20}/></MenubarShortcut>
                 </MenubarItem>
               </MenubarContent>
             </MenubarMenu>
