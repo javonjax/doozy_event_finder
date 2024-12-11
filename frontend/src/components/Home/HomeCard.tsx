@@ -13,7 +13,7 @@ const HomeCard = ({ path, label, icon, color }: HomeCardProps): React.JSX.Elemen
   const colors = colorClasses[color] || '';
   return (
     <NavLink
-      className={clsx('cursor-pointer border-2 w-[30%] h-full flex rounded-2xl overflow-hidden relative transform transition-all duration-400 hover:scale-105', colors)}
+      className={clsx('cursor-pointer border-2 h-[250px] w-[70%] md:w-[30%] md:h-full flex rounded-2xl overflow-hidden relative transform transition-all duration-400 hover:scale-105', colors)}
       to={path}>
       <div className={clsx(`absolute top-4 left-8`)}>
         {icon}
