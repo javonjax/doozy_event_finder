@@ -17,7 +17,7 @@ const App = () => {
         <LocationProvider>
         <NavBar/>
         <main className='grow flex flex-col items-center'>
-          <Toaster />
+          <Toaster/>
           <Routes>
             <Route
               path='/'
