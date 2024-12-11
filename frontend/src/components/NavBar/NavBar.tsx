@@ -1,4 +1,4 @@
-import { categories } from '@/schemas/schemas';
+import { Categories } from '@/schemas/schemas';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarShortcut, MenubarTrigger } from '@/components/ui/menubar';
 import { NavLink } from 'react-router-dom';
 import { Menu, UserRound, LogIn, PenLine } from 'lucide-react';
@@ -19,7 +19,7 @@ const NavBar = (): React.JSX.Element => {
           </div>
           {/* Normal navbar for larger screens. */}
           <div className='items-center hidden md:flex'>
-            {categories.map((cat: string): React.JSX.Element => {
+            {Categories.map((cat: string): React.JSX.Element => {
               return (
                 <NavBarItem
                   key={`${cat}-nav`}
@@ -50,7 +50,7 @@ const NavBar = (): React.JSX.Element => {
                 <Menu />
               </MenubarTrigger>
               <MenubarContent className='text-[hsl(var(--text-color))] md:hidden'>
-                {categories.map((cat) => {
+                {Categories.map((cat) => {
                   return (
                     <>
                     <NavLink

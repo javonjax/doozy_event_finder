@@ -1,9 +1,10 @@
-import { categories } from "@/schemas/schemas";
+import { Categories } from "@/schemas/schemas";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import NavBar from "@/components/NavBar/NavBar";
 import Footer from "@/components/Footer/Footer";
-import NotFound from "@/components/NotFound/NotFound";
 import Home from "@/components/Home/Home";
+import NavBar from "@/components/NavBar/NavBar";
+import NotFound from "@/components/NotFound/NotFound";
+import { Toaster } from "@/components/ui/toaster";
 
 const App = () => {
   return (
@@ -11,12 +12,13 @@ const App = () => {
       <BrowserRouter>
         <NavBar/>
         <main className='grow flex flex-col items-center'>
+          <Toaster />
           <Routes>
             <Route
               path='/'
               element={<Home/>}
             />
-            {categories.map((cat: string): React.JSX.Element => (
+            {Categories.map((cat: string): React.JSX.Element => (
               <Route
                 key={cat}
                 path={`/${cat.toLowerCase()}`}
