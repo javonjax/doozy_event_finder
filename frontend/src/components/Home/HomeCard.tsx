@@ -14,7 +14,7 @@ const HomeCard = ({ path, label, icon }: HomeCardProps): React.JSX.Element => {
       <div className='absolute top-4 left-8'>
         {icon}
       </div>
-      <h1 className='absolute bottom-4 right-4'>{label}</h1>
+      <label className='absolute bottom-4 right-4 text-[1.5rem]'>{label}</label>
     </NavLink>
   );
 };
