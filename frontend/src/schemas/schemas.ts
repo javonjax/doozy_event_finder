@@ -7,6 +7,14 @@ export const Categories: Array<string> = [
 ];
 
 /*
+  Used in: components/NavBar/NavBarItem
+*/
+export interface NavBarItemProps {
+  path: string;
+  label: React.ReactNode;
+};
+
+/*
   Used in: components/Home/Card
 */
 export interface HomeCardProps {
@@ -14,6 +22,7 @@ export interface HomeCardProps {
   label: string;
   icon: React.ReactNode;
   color: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 };
 
 /*

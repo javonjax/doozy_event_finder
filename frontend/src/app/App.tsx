@@ -1,15 +1,20 @@
 import { Categories } from "@/schemas/schemas";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
+
 import Footer from "@/components/Footer/Footer";
 import Home from "@/components/Home/Home";
 import NavBar from "@/components/NavBar/NavBar";
 import NotFound from "@/components/NotFound/NotFound";
-import { Toaster } from "@/components/ui/toaster";
+import { LocationProvider } from "@/components/Providers/LocationContext";
+
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
+        <LocationProvider>
         <NavBar/>
         <main className='grow flex flex-col items-center'>
           <Toaster />
@@ -32,6 +37,7 @@ const App = () => {
           </Routes>
         </main>
         <Footer/>
+        </LocationProvider>
       </BrowserRouter>
     </>
   );

@@ -1,8 +1,36 @@
 import Row from './Row';
 import Card from './Card';
+import { useToast } from '@/hooks/use-toast';
 import { Music, Trophy, Film, Drama, Puzzle, Flame, Radar } from 'lucide-react';
+import { useContext } from 'react';
+import { LocationContext } from '../Providers/LocationContext';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { LocationContextHelper } from '@/schemas/schemas';
 
 const Home = (): React.JSX.Element => {
+  const context = useContext<LocationContextHelper | undefined>(LocationContext);
+  const navigate: NavigateFunction = useNavigate();
+  const { toast } = useToast();
+
+  const handleClickLocalCard: React.MouseEventHandler<HTMLAnchorElement> = async (e): Promise<void> => {
+    e.preventDefault();
+    if (!context) {
+      console.log('Location context is unavailable.');
+      return;
+    }
+    try {
+      await context.requestLocation();
+      navigate('/local');
+    } catch (error) {
+      toast({
+        title: 'Location Services Required',
+        description: 'Please enable location services to see local events.',
+        variant: 'destructive',
+        duration: 5000,
+      });
+    }
+  };
+
   return (
     <div className='max-w-7xl w-full h-full flex flex-col items-center'>
       <div className='w-full flex flex-col items-center mt-8 text-[hsl(var(--text-color))]'>
@@ -26,6 +54,7 @@ const Home = (): React.JSX.Element => {
             label='Local'
             icon={<Radar size={164} />}
             color='slate'
+            onClick={handleClickLocalCard}
           />
         </Row>
         <Row>

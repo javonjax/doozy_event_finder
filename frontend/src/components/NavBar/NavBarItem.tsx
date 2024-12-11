@@ -1,10 +1,6 @@
 import { MenubarTrigger } from '@/components/ui/menubar';
 import { NavLink } from 'react-router-dom';
-
-interface NavBarItemProps {
-    path: string, 
-    label: React.ReactNode
-};
+import { NavBarItemProps } from '@/schemas/schemas';
 
 const NavBarItem = ({path, label}: NavBarItemProps): React.JSX.Element => {
   return (
