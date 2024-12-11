@@ -1,6 +1,6 @@
 import { Github, Linkedin } from "lucide-react";
 
-const Footer = () => {
+const Footer = (): React.JSX.Element => {
   const githubLink: string = import.meta.env.VITE_GITHUB_LINK;
   const linkedin: string = import.meta.env.VITE_LINKEDIN;
 

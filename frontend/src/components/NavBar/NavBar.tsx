@@ -60,7 +60,8 @@ const NavBar = (): React.JSX.Element => {
                       <MenubarItem>
                         {cat}
                       </MenubarItem>
-                    </NavLink><MenubarSeparator />
+                      <MenubarSeparator />
+                    </NavLink>
                     </>
                   )
                 })}

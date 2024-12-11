@@ -1,8 +1,7 @@
 import HomeCard from "./HomeCard";
-import Logo from "../Logo/Logo";
 import { Music, Trophy, Film, Drama, Puzzle } from 'lucide-react';
 
-const Home = () => {
+const Home = (): React.JSX.Element => {
   return (
     <div className='max-w-7xl w-full h-full flex flex-col items-center'>
         <div className='w-full flex flex-col items-center mt-8 text-[hsl(var(--text-color))]'>
@@ -15,13 +14,13 @@ const Home = () => {
         </div>
         <div className='w-full grow flex flex-col items-center gap-16 m-16'>
             <div className='w-full flex grow justify-center items-center gap-16'>
-                <HomeCard path={`/music`} label='Music' icon={<Music size={164}/>}/>
-                <HomeCard path={`/sports`} label='Sports' icon={<Trophy size={164}/>}/>
-                <HomeCard path={`/film`} label='Film' icon={<Film size={164}/>}/>
+                <HomeCard path={`/music`} label='Music' icon={<Music size={164}/>} color='orange'/>
+                <HomeCard path={`/sports`} label='Sports' icon={<Trophy size={164}/>} color='green'/>
+                <HomeCard path={`/film`} label='Film' icon={<Film size={164}/>} color='violet'/>
             </div>
             <div className='w-full flex grow justify-center items-center gap-16'>
-                <HomeCard path={`/arts`} label='Arts' icon={<Drama size={164}/>}/>
-                <HomeCard path={`/misc`} label='Misc' icon={<Puzzle size={164}/>}/>
+                <HomeCard path={`/arts`} label='Arts' icon={<Drama size={164}/>} color='pink'/>
+                <HomeCard path={`/misc`} label='Misc' icon={<Puzzle size={164}/>} color='slate'/>
             </div>
         </div>
     </div>
