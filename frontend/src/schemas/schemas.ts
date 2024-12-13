@@ -1,3 +1,6 @@
+import { z } from 'zod';
+
+
 export const Categories: Array<string> = [
   'Sports',
   'Music',
@@ -49,3 +52,17 @@ export interface LocationContextHelper {
   error?: string,
   requestLocation: () => Promise<Coordinates>
 };
+
+export const GenreSchema = z.object({
+  id: z.string(),
+  name: z.string()
+});
+
+export const GenreArraySchema = z.array(
+  z.object({
+    id: z.string(),
+    name: z.string(),
+  })
+);
+
+export type GenreData = z.infer<typeof GenreSchema>;

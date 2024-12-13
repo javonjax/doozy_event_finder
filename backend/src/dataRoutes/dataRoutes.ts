@@ -9,7 +9,7 @@ import {
   ClassificationSchema,
   ClassificationData,
   GenreData,
-} from '../schemas/schemas';
+} from '../../../schemas/schemas';
 
 /*
   Environment variables.
@@ -133,8 +133,9 @@ router.get(
       }
 
       const responseData: unknown = await res.json();
+      
       const parsedApiResponse = EventCardSchema.safeParse(responseData);
-
+     
       if (!parsedApiResponse.success) {
         throw new Error('Response data does not fit the desired schema.');
       }
@@ -158,7 +159,7 @@ router.get(
   GET genres from specified classification.
 */
 router.get(
-  '/genres/:route',
+  '/genres/:path',
   async (request: Request, response: Response): Promise<void> => {
     try {
       if (typeof TICKETMASTER_API_KEY !== 'string') {
@@ -172,8 +173,7 @@ router.get(
         ...request.query,
       }).toString();
 
-      const routeName: string = request.params.route.toLowerCase();
-      console.log(routeName);
+      const path: string = request.params.path.toLowerCase();
 
       const res: globalThis.Response = await fetch(
         `${TICKETMASTER_CLASS_API_URL}.json?${queryParams}`
@@ -204,12 +204,12 @@ router.get(
 
       const genres: Array<GenreData> | undefined = findGenres(
         validClassifications,
-        routeName
+        path
       );
 
       if (!genres) {
         throw new Error(
-          `Could not find genres for classification type: ${routeName}.`
+          `Could not find genres for classification type: ${path}.`
         );
       }
 

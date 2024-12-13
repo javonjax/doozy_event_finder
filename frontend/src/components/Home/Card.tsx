@@ -19,7 +19,7 @@ const Card = ({ path, label, icon, color, onClick }: HomeCardProps): React.JSX.E
       <div className={clsx(`absolute top-[-4px] left-[-4px]`)}>
         {icon}
       </div>
-      <label className='text-white absolute bottom-4 right-4 text-[1.5rem] cursor-pointer'>{label}</label>
+      <label className='text-[hsl(var(--text-color))] absolute bottom-4 right-4 text-[1.5rem] cursor-pointer'>{label}</label>
     </NavLink>
   );
 };

@@ -8,27 +8,31 @@ import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { LocationContextHelper } from '@/schemas/schemas';
 
 const Home = (): React.JSX.Element => {
-  const context = useContext<LocationContextHelper | undefined>(LocationContext);
+  const context = useContext<LocationContextHelper | undefined>(
+    LocationContext
+  );
   const navigate: NavigateFunction = useNavigate();
   const { toast } = useToast();
 
-  const handleClickLocalCard: React.MouseEventHandler<HTMLAnchorElement> = async (e): Promise<void> => {
-    e.preventDefault();
-    if (!context) {
-      console.log('Location context is unavailable.');
-      return;
-    }
-    try {
-      await context.requestLocation();
-      navigate('/local');
-    } catch (error) {
-      toast({
-        title: 'Location Services Required',
-        description: 'Please enable location services to see local events.',
-        variant: 'destructive',
-        duration: 5000,
-      });
-    }
+  const handleClickLocalCard: React.MouseEventHandler<HTMLAnchorElement> = 
+    async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): Promise<void> => {
+        e.preventDefault();
+        if (!context) {
+          console.log('Location context is unavailable.');
+          return;
+        }
+        try {
+          const { requestLocation } = context;
+          await requestLocation();
+        navigate('/local');
+        } catch (error) {
+          toast({
+            title: 'Location Services Required',
+            description: 'Please enable location services to see local events.',
+            variant: 'destructive',
+            duration: 5000,
+          });
+        }
   };
 
   return (

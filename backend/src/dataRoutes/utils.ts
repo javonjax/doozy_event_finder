@@ -3,7 +3,7 @@ import {
   ClassificationData,
   Image,
   ImageSchema,
-} from '../schemas/schemas';
+} from '../../../schemas/schemas';
 
 // Converts date from YYYY-MM-DD to Weekday, Month DD.
 export const formatDate = (dateString: string): string => {

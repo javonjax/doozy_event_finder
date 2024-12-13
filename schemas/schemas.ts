@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+/******************************************************** BACKEND ********************************************************/
 export const VenueSchema = z.object({
     name: z.string(),
     address: z.record(z.string(), z.string()),
@@ -74,6 +75,13 @@ export const GenreSchema = z.object({
     name: z.string()
 });
 
+export const GenreArraySchema = z.array(
+  z.object({
+    id: z.string(),
+    name: z.string(),
+  })
+);
+
 export type GenreData = z.infer<typeof GenreSchema>;
 
 /*
@@ -108,3 +116,10 @@ export const TicketMasterClassificationData = z.object({
         )
     })
 });
+
+/******************************************************** BACKEND ********************************************************/
+
+
+/******************************************************** FRONTEND ********************************************************/
+
+/******************************************************** FRONTEND ********************************************************/
