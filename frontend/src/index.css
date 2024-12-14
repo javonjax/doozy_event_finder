@@ -64,7 +64,7 @@
   body {
     @apply h-screen;
     @apply text-foreground;
-    @apply bg-slate-900;
+    @apply bg-neutral-900;
     @apply font-nunito;
   }
 }

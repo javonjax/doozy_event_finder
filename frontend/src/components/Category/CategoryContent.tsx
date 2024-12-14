@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-// import EventList from './EventList';
+import EventList from '../Events/EventList';
 import { LocationContext } from '../Providers/LocationContext';
 import { useState, useContext } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -82,7 +82,7 @@ const CategoryContent = (): React.JSX.Element => {
 
   return (
     <>
-      <div className='flex flex-col w-full items-center justify-center my-8 bg-[hsl(var(--background))] rounded-2xl p-4'>
+      <div className='flex flex-col w-full items-center justify-center my-4 bg-[hsl(var(--background))] rounded-2xl p-4'>
         <div className='flex justify-evenly items-center w-full mb-4'>
           {genres?.length && (
             <div>
@@ -123,13 +123,13 @@ const CategoryContent = (): React.JSX.Element => {
           </div>
         )}
       </div>
-      {/* <EventList
-        route={path}
+      <EventList
+        path={path}
         selectedGenre={selectedGenre}
         location={
-          useLocationData || path.toLowerCase() === 'local' ? location : null
+          useLocationData || path.toLowerCase() === 'local' ? context?.location : undefined
         }
-      ></EventList> */}
+      ></EventList>
     </>
   );
 };

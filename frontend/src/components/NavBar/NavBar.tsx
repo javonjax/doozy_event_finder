@@ -52,7 +52,6 @@ const NavBar = (): React.JSX.Element => {
               <MenubarContent className='text-[hsl(var(--text-color))] md:hidden'>
                 {Categories.map((cat) => {
                   return (
-                    <>
                     <NavLink
                       key={`${cat}-nav`}
                       to={`/${cat}`}
@@ -62,7 +61,6 @@ const NavBar = (): React.JSX.Element => {
                       </MenubarItem>
                       <MenubarSeparator />
                     </NavLink>
-                    </>
                   )
                 })}
                 <MenubarItem>

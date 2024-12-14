@@ -46,7 +46,7 @@ router.get(
       const res: globalThis.Response = await fetch(
         `${TICKETMASTER_EVENTS_API_URL}.json?${queryParams}`
       );
-
+      console.log(`${TICKETMASTER_EVENTS_API_URL}.json?${queryParams}`)
       if (!res.ok) {
         throw new Error(
           `Internal server error ${res.status}: ${res.statusText}`
@@ -54,6 +54,7 @@ router.get(
       }
 
       const responseData: unknown = await res.json();
+      
       const parsedApiResponse = TicketmasterEventsData.safeParse(responseData);
 
       if (!parsedApiResponse.success) {

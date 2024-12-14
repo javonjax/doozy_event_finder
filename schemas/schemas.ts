@@ -2,10 +2,19 @@ import { z } from 'zod';
 
 /******************************************************** BACKEND ********************************************************/
 export const VenueSchema = z.object({
+  name: z.string(),
+  address: z.record(z.string(), z.string()),
+  city: z.object({
     name: z.string(),
-    address: z.record(z.string(), z.string()),
-    city: z.record(z.string(), z.string()),
-    state: z.record(z.string(), z.string())
+  }),
+  state: z
+    .object({
+      name: z.string().optional(),
+      stateCode: z.string().optional(),
+    })
+    .refine((data) => data.name !== undefined || data.stateCode !== undefined, {
+      message: 'Name or state code must be present.',
+    }),
 });
 
 export const ImageSchema = z.object({
@@ -122,4 +131,15 @@ export const TicketMasterClassificationData = z.object({
 
 /******************************************************** FRONTEND ********************************************************/
 
+/*
+    Used in: components/Events/EventList
+*/
+export const EventsAPIResSchema = z.object({
+    events: z.array(
+        EventCardSchema
+    ),
+    nextPage: z.number().nullable()
+});
+
+export type EventsAPIRes = z.infer<typeof EventsAPIResSchema>;
 /******************************************************** FRONTEND ********************************************************/

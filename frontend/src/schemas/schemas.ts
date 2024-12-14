@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 
+
 export const Categories: Array<string> = [
   'Sports',
   'Music',
@@ -24,7 +25,6 @@ export interface HomeCardProps {
   path: string;
   label: string;
   icon: React.ReactNode;
-  color: string;
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 };
 
@@ -66,3 +66,10 @@ export const GenreArraySchema = z.array(
 );
 
 export type GenreData = z.infer<typeof GenreSchema>;
+
+export interface EventListProps {
+  selectedGenre?: string;
+  location?: Coordinates;
+  path: string;
+};
+
