@@ -3,7 +3,7 @@ import EventList from '../Events/EventList';
 import { LocationContext } from '../Providers/LocationContext';
 import { useState, useContext } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { LocationContextHelper } from '@/schemas/schemas';
+import { Categories, LocationContextHelper } from '@/schemas/schemas';
 import { useLocation } from 'react-router-dom';
 import { GenreData, GenreArraySchema } from '@/schemas/schemas';
 
@@ -48,29 +48,33 @@ const CategoryContent = (): React.JSX.Element => {
   };
 
   const fetchGenres = async (): Promise<Array<GenreData> | null> => {
-    try {
-      const res: globalThis.Response = await fetch(`${BACKEND_GENRES_API_URL}${path}`);
-      if (!res.ok) {
-        throw new Error('Error connecting to API.');
+    if (Categories.map((cat) => cat.toLowerCase()).includes(path)){
+      try {
+        const res: globalThis.Response = await fetch(`${BACKEND_GENRES_API_URL}${path}`);
+        if (!res.ok) {
+          throw new Error('Error connecting to API.');
+        }
+        const data: unknown = await res.json();
+        const parsedData = GenreArraySchema.safeParse(data);
+        if (!parsedData.success) {
+          throw new Error('Genre data is not in the correct format.');
+        }
+        if (!parsedData.data.length) {
+          return [];
+        }
+        return parsedData.data;
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            title: 'Error',
+            description: error.message,
+            variant: 'destructive',
+            duration: 5000,
+          });
+        }
+        return null;
       }
-      const data: unknown = await res.json();
-      const parsedData = GenreArraySchema.safeParse(data);
-      if (!parsedData.success) {
-        throw new Error('Genre data is not in the correct format.');
-      }
-      if (!parsedData.data.length) {
-        return [];
-      }
-      return parsedData.data;
-    } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          title: 'Error',
-          description: error.message,
-          variant: 'destructive',
-          duration: 5000,
-        });
-      }
+    } else {
       return null;
     }
   };

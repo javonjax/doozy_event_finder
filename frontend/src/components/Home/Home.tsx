@@ -48,12 +48,12 @@ const Home = (): React.JSX.Element => {
       <div className='w-full grow flex flex-col items-center gap-16 p-8'>
         <Row>
           <Card
-            path={`/music`}
+            path={`/popular`}
             label='Popular'
             icon={<Flame size={164} />}
           />
           <Card
-            path={`/sports`}
+            path={`/local`}
             label='Local'
             icon={<Radar size={164} />}
             onClick={handleClickLocalCard}

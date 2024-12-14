@@ -36,9 +36,14 @@ const App = () => {
                 />
               ))}
               <Route
+                path='/popular'
+                element={<CategoryLanding path='popular'/>}/>
+              <Route
+                path='/local'
+                element={<CategoryLanding path='local'/>}/>
+              <Route
                 path='*'
-                element={<NotFound/>}
-              />
+                element={<NotFound/>}/>
             </Routes>
           </main>
           <Footer/>
