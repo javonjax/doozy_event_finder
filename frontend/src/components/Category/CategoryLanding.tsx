@@ -6,8 +6,10 @@ const CategoryLanding = ({ path }: {path: string}): React.JSX.Element => {
   return (
     <>
     <div className='max-w-7xl w-full h-full'>
-        <CategoryHeader />
-        <CategoryContent />
+       <div className='mx-4'>
+         <CategoryHeader />
+         <CategoryContent />
+       </div>
     </div>
     </>
   );

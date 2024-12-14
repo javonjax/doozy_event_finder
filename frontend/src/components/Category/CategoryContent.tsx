@@ -82,13 +82,13 @@ const CategoryContent = (): React.JSX.Element => {
 
   return (
     <>
-      <div className='flex flex-col w-full items-center justify-center my-4 bg-[hsl(var(--background))] rounded-2xl p-4'>
-        <div className='flex justify-evenly items-center w-full mb-4'>
+      <div className='flex flex-col w-full items-center justify-center bg-[hsl(var(--background))] rounded-2xl p-4 my-4'>
+        <div className='flex flex-col md:flex-row justify-evenly items-center w-full mb-4'>
           {genres?.length && (
-            <div>
+            <div className='flex flex-col text-center md:flex-row  w-[60%] md:w-fit mb-4 md:mb-0'>
               <label htmlFor='subcategory-select' className='text-[hsl(var(--text-color))] mr-4'>Subcategory:</label>
               <select
-                className='p-1'
+                className='p-1 w-full'
                 name='subcategory-select'
                 value={selectedGenre}
                 onChange={handleGenreChange}
@@ -102,11 +102,11 @@ const CategoryContent = (): React.JSX.Element => {
               </select>
             </div>
           )}
-          <div>
+          <div className='flex flex-col text-center md:flex-row mb-4 md:mb-0'>
             <label className='mr-2 text-[hsl(var(--text-color))]'>Start date:</label>
             <input type='date'></input>
           </div>
-          <div>
+          <div className='flex flex-col text-center md:flex-row mb-4 md:mb-0'>
             <label className='mr-2 text-[hsl(var(--text-color))]'>End date:</label>
             <input type='date'></input>
           </div>

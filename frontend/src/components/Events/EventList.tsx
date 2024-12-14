@@ -160,7 +160,7 @@ const EventList = ({ selectedGenre, location }: EventListProps) => {
   // Render an event component for each event returned from the backend API.
   return (
     <>
-      <div className='flex flex-col items-center'>
+      <div className='flex flex-col items-center max-w-full'>
         {visibleEvents?.map((event) => (
           <Event key={event.id} event={event} path={path}></Event>
         ))}
