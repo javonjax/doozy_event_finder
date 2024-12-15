@@ -3,7 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 import { EventListProps, Categories } from '@/schemas/schemas';
 import { EventsAPIResSchema, EventsAPIRes, EventCardData } from '../../../../schemas/schemas';
-import Event from './Event';
+import EventCard from './EventCard';
 
 
 const EventList = ({ selectedGenre, location }: EventListProps) => {
@@ -162,7 +162,7 @@ const EventList = ({ selectedGenre, location }: EventListProps) => {
     <>
       <div className='flex flex-col items-center max-w-full'>
         {visibleEvents?.map((event) => (
-          <Event key={event.id} event={event} path={path}></Event>
+          <EventCard key={event.id} event={event} path={path}></EventCard>
         ))}
         {isFetching && <p className='text-center'>Loading events...</p>}
         <button 

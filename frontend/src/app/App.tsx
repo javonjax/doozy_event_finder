@@ -10,6 +10,7 @@ import NavBar from "@/components/NavBar/NavBar";
 import NotFound from "@/components/NotFound/NotFound";
 import CategoryLanding from "@/components/Category/CategoryLanding";
 import { LocationProvider } from "@/components/Providers/LocationContext";
+import EventInfo from "@/components/Events/EventInfo";
 
 
 const App = () => {
@@ -35,12 +36,25 @@ const App = () => {
                   element={<CategoryLanding path={cat}/>}
                 />
               ))}
+              {Categories.map((cat: string): React.JSX.Element => (
+                <Route
+                  key={`${cat}-info`}
+                  path={`/${cat}/:id`}
+                  element={<EventInfo/>}
+                />
+              ))}
               <Route
                 path='/popular'
                 element={<CategoryLanding path='popular'/>}/>
               <Route
+                path='/popular/:id'
+                element={<EventInfo/>}/>
+              <Route
                 path='/local'
                 element={<CategoryLanding path='local'/>}/>
+              <Route
+                path='/local/:id'
+                element={<EventInfo/>}/>
               <Route
                 path='*'
                 element={<NotFound/>}/>
