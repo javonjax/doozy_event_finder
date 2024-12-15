@@ -16,6 +16,8 @@ const EventInfo = (): React.JSX.Element => {
   const date: string = event.dates.start.localDate;
   const time: string = event.dates.start.localTime;
 
+  console.log(event)
+
   const formattedDate = formatDate(date);
   const formattedTime = formatTime(time);
 
@@ -59,11 +61,9 @@ const EventInfo = (): React.JSX.Element => {
         )}
         {event.seatmap && (
           <div className='seatmap'>
-            <h2>{event._embedded.venues[0].name}</h2>
-            {/* {event._embedded.venues[0].address && <p>{event._embedded.venues[0].address}</p>} */}
-            {event?.seatmap && (
-              <img src={event.seatmap.staticUrl} alt={`${event._embedded.venues[0].name} Seatmap`}></img>
-            )}
+            <h3>{event._embedded.venues[0].name}</h3>
+            <h3>{event._embedded.venues[0].address.line1}</h3>
+            <img src={event.seatmap.staticUrl} alt={`${event._embedded.venues[0].name} Seatmap`}></img>
           </div>
         )}
       </div>

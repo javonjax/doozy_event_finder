@@ -8,8 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { GenreData, GenreArraySchema } from '@/schemas/schemas';
 
 
-const BACKEND_GENRES_API_URL: string = import.meta.env
-  .VITE_BACKEND_GENRES_API_URL;
+const BACKEND_GENRES_API_URL: string = import.meta.env.VITE_BACKEND_GENRES_API_URL;
 
 const CategoryContent = (): React.JSX.Element => {
   const { toast } = useToast();

@@ -25,6 +25,7 @@ export interface HomeCardProps {
   path: string;
   label: string;
   icon: React.ReactNode;
+  color?: string;
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 };
 

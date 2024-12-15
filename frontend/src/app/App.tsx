@@ -11,6 +11,7 @@ import NotFound from "@/components/NotFound/NotFound";
 import CategoryLanding from "@/components/Category/CategoryLanding";
 import { LocationProvider } from "@/components/Providers/LocationContext";
 import EventInfo from "@/components/Events/EventInfo";
+import RegistrationForm from "@/components/Accounts/RegistrationForm";
 
 
 const App = () => {
@@ -55,6 +56,10 @@ const App = () => {
               <Route
                 path='/local/:id'
                 element={<EventInfo/>}/>
+              {/* <Route
+                path='/register'
+                element={<RegistrationForm/>}
+              /> */}
               <Route
                 path='*'
                 element={<NotFound/>}/>

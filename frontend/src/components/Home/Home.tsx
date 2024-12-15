@@ -50,12 +50,13 @@ const Home = (): React.JSX.Element => {
           <Card
             path={`/popular`}
             label='Popular'
-            icon={<Flame size={164} />}
+            color='orange'
+            icon={<Flame size={156}/>}
           />
           <Card
             path={`/local`}
             label='Local'
-            icon={<Radar size={164} />}
+            icon={<Radar size={156} className='ml-2'/>}
             onClick={handleClickLocalCard}
           />
         </Row>
@@ -63,29 +64,29 @@ const Home = (): React.JSX.Element => {
           <Card
             path={`/music`}
             label='Music'
-            icon={<Music size={164} />}
+            icon={<Music size={156}/>}
           />
           <Card
             path={`/sports`}
             label='Sports'
-            icon={<Trophy size={164} />}
+            icon={<Trophy size={156}/>}
           />
           <Card
             path={`/arts`}
             label='Arts'
-            icon={<Drama size={164} />}
+            icon={<Drama size={156}/>}
           />
         </Row>
         <Row>
           <Card
             path={`/film`}
             label='Film'
-            icon={<Film size={164} />}
+            icon={<Film size={156}/>}
           />
           <Card
             path={`/misc`}
             label='Misc'
-            icon={<Puzzle size={164} />}
+            icon={<Puzzle size={156}/>}
           />
         </Row>
       </div>
