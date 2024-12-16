@@ -3,7 +3,8 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 import { EventListProps, Categories } from '@/schemas/schemas';
 import { EventsAPIResSchema, EventsAPIRes, EventCardData } from '../../../../schemas/schemas';
-import EventCard from './EventCard';
+import Event from './Event';
+import { Loader, LoaderCircle } from 'lucide-react';
 
 
 const EventList = ({ selectedGenre, location }: EventListProps) => {
@@ -150,7 +151,14 @@ const EventList = ({ selectedGenre, location }: EventListProps) => {
   useEffect(() => setHasMore(false), [isFetchNextPageError]);
 
   if (isLoading) {
-    return <p id='initial-fetch-loading' className='text-center'>Finding events...</p>;
+    return (
+    <div className='w-full flex justify-center'>
+      <div className='flex justify-center bg-black text-white w-fit p-4 rounded-2xl'>
+        <Loader className='animate-spin'/>
+        <p id='initial-fetch-loading' className='ml-1 text-center'>Finding events...</p>
+      </div>
+    </div>
+  );
   }
 
   if (error && !isFetchNextPageError) {
@@ -162,9 +170,14 @@ const EventList = ({ selectedGenre, location }: EventListProps) => {
     <>
       <div className='flex flex-col items-center max-w-full'>
         {visibleEvents?.map((event) => (
-          <EventCard key={event.id} event={event} path={path}></EventCard>
+          <Event key={event.id} event={event} path={path}></Event>
         ))}
-        {isFetching && <p className='text-center'>Loading events...</p>}
+        {isFetching &&
+          <div className='flex justify-center bg-black text-white w-fit p-4 rounded-2xl'>
+          <Loader className='text-white animate-spin'/>
+          <p className='ml-1 text-center'>Loading events... </p>
+        </div>
+        }
         <button 
           className={
             !data || !hasMore || data.pages.flatMap((page) => page.events).length <= 10 
