@@ -22,9 +22,10 @@ const Home = (): React.JSX.Element => {
           return;
         }
         try {
-          const { requestLocation } = context;
+          const { requestLocation} = context;
           await requestLocation();
-        navigate('/local');
+          console.log(location)
+          navigate('/local');
         } catch (error) {
           toast({
             title: 'Location Services Required',

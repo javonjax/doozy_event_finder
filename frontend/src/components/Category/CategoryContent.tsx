@@ -85,8 +85,8 @@ const CategoryContent = (): React.JSX.Element => {
 
   return (
     <>
-      <div className='flex flex-col w-full items-center justify-center bg-[hsl(var(--background))] rounded-2xl p-4 my-4'>
-        <div className='flex flex-col md:flex-row justify-evenly items-center w-full mb-4'>
+      <div className='flex flex-col w-full items-center justify-center bg-[hsl(var(--background))] rounded-2xl py-8 my-4'>
+        <div className='flex flex-col md:flex-row justify-evenly items-center w-full'>
           {genres?.length && (
             <div className='flex flex-col text-center md:flex-row  w-[60%] md:w-fit mb-4 md:mb-0'>
               <label htmlFor='subcategory-select' className='text-[hsl(var(--text-color))] mr-4'>Subcategory:</label>
@@ -115,7 +115,7 @@ const CategoryContent = (): React.JSX.Element => {
           </div>
         </div>
         {path.toLowerCase() !== 'local' && (
-          <div>
+          <div className='mt-4'>
             <input
               type='checkbox'
               id='location-checkbox'
