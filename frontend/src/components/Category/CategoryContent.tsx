@@ -8,7 +8,6 @@ import { useLocation } from 'react-router-dom';
 import { GenreData, GenreArraySchema } from '@/schemas/schemas';
 import CategoryFilters from './CategoryFilters';
 
-
 const BACKEND_GENRES_API_URL: string = import.meta.env.VITE_BACKEND_GENRES_API_URL;
 
 const CategoryContent = (): React.JSX.Element => {
@@ -32,26 +31,28 @@ const CategoryContent = (): React.JSX.Element => {
         console.log('Location context is unavailable.');
         return;
       }
-      const {location, requestLocation} = context;
-      
+      const { location, requestLocation } = context;
+
       if (!location) {
         await requestLocation();
       }
     } catch (error) {
-        toast({
-            title: 'Location Services Required',
-            description: 'Please enable location services to see local events.',
-            variant: 'destructive',
-            duration: 5000,
-        });
+      toast({
+        title: 'Location Services Required',
+        description: 'Please enable location services to see local events.',
+        variant: 'destructive',
+        duration: 5000,
+      });
       setUseLocationData(false);
     }
   };
 
   const fetchGenres = async (): Promise<Array<GenreData> | null> => {
-    if (Categories.map((cat) => cat.toLowerCase()).includes(path)){
+    if (Categories.map((cat) => cat.toLowerCase()).includes(path)) {
       try {
-        const res: globalThis.Response = await fetch(`${BACKEND_GENRES_API_URL}${path}`);
+        const res: globalThis.Response = await fetch(
+          `${BACKEND_GENRES_API_URL}${path}`
+        );
         if (!res.ok) {
           throw new Error('Error connecting to API.');
         }
@@ -93,13 +94,17 @@ const CategoryContent = (): React.JSX.Element => {
         handleGenreChange={handleGenreChange}
         onCheckBox={onCheckBox}
         selectedGenre={selectedGenre}
-        useLocationData={useLocationData}/>
+        useLocationData={useLocationData}
+      />
       <EventList
         path={path}
         selectedGenre={selectedGenre}
         location={
-          useLocationData || path.toLowerCase() === 'local' ? context?.location : undefined
-        }/>
+          useLocationData || path.toLowerCase() === 'local'
+            ? context?.location
+            : undefined
+        }
+      />
     </>
   );
 };
