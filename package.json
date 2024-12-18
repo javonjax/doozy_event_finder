@@ -1,10 +1,16 @@
 {
+  "scripts": {
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "cd frontend && npm run dev",
+    "start:backend": "cd backend && npm run dev"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
-    "@types/node": "^22.10.1"
+    "@types/node": "^22.10.1",
+    "concurrently": "^9.1.0"
   }
 }

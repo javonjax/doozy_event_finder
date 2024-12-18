@@ -80,6 +80,9 @@ const EventList = ({ selectedGenre, location }: EventListProps) => {
     // Set hasMore based on how many events are fetched
     if (events.length <= 10) {
       setHasMore(false);
+      if (events.length === 0) {
+        throw new Error('No events found.');
+      }
     } else {
       setHasMore(true);
     }
@@ -162,7 +165,15 @@ const EventList = ({ selectedGenre, location }: EventListProps) => {
   }
 
   if (error && !isFetchNextPageError) {
-    return <p id='initial-fetch-error' className='text-center'>No events found...</p>;
+    return (
+      <div className='w-full flex justify-center'>
+        <div className='flex justify-center bg-black text-white w-fit p-4 rounded-2xl'>
+          <p id='initial-fetch-loading' className='ml-1 text-center'>
+            No Events found.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   // Render an event component for each event returned from the backend API.

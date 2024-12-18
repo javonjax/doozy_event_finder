@@ -9,7 +9,7 @@ import Logo from '../Logo/Logo';
 
 const NavBar = (): React.JSX.Element => {
   return (
-    <div className='bg-[hsl(var(--background))]'>
+    <nav className='bg-[hsl(var(--background))]'>
       <Menubar className='h-20 flex justify-between max-w-7xl mx-auto border-0 p-0 rounded-none'>
         <MenubarMenu>
           <div>
@@ -75,7 +75,7 @@ const NavBar = (): React.JSX.Element => {
           </div>
         </MenubarMenu>
       </Menubar>
-    </div>
+    </nav>
   );
 };
 
