@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Categories, LocationContextHelper } from '@/schemas/schemas';
 import { useLocation } from 'react-router-dom';
 import { GenreData, GenreArraySchema } from '@/schemas/schemas';
+import CategoryFilters from './CategoryFilters';
 
 
 const BACKEND_GENRES_API_URL: string = import.meta.env.VITE_BACKEND_GENRES_API_URL;
@@ -17,6 +18,7 @@ const CategoryContent = (): React.JSX.Element => {
   const context = useContext<LocationContextHelper | undefined>(
     LocationContext
   );
+
   const path: string = useLocation().pathname.slice(1);
 
   const handleGenreChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
@@ -85,54 +87,19 @@ const CategoryContent = (): React.JSX.Element => {
 
   return (
     <>
-      <div className='flex flex-col w-full items-center justify-center bg-[hsl(var(--background))] rounded-2xl py-8 my-4'>
-        <div className='flex flex-col md:flex-row justify-evenly items-center w-full'>
-          {genres?.length && (
-            <div className='flex flex-col text-center md:flex-row  w-[60%] md:w-fit mb-4 md:mb-0'>
-              <label htmlFor='subcategory-select' className='text-[hsl(var(--text-color))] mr-4'>Subcategory:</label>
-              <select
-                className='p-1 w-full'
-                name='subcategory-select'
-                value={selectedGenre}
-                onChange={handleGenreChange}
-              >
-                <option value=''>Show all</option>
-                {genres?.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-          <div className='flex flex-col text-center md:flex-row mb-4 md:mb-0'>
-            <label className='mr-2 text-[hsl(var(--text-color))]'>Start date:</label>
-            <input type='date'></input>
-          </div>
-          <div className='flex flex-col text-center md:flex-row mb-4 md:mb-0'>
-            <label className='mr-2 text-[hsl(var(--text-color))]'>End date:</label>
-            <input type='date'></input>
-          </div>
-        </div>
-        {path.toLowerCase() !== 'local' && (
-          <div className='mt-4'>
-            <input
-              type='checkbox'
-              id='location-checkbox'
-              checked={useLocationData}
-              onChange={onCheckBox}
-            />
-            <label htmlFor='location-checkbox' className='ml-2 text-[hsl(var(--text-color))]'>Search near your location</label>
-          </div>
-        )}
-      </div>
+      <CategoryFilters
+        path={path}
+        genres={genres}
+        handleGenreChange={handleGenreChange}
+        onCheckBox={onCheckBox}
+        selectedGenre={selectedGenre}
+        useLocationData={useLocationData}/>
       <EventList
         path={path}
         selectedGenre={selectedGenre}
         location={
           useLocationData || path.toLowerCase() === 'local' ? context?.location : undefined
-        }
-      ></EventList>
+        }/>
     </>
   );
 };
