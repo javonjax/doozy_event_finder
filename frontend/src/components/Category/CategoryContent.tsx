@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import EventList from '../Events/EventList';
 import { LocationContext } from '../Providers/LocationContext';
 import { useState, useContext } from 'react';
+import { DateRange } from 'react-day-picker';
 import { useToast } from '@/hooks/use-toast';
 import { Categories, LocationContextHelper } from '@/schemas/schemas';
 import { useLocation } from 'react-router-dom';
@@ -14,6 +15,14 @@ const CategoryContent = (): React.JSX.Element => {
   const { toast } = useToast();
   const [useLocationData, setUseLocationData] = useState<boolean>(false);
   const [selectedGenre, setSelectedGenre] = useState<string>('');
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: undefined,
+    to: undefined,
+  });
+  const [queryDate, setQueryDate] = useState<DateRange | undefined>({
+    from: undefined,
+    to: undefined,
+  });
   const context = useContext<LocationContextHelper | undefined>(
     LocationContext
   );
@@ -95,10 +104,13 @@ const CategoryContent = (): React.JSX.Element => {
         onCheckBox={onCheckBox}
         selectedGenre={selectedGenre}
         useLocationData={useLocationData}
+        date={date}
+        setDate={setDate}
+        setQueryDate={setQueryDate}
       />
       <EventList
-        path={path}
         selectedGenre={selectedGenre}
+        dateRange={queryDate}
         location={
           useLocationData || path.toLowerCase() === 'local'
             ? context?.location

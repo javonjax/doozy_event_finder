@@ -1,13 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
-import { EventListProps, Categories } from '@/schemas/schemas';
+import { Categories, Coordinates } from '@/schemas/schemas';
 import { EventsAPIResSchema, EventsAPIRes, EventCardData } from '../../../../schemas/schemas';
 import Event from './Event';
-import { Loader, LoaderCircle } from 'lucide-react';
+import { Loader } from 'lucide-react';
+import { DateRange } from 'react-day-picker';
+import { addDays } from 'date-fns';
 
+export interface EventListProps {
+  selectedGenre?: string;
+  location?: Coordinates;
+  dateRange?: DateRange | undefined;
+};
 
-const EventList = ({ selectedGenre, location }: EventListProps) => {
+const EventList = ({ selectedGenre, location, dateRange }: EventListProps) => {
   // List of event objects visible on the page.
   const [visibleEvents, setVisibleEvents] = useState<Array<EventCardData>>(); 
   // Number of visible events.
@@ -21,12 +28,42 @@ const EventList = ({ selectedGenre, location }: EventListProps) => {
   const path: string = useLocation().pathname.slice(1);
 
   const fetchEvents = async (pageParam: number): Promise<EventsAPIRes> => {
-    let today: string = new Date().toJSON();
-    today = today.slice(0, -5) + 'Z';
-
     // Construct query params.
-    let queryParams = `sort=date,name,asc&startDateTime=${today}`;
+    let startDate = undefined;
+    let endOfStartDate = undefined;
+    let endDate = undefined;
+    let queryParams: string = `sort=date,name,asc`;
+    if (dateRange) {
+      if (dateRange.from) {
+        startDate = dateRange.from;
+        startDate.setHours(0, 0, 0, 0);
+        endOfStartDate = addDays(startDate, 1);
+        startDate = startDate.toJSON().slice(0, -5) + 'Z';
+        endOfStartDate = endOfStartDate.toJSON().slice(0, -5) + 'Z';
+        console.log(startDate, 'startdate')
+      }
+      if (dateRange.to) {
+        endDate = dateRange.to;
+        endDate.setHours(0, 0, 0, 0);
+        endDate = addDays(endDate, 1);
+        endDate = endDate.toJSON().slice(0, -5) + 'Z';
+        console.log(endDate, 'end date')
+      }
+    }
 
+    if (!startDate) {
+      const today: string = new Date().toJSON().slice(0, -5) + 'Z';
+      console.log(today, 'today')
+      queryParams += `&startDateTime=${today}`;
+    } else {
+      if (endDate) {
+        queryParams += `&startEndDateTime=${startDate},${endDate}`;
+      } else {
+        
+        queryParams += `&startEndDateTime=${startDate},${endOfStartDate}`;
+      }
+    }
+    
     if (Categories.map((cat) => cat.toLowerCase()).includes(path)) {
       if (path === 'misc') {
         // The Ticketmaster API requires the full word.
@@ -101,7 +138,7 @@ const EventList = ({ selectedGenre, location }: EventListProps) => {
       isFetchingNextPage,
       isFetchNextPageError 
     } = useInfiniteQuery({
-    queryKey: ['fetchEvents', path, selectedGenre, location],
+    queryKey: ['fetchEvents', path, selectedGenre, location, dateRange],
     queryFn: ({ pageParam }) => fetchEvents(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage: EventsAPIRes) => lastPage.nextPage,

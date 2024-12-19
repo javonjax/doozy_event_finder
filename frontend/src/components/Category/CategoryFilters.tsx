@@ -1,21 +1,25 @@
 import { GenreData } from "@/schemas/schemas";
 import DateRangePicker from "./DateRangePicker";
+import { DateRange } from "react-day-picker";
 
-interface CategoryFiltersProps {
+export interface CategoryFiltersProps {
   path: string;
   genres: Array<GenreData> | null | undefined;
   selectedGenre: string;
   handleGenreChange: React.ChangeEventHandler<HTMLSelectElement>;
   useLocationData: boolean;
-  onCheckBox: React.ChangeEventHandler<HTMLInputElement>; 
-}
+  onCheckBox: React.ChangeEventHandler<HTMLInputElement>;
+  date: DateRange | undefined;
+  setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+  setQueryDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>
+};
 
-const CategoryFilters = ({path, genres, selectedGenre, handleGenreChange, useLocationData, onCheckBox} : CategoryFiltersProps) => {
+const CategoryFilters = ({path, genres, selectedGenre, handleGenreChange, useLocationData, onCheckBox, date, setDate, setQueryDate} : CategoryFiltersProps) => {
   return (
     <div className='flex flex-col w-full items-center justify-center bg-[hsl(var(--background))] rounded-2xl py-8 my-4'>
-      <div className='flex flex-col md:flex-row justify-evenly items-center w-full'>
+      <div className='flex flex-col xl:flex-row justify-evenly items-center w-full'>
         {genres?.length && (
-          <div className='flex flex-col text-center md:flex-row w-[60%] min-w-[300px] md:w-fit mb-4 md:mb-0'>
+          <div className='flex flex-col text-center xl:flex-row max-w-[60%] min-w-[300px] xl:w-fit mb-4 xl:mb-0'>
             <label
               htmlFor='subcategory-select'
               className='text-[hsl(var(--text-color))] mr-4'
@@ -23,7 +27,7 @@ const CategoryFilters = ({path, genres, selectedGenre, handleGenreChange, useLoc
               Subcategory:
             </label>
             <select
-              className='p-1 w-full'
+              className='p-1 w-full min-w-[300px]'
               name='subcategory-select'
               value={selectedGenre}
               onChange={handleGenreChange}
@@ -37,7 +41,7 @@ const CategoryFilters = ({path, genres, selectedGenre, handleGenreChange, useLoc
             </select>
           </div>
         )}
-        <DateRangePicker className='text-white'/>
+        <DateRangePicker className='text-white' date={date} setDate={setDate} setQueryDate={setQueryDate}/>
       </div>
       {path.toLowerCase() !== 'local' && (
         <div className='mt-4'>

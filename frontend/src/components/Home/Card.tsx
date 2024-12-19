@@ -1,7 +1,14 @@
 import { NavLink } from 'react-router-dom';
-import { HomeCardProps } from '@/schemas/schemas';
 import { ColorClasses } from '@/schemas/schemas';
 import clsx from 'clsx';
+
+export interface HomeCardProps {
+  path: string;
+  label: string;
+  icon: React.ReactNode;
+  color?: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+};
 
 const Card = ({ path, label, icon, onClick, color }: HomeCardProps): React.JSX.Element => {
 

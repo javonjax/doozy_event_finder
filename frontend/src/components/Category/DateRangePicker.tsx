@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { addDays, format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
@@ -12,11 +11,21 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 
-const DateRangePicker = ({className}: React.HTMLAttributes<HTMLDivElement>): React.JSX.Element => {
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: undefined,
-    to: undefined,
-  });
+interface DateRangePickerProps {
+    className: string;
+    date: DateRange | undefined;
+    setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+    setQueryDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+}
+
+const DateRangePicker = ({className, date, setDate, setQueryDate}: DateRangePickerProps): React.JSX.Element => {
+  const handleSumbmit = () => {
+    setQueryDate(date);
+  };
+
+  const handleReset = () => {
+    setDate({from: undefined, to: undefined})
+  };
 
   return (
     <div className={cn('grid gap-2', className)}>
@@ -28,8 +37,7 @@ const DateRangePicker = ({className}: React.HTMLAttributes<HTMLDivElement>): Rea
             className={cn(
               'w-[300px] justify-start text-left font-normal',
               !date && 'text-muted-foreground'
-            )}
-          >
+            )}>
             <CalendarIcon />
             {date?.from ? (
               date.to ? (
@@ -45,7 +53,7 @@ const DateRangePicker = ({className}: React.HTMLAttributes<HTMLDivElement>): Rea
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className='w-auto p-0 text-white flex flex-col items-center' align='start'>
+        <PopoverContent className='w-auto p-0 text-white flex flex-col items-center' avoidCollisions={false}>
           <Calendar
             initialFocus
             mode='range'
@@ -54,9 +62,18 @@ const DateRangePicker = ({className}: React.HTMLAttributes<HTMLDivElement>): Rea
             onSelect={setDate}
             numberOfMonths={2}
           />
-          <Button className='m-4 bg-black border-white border-2 w-fit p-2 rounded-2xl hover:bg-white hover:text-black'>
-            Submit
-          </Button>
+          <div className='flex self-start'>
+            <Button 
+              className='ml-3 mb-3 bg-black border-white border-2 w-fit p-2 rounded-2xl hover:bg-white hover:text-black'
+              onClick={handleSumbmit}>
+              Submit
+            </Button>
+            <Button 
+              className='ml-3 mb-3 bg-black border-white border-2 w-fit p-2 rounded-2xl hover:bg-white hover:text-black'
+              onClick={handleReset}>
+              Reset
+            </Button>
+          </div>
         </PopoverContent>
       </Popover>
     </div>
