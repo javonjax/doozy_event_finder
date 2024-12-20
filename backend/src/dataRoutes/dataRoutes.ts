@@ -67,7 +67,7 @@ router.get(
       if (!numRetrieved) {
         throw new Error('No events found.');
       }
-
+      
       /*
         Remove items that do not fit the schema.
       */
@@ -87,6 +87,7 @@ router.get(
         event.images = findImage(event.images);
       });
 
+      console.log(numRetrieved >= 200 && currentPage < 4 ? currentPage + 1 : null)
       response.json({
         events: validEvents,
         nextPage:

@@ -102,9 +102,6 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     const events = parsedEventData.data.events;
     const nextPage = parsedEventData.data.nextPage;
     
-    console.log('fetched', events)
-    console.log('more', nextPage)
-    
     // When the initial data is fetched, set the appropriate amount of visible events.
     if (pageParam === 0) {
       if (events.length <= 10) {
@@ -115,13 +112,14 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     }
 
     // Set hasMore based on how many events are fetched
-    if (events.length <= 10) {
-      setHasMore(false);
-      if (events.length === 0) {
-        throw new Error('No events found.');
-      }
-    } else {
+    if (typeof nextPage === 'number') {
       setHasMore(true);
+    } else {
+      if (events.length <= 10) {
+        setHasMore(true);
+      } else {
+        setHasMore(false);
+      }
     }
     console.log('length', events.length);
     return parsedEventData.data;
@@ -188,7 +186,9 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
   }, [data, numVisible]);
 
   // Fail safe to hide the button that shows more events when fetching the next page fails.
-  useEffect(() => setHasMore(false), [isFetchNextPageError]);
+  useEffect(() => {
+    setHasMore(false)
+  }, [isFetchNextPageError]);
 
   if (isLoading) {
     return (
@@ -228,7 +228,9 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
         }
         <button 
           className={
-            !data || !hasMore || data.pages.flatMap((page) => page.events).length <= 10 
+            !data || 
+            !hasMore || 
+            ((data.pages.flatMap((page) => page.events).length <= 10) && (typeof data.pages[0].nextPage) !== 'number')
             ? 'hidden' : 
               'cursor-pointer m-4 p-4 rounded-2xl text-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))]'
           }
