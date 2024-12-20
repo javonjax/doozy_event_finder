@@ -1,11 +1,71 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Input from './Input';
 import { EMAIL_REGEX, USERNAME_REGEX, PASSWORD_REGEX } from '../../../../schemas/schemas';
 import { useToast } from '@/hooks/use-toast';
 
 const REGISTRATION_API_URL = import.meta.env.VITE_BACKEND_REGISTRATION_API_URL;
+
+let passwordInput: any;
+
+// Validation options for react-hook-forms.
+export const emailValidation = {
+  required: 'Email address is required.',
+  pattern: {
+    value: EMAIL_REGEX,
+    message: 'Email address is invalid.',
+  },
+};
+
+export type EmailValidation = typeof emailValidation;
+
+export const usernameValidation = {
+  required: 'Username is required.',
+  minLength: {
+    value: 4,
+    message: 'Must be at least 4 characters long.',
+  },
+  maxLength: {
+    value: 24,
+    message: 'Must be less than 24 characters long.',
+  },
+  pattern: {
+    value: USERNAME_REGEX,
+    message: 'May only contain letters, numbers, hyphens, and underscores.',
+  },
+};
+
+export type UsernameValidation = typeof usernameValidation;
+
+export const passwordValidation = {
+  required: 'Password is required.',
+  minLength: {
+    value: 8,
+    message: 'Must be at least 8 characters long.',
+  },
+  maxLength: {
+    value: 24,
+    message: 'Must be less than 24 characters long.',
+  },
+  pattern: {
+    value: PASSWORD_REGEX,
+    message:
+      'Must contain an uppercase letter, a number, and a special character [!@#$%].',
+  },
+};
+
+export type PasswordValidation = typeof passwordValidation;
+
+export const confirmPasswordValidation = {
+  required: 'Please confirm your password.',
+  validate: {
+    passwordMatch: (value: string) =>
+      value === passwordInput || 'Passwords must match.',
+  },
+}; 
+
+export type ConfirmPasswordValidation = typeof confirmPasswordValidation;
 
 const RegistrationForm = (): React.JSX.Element => {
   const [registrationError, setRegistrationError] = useState<string>('');
@@ -19,7 +79,7 @@ const RegistrationForm = (): React.JSX.Element => {
     watch,
   } = useForm({ mode: 'onChange' });
 
-  const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (e) => {
     const res = await fetch(REGISTRATION_API_URL, {
       method: 'POST',
       headers: {
@@ -32,73 +92,32 @@ const RegistrationForm = (): React.JSX.Element => {
 
     if (!res.ok) {
       setRegistrationError(data.message);
-      toast.error(data.message);
+      toast({
+        title: 'Location Services Required',
+        description: data.message,
+        variant: 'destructive',
+        duration: 5000,
+      });
     } else {
       setRegistrationError('');
       navigate('/signin');
-      toast.success('Account registered! You may now sign in.');
+      toast({
+        title: 'Account registered! You may now sign in.',
+        description: data.message,
+        duration: 5000,
+      });
     }
   };
 
   // Watch the 'password' field to compare with the 'confirm password' field.
-  const passwordInput = watch('password');
-
-  // Validation options for react-hook-forms.
-  const emailValidation = {
-    required: 'Email address is required.',
-    pattern: {
-      value: EMAIL_REGEX,
-      message: 'Email address is invalid.',
-    },
-  };
-
-  const usernameValidation = {
-    required: 'Username is required.',
-    minLength: {
-      value: 4,
-      message: 'Must be at least 4 characters long.',
-    },
-    maxLength: {
-      value: 24,
-      message: 'Must be less than 24 characters long.',
-    },
-    pattern: {
-      value: USERNAME_REGEX,
-      message: 'May only contain letters, numbers, hyphens, and underscores.',
-    },
-  };
-
-  const passwordValidation = {
-    required: 'Password is required.',
-    minLength: {
-      value: 8,
-      message: 'Must be at least 8 characters long.',
-    },
-    maxLength: {
-      value: 24,
-      message: 'Must be less than 24 characters long.',
-    },
-    pattern: {
-      value: PASSWORD_REGEX,
-      message:
-        'Must contain an uppercase letter, a number, and a special character [!@#$%].',
-    },
-  };
-
-  const confirmPasswordValidation = {
-    required: 'Please confirm your password.',
-    validate: {
-      passwordMatch: (value: string) =>
-        value === passwordInput || 'Passwords must match.',
-    },
-  };
+  passwordInput = watch('password');
 
   return (
-    <div className="registration-container">
-      <div className="registration-form-container">
+    <div className='flex items center justify-center h-full w-full'>
+      <div className='flex flex-col text-[hsl(var(--text-color))] w-[400px] bg-[hsl(var(--background))] rounded-2xl p-4'>
         <h1>Register</h1>
-        {registrationError && <p className="submission-error">{registrationError}</p>}
-        <form className="registration-form" onSubmit={handleSubmit(onSubmit)}>
+        {registrationError && <p className='m-0 bg-red-600 mb-4'>{registrationError}</p>}
+        <form className='flex flex-col grow text-[hsl(var(--text-color))]' onSubmit={handleSubmit(onSubmit)}>
           <Input
             register={register}
             name="email"
@@ -129,11 +148,14 @@ const RegistrationForm = (): React.JSX.Element => {
             options={confirmPasswordValidation}
             validationError={errors.confirmPassword}
           />
-          <button type="submit" disabled={!isValid}>
+          <button 
+            className='p-2 mt-1 mb-4 rounded-lg cursor-pointer'
+            type="submit" 
+            disabled={!isValid}>
             Create account
           </button>
         </form>
-        <div className="form-nav">
+        <div className='text-[hsl(var(--text-color))] flex flex-col'>
           <p>Already have an account? <NavLink to="/signin">Sign In</NavLink></p>
         </div>
       </div>

@@ -6,7 +6,7 @@ const Footer = (): React.JSX.Element => {
 
   return (
     <footer className='bg-[hsl(var(--background))]'>
-        <div className='h-20 flex justify-between items-center text-[hsl(var(--text-color))] text-2xl max-w-7xl mx-auto border-0 rounded-none'>
+        <div className='h-20 flex justify-between items-center text-[hsl(var(--text-color))] text-2xl max-w-7xl mx-auto border-0 rounded-none p-4'>
             <p>Created by Javon Jackson</p>
             <div className='flex'>
                 <a className='cursor-pointer' target='_blank' href={githubLink}>

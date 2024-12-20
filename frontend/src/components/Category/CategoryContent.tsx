@@ -14,7 +14,7 @@ const BACKEND_GENRES_API_URL: string = import.meta.env.VITE_BACKEND_GENRES_API_U
 const CategoryContent = (): React.JSX.Element => {
   const { toast } = useToast();
   const [useLocationData, setUseLocationData] = useState<boolean>(false);
-  const [selectedGenre, setSelectedGenre] = useState<string>('');
+  const [selectedSubcategory, setSelectedSubcategory] = useState<GenreData | undefined>(undefined);
   const [date, setDate] = useState<DateRange | undefined>({
     from: undefined,
     to: undefined,
@@ -29,8 +29,13 @@ const CategoryContent = (): React.JSX.Element => {
 
   const path: string = useLocation().pathname.slice(1);
 
-  const handleGenreChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setSelectedGenre(e.target.value);
+  const handleSubcategoryChange = (subcategory?: GenreData): void => {
+    if (subcategory) {
+      setSelectedSubcategory(subcategory);
+    } else {
+      setSelectedSubcategory(undefined);
+    }
+
   };
 
   const onCheckBox: React.ChangeEventHandler<HTMLInputElement> = async (): Promise<void> => {
@@ -100,16 +105,16 @@ const CategoryContent = (): React.JSX.Element => {
       <CategoryFilters
         path={path}
         genres={genres}
-        handleGenreChange={handleGenreChange}
+        handleSubcategoryChange={handleSubcategoryChange}
         onCheckBox={onCheckBox}
-        selectedGenre={selectedGenre}
+        selectedSubcategory={selectedSubcategory}
         useLocationData={useLocationData}
         date={date}
         setDate={setDate}
         setQueryDate={setQueryDate}
       />
       <EventList
-        selectedGenre={selectedGenre}
+        selectedSubcategory={selectedSubcategory}
         dateRange={queryDate}
         location={
           useLocationData || path.toLowerCase() === 'local'

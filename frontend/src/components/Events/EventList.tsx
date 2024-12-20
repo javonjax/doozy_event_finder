@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
-import { Categories, Coordinates } from '@/schemas/schemas';
+import { Categories, Coordinates, GenreData } from '@/schemas/schemas';
 import { EventsAPIResSchema, EventsAPIRes, EventCardData } from '../../../../schemas/schemas';
 import Event from './Event';
 import { Loader } from 'lucide-react';
@@ -9,12 +9,12 @@ import { DateRange } from 'react-day-picker';
 import { addDays } from 'date-fns';
 
 export interface EventListProps {
-  selectedGenre?: string;
+  selectedSubcategory?: GenreData | undefined;
   location?: Coordinates;
   dateRange?: DateRange | undefined;
 };
 
-const EventList = ({ selectedGenre, location, dateRange }: EventListProps) => {
+const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps) => {
   // List of event objects visible on the page.
   const [visibleEvents, setVisibleEvents] = useState<Array<EventCardData>>(); 
   // Number of visible events.
@@ -73,8 +73,8 @@ const EventList = ({ selectedGenre, location, dateRange }: EventListProps) => {
       }
     }
 
-    if (selectedGenre) {
-      queryParams += `&genreId=${selectedGenre}`;
+    if (selectedSubcategory) {
+      queryParams += `&genreId=${selectedSubcategory.id}`;
     }
     
     if (location) {
@@ -138,7 +138,7 @@ const EventList = ({ selectedGenre, location, dateRange }: EventListProps) => {
       isFetchingNextPage,
       isFetchNextPageError 
     } = useInfiniteQuery({
-    queryKey: ['fetchEvents', path, selectedGenre, location, dateRange],
+    queryKey: ['fetchEvents', path, selectedSubcategory, location, dateRange],
     queryFn: ({ pageParam }) => fetchEvents(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage: EventsAPIRes) => lastPage.nextPage,
@@ -193,7 +193,7 @@ const EventList = ({ selectedGenre, location, dateRange }: EventListProps) => {
   if (isLoading) {
     return (
     <div className='w-full flex justify-center'>
-      <div className='flex justify-center bg-black text-white w-fit p-4 rounded-2xl'>
+      <div className='flex justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] w-fit p-4 rounded-2xl mb-4'>
         <Loader className='animate-spin'/>
         <p id='initial-fetch-loading' className='ml-1 text-center'>Finding events...</p>
       </div>
@@ -204,7 +204,7 @@ const EventList = ({ selectedGenre, location, dateRange }: EventListProps) => {
   if (error && !isFetchNextPageError) {
     return (
       <div className='w-full flex justify-center'>
-        <div className='flex justify-center bg-black text-white w-fit p-4 rounded-2xl'>
+        <div className='flex justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] w-fit p-4 rounded-2xl mb-4'>
           <p id='initial-fetch-loading' className='ml-1 text-center'>
             No Events found.
           </p>
@@ -216,13 +216,13 @@ const EventList = ({ selectedGenre, location, dateRange }: EventListProps) => {
   // Render an event component for each event returned from the backend API.
   return (
     <>
-      <div className='flex flex-col items-center max-w-full'>
+      <div className='flex flex-col items-center w-full'>
         {visibleEvents?.map((event) => (
           <Event key={event.id} event={event} path={path}></Event>
         ))}
         {isFetching &&
-          <div className='flex justify-center bg-black text-white w-fit p-4 rounded-2xl'>
-          <Loader className='text-white animate-spin'/>
+          <div className='flex justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] w-fit p-4 rounded-2xl'>
+          <Loader className='text-[hsl(var(--text-color))] animate-spin'/>
           <p className='ml-1 text-center'>Loading events... </p>
         </div>
         }

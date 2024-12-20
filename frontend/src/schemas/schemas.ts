@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { USERNAME_REGEX, PASSWORD_REGEX } from '../../../schemas/schemas';
 
 
 export const Categories: Array<string> = [

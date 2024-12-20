@@ -8,7 +8,7 @@ const CategoryHeader = (): React.JSX.Element => {
       className='w-full h-[250px] relative overflow-hidden rounded-2xl my-4'
       style={{backgroundImage: `url('music_header.jpg')`,}}
     >
-      <div className='absolute top-4 left-4 bg-black p-4 rounded-2xl text-[hsl(var(--text-color))]'>
+      <div className='absolute top-4 left-4 bg-[hsl(var(--background))] p-4 rounded-2xl text-[hsl(var(--text-color))]'>
         <NavLink to={'/'}>Home</NavLink>
         <span> / </span>
         <NavLink to={`/${route}`}>

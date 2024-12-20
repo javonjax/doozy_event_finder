@@ -12,7 +12,7 @@ const Event = ({ event, path }: { event: EventCardData; path: string }): React.J
   const [dayOfWeek, monthDay] = formattedDate.split(',');
 
   return (
-    <div className='flex items-center rounded-2xl mb-4 w-full transform transition-all duration-400 hover:scale-105'>
+    <div className='flex items-center rounded-2xl mb-4 w-[95%] transform transition-all duration-400 hover:scale-105'>
       <div className='bg-[hsl(var(--background))] text-[hsl(var(--text-color))] flex items-center justify-center uppercase rounded-tl-xl rounded-bl-xl min-w-[125px] self-stretch'>
         <h2>{monthDay.trim()} </h2>
       </div>

@@ -1,4 +1,4 @@
-import { addDays, format } from 'date-fns';
+import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 
@@ -53,7 +53,7 @@ const DateRangePicker = ({className, date, setDate, setQueryDate}: DateRangePick
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className='w-auto p-0 text-white flex flex-col items-center' avoidCollisions={false}>
+        <PopoverContent className='w-auto p-0 text-[hsl(var(--text-color))] flex flex-col items-center' avoidCollisions={false}>
           <Calendar
             initialFocus
             mode='range'
@@ -64,12 +64,12 @@ const DateRangePicker = ({className, date, setDate, setQueryDate}: DateRangePick
           />
           <div className='flex self-start'>
             <Button 
-              className='ml-3 mb-3 bg-black border-white border-2 w-fit p-2 rounded-2xl hover:bg-white hover:text-black'
+              className='ml-3 mb-3 bg-[hsl(var(--background))] border-white border-2 w-fit p-2 rounded-2xl hover:bg-white hover:text-black'
               onClick={handleSumbmit}>
               Submit
             </Button>
             <Button 
-              className='ml-3 mb-3 bg-black border-white border-2 w-fit p-2 rounded-2xl hover:bg-white hover:text-black'
+              className='ml-3 mb-3 bg-[hsl(var(--background))] border-white border-2 w-fit p-2 rounded-2xl hover:bg-white hover:text-black'
               onClick={handleReset}>
               Reset
             </Button>

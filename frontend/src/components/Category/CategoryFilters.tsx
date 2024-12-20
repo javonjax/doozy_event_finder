@@ -1,12 +1,14 @@
 import { GenreData } from "@/schemas/schemas";
 import DateRangePicker from "./DateRangePicker";
 import { DateRange } from "react-day-picker";
+import SubCategoryDropdown from "./SubCategoryDropdown";
+import { useEffect } from "react";
 
 export interface CategoryFiltersProps {
   path: string;
   genres: Array<GenreData> | null | undefined;
-  selectedGenre: string;
-  handleGenreChange: React.ChangeEventHandler<HTMLSelectElement>;
+  selectedSubcategory: GenreData | undefined;
+  handleSubcategoryChange: (item?: GenreData) => void;
   useLocationData: boolean;
   onCheckBox: React.ChangeEventHandler<HTMLInputElement>;
   date: DateRange | undefined;
@@ -14,34 +16,24 @@ export interface CategoryFiltersProps {
   setQueryDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>
 };
 
-const CategoryFilters = ({path, genres, selectedGenre, handleGenreChange, useLocationData, onCheckBox, date, setDate, setQueryDate} : CategoryFiltersProps) => {
+const CategoryFilters = ({path, genres, selectedSubcategory, handleSubcategoryChange, useLocationData, onCheckBox, date, setDate, setQueryDate} : CategoryFiltersProps) => {
+  // Set the subcategory
+  useEffect(() => {
+    handleSubcategoryChange();
+  }, [path]);
+
   return (
-    <div className='flex flex-col w-full items-center justify-center bg-[hsl(var(--background))] rounded-2xl py-8 my-4'>
+    <div className='flex flex-col w-[95%] items-center justify-center bg-[hsl(var(--background))] rounded-2xl py-8 my-4'>
       <div className='flex flex-col xl:flex-row justify-evenly items-center w-full'>
-        {genres?.length && (
-          <div className='flex flex-col text-center xl:flex-row max-w-[60%] min-w-[300px] xl:w-fit mb-4 xl:mb-0'>
-            <label
-              htmlFor='subcategory-select'
-              className='text-[hsl(var(--text-color))] mr-4'
-            >
-              Subcategory:
-            </label>
-            <select
-              className='p-1 w-full min-w-[300px]'
-              name='subcategory-select'
-              value={selectedGenre}
-              onChange={handleGenreChange}
-            >
-              <option value=''>Show all</option>
-              {genres?.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-        <DateRangePicker className='text-white' date={date} setDate={setDate} setQueryDate={setQueryDate}/>
+        <SubCategoryDropdown 
+          subcategories={genres}
+          selectedSubcategory={selectedSubcategory}
+          handleSubCategoryChange={handleSubcategoryChange}/>
+        <DateRangePicker 
+          className='text-[hsl(var(--text-color))]' 
+          date={date} 
+          setDate={setDate} 
+          setQueryDate={setQueryDate}/>
       </div>
       {path.toLowerCase() !== 'local' && (
         <div className='mt-4'>

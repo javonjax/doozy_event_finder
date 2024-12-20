@@ -24,7 +24,7 @@ const EventInfo = (): React.JSX.Element => {
 
   return (
     <div className='flex flex-col h-full w-full max-w-7xl mx-4'>
-      <div className='bg-black rounded-2xl m-4 p-8 text-[hsl(var(--text-color))]'>
+      <div className='bg-[hsl(var(--background))] rounded-2xl m-4 p-8 text-[hsl(var(--text-color))]'>
         <div className='flex flex-col md:flex-row items-center justify-center md:justify-between'>
           <div className='flex flex-col items-center md:block'>
             <h1 className='text-3xl'>{event.name}</h1>
@@ -54,7 +54,7 @@ const EventInfo = (): React.JSX.Element => {
               )}
             </div>
             <Link 
-              className='text-white flex items-center w-fit border-2 border-orange-400 p-4 rounded-2xl'
+              className='text-[hsl(var(--text-color))] flex items-center w-fit border-2 border-orange-400 p-4 rounded-2xl'
               to={event.url}
               target='blank'>
               <Ticket size={18} className='-rotate-45 mr-1 text-orange-400' />
