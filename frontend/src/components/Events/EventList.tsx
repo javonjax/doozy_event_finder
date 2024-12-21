@@ -101,6 +101,8 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
 
     const events = parsedEventData.data.events;
     const nextPage = parsedEventData.data.nextPage;
+    console.log('events', events)
+    console.log('next page', nextPage)
     
     // When the initial data is fetched, set the appropriate amount of visible events.
     if (pageParam === 0) {
@@ -115,7 +117,7 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     if (typeof nextPage === 'number') {
       setHasMore(true);
     } else {
-      if (events.length <= 10) {
+      if (events.length >= 10) {
         setHasMore(true);
       } else {
         setHasMore(false);
@@ -201,7 +203,7 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
   );
   }
 
-  if (error && !isFetchNextPageError) {
+  if ((error && !isFetchNextPageError) || (!(data?.pages.flatMap((page) => page.events).length) && !hasMore)) {
     return (
       <div className='w-full flex justify-center'>
         <div className='flex justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] w-fit p-4 rounded-2xl mb-4'>

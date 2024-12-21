@@ -54,7 +54,7 @@ const EventInfo = (): React.JSX.Element => {
               )}
             </div>
             <Link 
-              className='text-[hsl(var(--text-color))] flex items-center w-fit border-2 border-orange-400 p-4 rounded-2xl'
+              className='text-[hsl(var(--text-color))] flex items-center w-fit border-2 border-orange-400 p-4 rounded-2xl hover:text-black hover:bg-white'
               to={event.url}
               target='blank'>
               <Ticket size={18} className='-rotate-45 mr-1 text-orange-400' />

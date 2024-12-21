@@ -34,11 +34,15 @@ const NavBar = (): React.JSX.Element => {
               </MenubarTrigger>
               <MenubarContent className='text-[hsl(var(--text-color))] hidden md:block'>
                 <MenubarItem>
-                  Login <MenubarShortcut><LogIn/></MenubarShortcut>
+                  <NavLink to='/login' className='flex justify-between w-full'>
+                    Login <MenubarShortcut><LogIn/></MenubarShortcut>
+                  </NavLink>
                 </MenubarItem>
                 <MenubarSeparator/>
                 <MenubarItem>
-                  Sign up <MenubarShortcut><PenLine/></MenubarShortcut>
+                  <NavLink to='/register' className='flex justify-between w-full'>
+                    Register <MenubarShortcut><PenLine/></MenubarShortcut>
+                  </NavLink>
                 </MenubarItem>
               </MenubarContent>
             </MenubarMenu>
@@ -64,11 +68,15 @@ const NavBar = (): React.JSX.Element => {
                   )
                 })}
                 <MenubarItem>
-                  Login <MenubarShortcut><LogIn size={20}/></MenubarShortcut>
+                  <NavLink to='/login' className='flex justify-between w-full'>
+                    Login <MenubarShortcut><LogIn/></MenubarShortcut>
+                  </NavLink>
                 </MenubarItem>
                 <MenubarSeparator/>
                 <MenubarItem>
-                  Sign up <MenubarShortcut><PenLine size={20}/></MenubarShortcut>
+                  <NavLink to='/register' className='flex justify-between w-full'>
+                    Register <MenubarShortcut><PenLine/></MenubarShortcut>
+                  </NavLink>
                 </MenubarItem>
               </MenubarContent>
             </MenubarMenu>

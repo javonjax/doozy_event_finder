@@ -104,7 +104,7 @@ router.get(
 
 /*
     GET individual event by passing in an id.
-*/
+*/ 
 router.get(
   '/events/:id',
   async (request: Request, response: Response): Promise<void> => {
