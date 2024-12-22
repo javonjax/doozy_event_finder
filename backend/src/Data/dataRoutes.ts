@@ -20,7 +20,7 @@ const TICKETMASTER_EVENTS_API_URL = process.env.TICKETMASTER_EVENTS_API_URL;
 const TICKETMASTER_CLASS_API_URL = process.env.TICKETMASTER_CLASS_API_URL;
 const TICKETMASTER_SUGGEST_API_URL = process.env.TICKETMASTER_SUGGEST_API_URL;
 
-const router: Router = Router();
+const router: Router = express.Router();
 
 /* 
     GET multiple events. 

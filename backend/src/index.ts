@@ -1,6 +1,7 @@
 import express, { Request, Response, Application } from 'express';
 import cors from 'cors';
-import dataRoutes from './dataRoutes/dataRoutes';
+import dataRoutes from './Data/dataRoutes';
+import accountRoutes from './Accounts/accountRoutes';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -14,8 +15,7 @@ app.use(express.json());
 // Routes
 app.use('/api', dataRoutes);
 app.get('/', (req: Request, res: Response) => {
-    console.log(typeof '')
-  res.send('Hello, TypeScript with Express!');
+  res.send('Hello from Doozy backend!');
 });
 
 // Start Server
