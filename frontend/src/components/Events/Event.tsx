@@ -2,7 +2,12 @@ import { EventCardData } from '../../../../schemas/schemas';
 import { formatDate, formatTime } from '../utils/utils';
 import EventLink from './EventLink';
 
-const Event = ({ event, path }: { event: EventCardData; path: string }): React.JSX.Element => {
+export interface EventProps {
+  event: EventCardData; 
+  path: string;
+};
+
+const Event = ({ event, path }: EventProps): React.JSX.Element => {
   const date: string = event.dates.start.localDate;
   const time: string = event.dates.start.localTime;
 
