@@ -11,12 +11,12 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 
-interface DateRangePickerProps {
+export interface DateRangePickerProps {
     className: string;
     date: DateRange | undefined;
     setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
     setQueryDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
-}
+};
 
 const DateRangePicker = ({className, date, setDate, setQueryDate}: DateRangePickerProps): React.JSX.Element => {
   const handleSumbmit = () => {

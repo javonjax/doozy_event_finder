@@ -10,7 +10,7 @@ export interface InputProps {
     options: EmailValidation | UsernameValidation | RegistrationPasswordValidation | LoginPasswordValidation | ConfirmPasswordValidation;
     validationError?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
     submissionError?: string;
-}
+};
 
 const Input = ({ register, name, label, options, validationError, submissionError }: InputProps): React.JSX.Element => {
   const inputType = ['password', 'confirmPassword'].includes(name)
