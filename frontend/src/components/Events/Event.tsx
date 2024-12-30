@@ -12,12 +12,12 @@ const Event = ({ event, path }: { event: EventCardData; path: string }): React.J
   const [dayOfWeek, monthDay] = formattedDate.split(',');
 
   return (
-    <div className='flex items-center rounded-2xl mb-4 w-[95%] transform transition-all duration-400 hover:scale-105'>
-      <div className='bg-[hsl(var(--background))] text-[hsl(var(--text-color))] flex items-center justify-center uppercase rounded-tl-xl rounded-bl-xl min-w-[125px] self-stretch'>
-        <h2>{monthDay.trim()} </h2>
+    <div className='flex flex-col md:flex-row items-center rounded-2xl mb-4 w-[85%] transform transition-all duration-400 hover:scale-105'>
+      <div className='bg-[hsl(var(--background))] text-[hsl(var(--text-color))] flex items-center justify-center uppercase rounded-tl-xl rounded-tr-xl md:rounded-tr-none md:rounded-bl-xl min-w-[125px] self-stretch p-4'>
+        <h2>{monthDay.trim()}</h2>
       </div>
-      <div className='flex grow bg-neutral-500 rounded-tr-xl rounded-br-xl'>
-        <div className='flex flex-col p-4 grow'>
+      <div className='flex flex-col md:flex-row items-center grow bg-neutral-500 w-full rounded-bl-xl rounded-br-xl md:rounded-bl-none md:rounded-tr-xl pb-4 md:p-0'>
+        <div className='flex flex-col m-4 grow text-center md:text-start'>
           <div>
             {dayOfWeek.trim()} - {formattedTime}
           </div>
@@ -29,7 +29,7 @@ const Event = ({ event, path }: { event: EventCardData; path: string }): React.J
             }`}
           </div>
         </div>
-        <div className='flex self-stretch items-center'>
+        <div className='flex md:self-stretch items-center'>
           <EventLink event={event} path={path}></EventLink>
         </div>
       </div>
