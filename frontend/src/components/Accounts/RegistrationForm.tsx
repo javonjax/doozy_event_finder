@@ -103,10 +103,11 @@ const RegistrationForm = (): React.JSX.Element => {
       });
     } else {
       setRegistrationError('');
-      navigate('/signin');
+      navigate('/login');
       toast({
-        title: 'Account registered! You may now sign in.',
+        title: 'Account registered! You may now login.',
         description: data.message,
+        className: 'text-[hsl(var(--text-color))] bg-green-600',
         duration: 5000,
       });
     }
@@ -169,7 +170,7 @@ const RegistrationForm = (): React.JSX.Element => {
           <p>
             Already have an account?{' '}
             <NavLink to='/login' className='text-orange-500'>
-              Login
+              Login here.
             </NavLink>
           </p>
         </div>

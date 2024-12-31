@@ -81,7 +81,7 @@ router.post('/register', async (request: Request, response: Response): Promise<v
 /*
   Sign in with an account.
 */
-router.post('/signin', async (request: Request, response: Response): Promise<void> => {
+router.post('/login', async (request: Request, response: Response): Promise<void> => {
   try {
     const { email, password } = request.body;
     const user: { exists: boolean, account: any } = await checkIfExists('email', email);
@@ -107,7 +107,7 @@ router.post('/signin', async (request: Request, response: Response): Promise<voi
     //   sameSite: 'strict'
     // });
 
-    response.status(200).json({message: 'Sign in successful.', token: token});
+    response.status(200).json({message: 'Login successful.', token: token});
   } catch (error) {
     if (error instanceof Error) {
       response

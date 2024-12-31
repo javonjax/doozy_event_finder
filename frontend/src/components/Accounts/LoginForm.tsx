@@ -13,10 +13,10 @@ export const loginPasswordValidation = {
 
 export type LoginPasswordValidation = typeof loginPasswordValidation;
 
-const SignInForm = (): React.JSX.Element => {
-  const SIGNIN_API_URL = import.meta.env.VITE_BACKEND_SIGNIN_API_URL;
+const LoginForm = (): React.JSX.Element => {
+  const SIGNIN_API_URL = import.meta.env.VITE_BACKEND_LOGIN_API_URL;
 
-  const [signInError, setSignInError] = useState<string>('');
+  const [loginError, setLoginError] = useState<string>('');
 
   const { toast } = useToast();
 
@@ -39,7 +39,7 @@ const SignInForm = (): React.JSX.Element => {
 
     const data = await res.json();
     if (!res.ok) {
-      setSignInError(data.message);
+      setLoginError(data.message);
       toast({
         title: 'Login error.',
         description: data.message,
@@ -47,12 +47,14 @@ const SignInForm = (): React.JSX.Element => {
         duration: 5000,
       });
     } else {
-      setSignInError('');
-      navigate('/');
+      setLoginError('');
       toast({
         title: data.message,
+        description: 'Enjoy your time with Doozy!',
+        className: 'text-[hsl(var(--text-color))] bg-green-600',
         duration: 5000,
       });
+      navigate('/');
     }
     // TODO: put token in cookie
     console.log(data.token);
@@ -62,7 +64,7 @@ const SignInForm = (): React.JSX.Element => {
     <div className='h-full w-full flex items-center justify-center'>
       <div className='text-[hsl(var(--text-color))] w-[400px] bg-[hsl(var(--background))] rounded-2xl flex flex-col p-4 my-4'>
         <h1 className='text-[2rem] mb-4'>Login</h1>
-        {signInError && <p className='m-0 bg-red-600 mb-4'>{signInError}</p>}
+        {loginError && <p className='m-0 bg-red-600 mb-4'>{loginError}</p>}
         <form className='flex flex-col grow text-[hsl(var(--text-color))]' onSubmit={handleSubmit(onSubmit)}>
           <Input
             register={register}
@@ -99,4 +101,4 @@ const SignInForm = (): React.JSX.Element => {
   );
 };
 
-export default SignInForm;
+export default LoginForm;
