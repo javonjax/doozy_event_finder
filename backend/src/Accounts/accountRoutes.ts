@@ -1,18 +1,19 @@
 import express, { Request, Response, Router } from 'express';
-import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { pool } from './db';
+
+
+const JWT_SECRET = process.env.JWT_SECRET as jwt.Secret;
 const router: Router = express.Router();
-
-const { pool } = require('./db');
-const jwt = require('jsonwebtoken');
-
 const checkIfExists = async (field: string, value: string) => {
   const query = {
     text: `SELECT * FROM users.users WHERE ${field} = $1;`,
     values: [value],
   };
   const result = await pool.query(query);
-  return { exists: result.rowCount > 0, account: result.rows[0] };
+  return { exists: result.rowCount ? result.rowCount > 0 : false, 
+           account: result.rows[0] };
 };
 
 /*
@@ -35,7 +36,7 @@ router.post('/register', async (request: Request, response: Response): Promise<v
       values: [email],
     };
     const existsUnderEmail = await pool.query(query);
-    if (existsUnderEmail.rowCount > 0) {
+    if (existsUnderEmail.rowCount && existsUnderEmail.rowCount > 0) {
       throw new Error('An account is already registered with this email address.',);
     }
 
@@ -46,7 +47,7 @@ router.post('/register', async (request: Request, response: Response): Promise<v
       values: [username],
     };
     const existsUnderUsername = await pool.query(query);
-    if (existsUnderUsername.rowCount > 0) {
+    if (existsUnderUsername.rowCount && existsUnderUsername.rowCount > 0) {
       throw new Error('An account is already registered with this username.');
      }
 
@@ -98,7 +99,7 @@ router.post('/signin', async (request: Request, response: Response): Promise<voi
     }
 
     // Generate json web token
-    const token = jwt.sign({id: user.account.id}, process.env.JWT_SECRET, 
+    const token = jwt.sign({id: user.account.id}, JWT_SECRET, 
                            {expiresIn: process.env.JWT_EXPIRES_IN});
 
     // response.cookie('token', token, {

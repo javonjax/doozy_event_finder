@@ -1,8 +1,8 @@
-require('dotenv').config();
-const { Pool } = require('pg');
-const fs = require('fs');
-const path = require('path');
-const { table } = require('console');
+import dotenv from 'dotenv';
+import { Pool } from 'pg';
+import fs from 'fs';
+import path from 'path';
+
 
 const config: string = process.env.PG_CONFIG as string;
 const pool = new Pool(JSON.parse(config));
