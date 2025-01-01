@@ -35,6 +35,15 @@ export interface LocationContextHelper {
   requestLocation: () => Promise<Coordinates>
 };
 
+/*
+
+*/
+export interface AuthContextHelper {
+  loggedIn: boolean,
+  login: () => void,
+  logout: () => void
+}
+
 export const GenreSchema = z.object({
   id: z.string(),
   name: z.string()

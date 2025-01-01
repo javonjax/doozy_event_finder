@@ -8,7 +8,7 @@ import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { LocationContextHelper } from '@/schemas/schemas';
 
 const Home = (): React.JSX.Element => {
-  const context = useContext<LocationContextHelper | undefined>(
+  const locationContext = useContext<LocationContextHelper | undefined>(
     LocationContext
   );
   const navigate: NavigateFunction = useNavigate();
@@ -17,12 +17,12 @@ const Home = (): React.JSX.Element => {
   const handleClickLocalCard: React.MouseEventHandler<HTMLAnchorElement> = 
     async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): Promise<void> => {
         e.preventDefault();
-        if (!context) {
+        if (!locationContext) {
           console.log('Location context is unavailable.');
           return;
         }
         try {
-          const { requestLocation} = context;
+          const { requestLocation} = locationContext;
           await requestLocation();
           console.log(location)
           navigate('/local');

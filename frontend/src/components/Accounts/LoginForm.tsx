@@ -56,15 +56,13 @@ const LoginForm = (): React.JSX.Element => {
       });
       navigate('/');
     }
-    // TODO: put token in cookie
-    console.log(data.token);
   };
 
   return (
     <div className='h-full w-full flex items-center justify-center'>
       <div className='text-[hsl(var(--text-color))] w-[400px] bg-[hsl(var(--background))] rounded-2xl flex flex-col p-4 my-4'>
         <h1 className='text-[2rem] mb-4'>Login</h1>
-        {loginError && <p className='m-0 bg-red-600 mb-4'>{loginError}</p>}
+        {loginError && <p className='m-0 text-red-600 mb-4'>{loginError}</p>}
         <form className='flex flex-col grow text-[hsl(var(--text-color))]' onSubmit={handleSubmit(onSubmit)}>
           <Input
             register={register}

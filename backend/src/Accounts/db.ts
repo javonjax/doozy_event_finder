@@ -7,7 +7,7 @@ import path from 'path';
 const config: string = process.env.PG_CONFIG as string;
 const pool = new Pool(JSON.parse(config));
 
-const createTable = async (): Promise<void> => {
+const createUsersTable = async (): Promise<void> => {
   try {
     const res = await pool.query(`
             SELECT EXISTS (
@@ -31,11 +31,25 @@ const createTable = async (): Promise<void> => {
   }
 };
 
+const createFavoritesTable = async (): Promise<void> => {
+  try {
+    const res = await pool.query(`
+      SELECT EXISTS (
+          SELECT 1 
+          FROM information_schema.tables
+          WHERE table_schema = 'users' AND table_name = 'users' 
+      )    
+  `);
+  } catch (error) {
+    console.error('Error creating FAVORITES table:', error);
+  }
+};
+
 const connectDB = async (): Promise<void> => {
   try {
     await pool.connect();
     console.log('Connected to PostgreSQL.');
-    await createTable();
+    await createUsersTable();
   } catch (error) {
     console.error('Connection error', error);
   }

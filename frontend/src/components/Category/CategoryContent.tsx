@@ -23,7 +23,7 @@ const CategoryContent = (): React.JSX.Element => {
     from: undefined,
     to: undefined,
   });
-  const context = useContext<LocationContextHelper | undefined>(
+  const locationContext = useContext<LocationContextHelper | undefined>(
     LocationContext
   );
 
@@ -41,11 +41,11 @@ const CategoryContent = (): React.JSX.Element => {
   const onCheckBox: React.ChangeEventHandler<HTMLInputElement> = async (): Promise<void> => {
     try {
       setUseLocationData((prev) => !prev);
-      if (!context) {
+      if (!locationContext) {
         console.log('Location context is unavailable.');
         return;
       }
-      const { location, requestLocation } = context;
+      const { location, requestLocation } = locationContext;
 
       if (!location) {
         await requestLocation();
@@ -118,7 +118,7 @@ const CategoryContent = (): React.JSX.Element => {
         dateRange={queryDate}
         location={
           useLocationData || path.toLowerCase() === 'local'
-            ? context?.location
+            ? locationContext?.location
             : undefined
         }
       />

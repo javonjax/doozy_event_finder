@@ -130,6 +130,20 @@ export const TicketMasterClassificationData = z.object({
     })
 });
 
+
+/*
+    Account object retrieved on login.
+    Used in:
+        /login accountRoute
+*/
+export const UserAccountSchema = z.object({
+    id: z.number(),
+    username: z.string(),
+    email: z.string(),
+    password_hash: z.string()
+});
+
+export type UserAccount = z.infer<typeof UserAccountSchema>;
 /******************************************************** BACKEND ********************************************************/
 
 

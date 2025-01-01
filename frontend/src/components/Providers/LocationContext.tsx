@@ -1,6 +1,7 @@
 import { createContext, useState } from 'react';
 import { Coordinates, LocationContextHelper } from '@/schemas/schemas';
 
+
 export const LocationContext = createContext<LocationContextHelper | undefined>(undefined);
 
 export const LocationProvider = ({children}: {children: React.ReactNode}) => {

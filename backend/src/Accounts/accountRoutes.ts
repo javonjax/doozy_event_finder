@@ -1,8 +1,9 @@
 import express, { Request, Response, Router } from 'express';
+import sessionq from 'express-session';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { pool } from './db';
-
+import { UserAccount } from '../../../schemas/schemas';
 
 const JWT_SECRET = process.env.JWT_SECRET as jwt.Secret;
 const router: Router = express.Router();
@@ -12,8 +13,7 @@ const checkIfExists = async (field: string, value: string) => {
     values: [value],
   };
   const result = await pool.query(query);
-  return { exists: result.rowCount ? result.rowCount > 0 : false, 
-           account: result.rows[0] };
+  return { account: result.rows[0] };
 };
 
 /*
@@ -40,7 +40,7 @@ router.post('/register', async (request: Request, response: Response): Promise<v
       throw new Error('An account is already registered with this email address.',);
     }
 
-    // Check if a use
+    // Check if a user exists with the given username.
     console.log('Checking an account is registered with the given username.');
     query = {
       text: 'SELECT * FROM users.users WHERE username = $1;',
@@ -79,13 +79,14 @@ router.post('/register', async (request: Request, response: Response): Promise<v
 });
 
 /*
-  Sign in with an account.
+  Login with an account.
 */
 router.post('/login', async (request: Request, response: Response): Promise<void> => {
   try {
     const { email, password } = request.body;
-    const user: { exists: boolean, account: any } = await checkIfExists('email', email);
-    if (!user.exists) {
+    const user: { account: UserAccount | undefined } = await checkIfExists('email', email);
+    
+    if (!user.account) {
       throw new Error('Invalid email or password.');
     }
 
@@ -98,16 +99,10 @@ router.post('/login', async (request: Request, response: Response): Promise<void
       throw new Error('Invalid email or password.');
     }
 
-    // Generate json web token
-    const token = jwt.sign({id: user.account.id}, JWT_SECRET, 
-                           {expiresIn: process.env.JWT_EXPIRES_IN});
+    request.session.userId = user.account.id;
+    request.session.email = user.account.email;
 
-    // response.cookie('token', token, {
-    //   httpOnly: true,
-    //   sameSite: 'strict'
-    // });
-
-    response.status(200).json({message: 'Login successful.', token: token});
+    response.status(200).json({message: 'Login successful.'});
   } catch (error) {
     if (error instanceof Error) {
       response
@@ -115,6 +110,19 @@ router.post('/login', async (request: Request, response: Response): Promise<void
         .json({ message: error.message || 'Internal server error.' });
     }   
   }
+});
+
+/*
+  Logout of an account.
+*/
+router.post('/logout', (request: Request, response: Response) => {
+  request.session.destroy((error) => {
+    if (error) {
+      return response.status(500).json({ message: 'Could not logout at this time.'});
+    } else {
+      response.status(200).json({ message: 'You are now logged out.'})
+    }
+  });
 });
 
 export default router;

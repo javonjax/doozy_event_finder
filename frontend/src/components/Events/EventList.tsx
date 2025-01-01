@@ -53,13 +53,11 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
 
     if (!startDate) {
       const today: string = new Date().toJSON().slice(0, -5) + 'Z';
-      console.log(today, 'today')
       queryParams += `&startDateTime=${today}`;
     } else {
       if (endDate) {
         queryParams += `&startEndDateTime=${startDate},${endDate}`;
       } else {
-        
         queryParams += `&startEndDateTime=${startDate},${endOfStartDate}`;
       }
     }
@@ -84,7 +82,7 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     if (pageParam <= MAX_PAGES) {
       queryParams += `&page=${pageParam}`;
     }
-    console.log(queryParams)
+    
     // Fetch data from backend API.
     const res: globalThis.Response = await fetch(`${BACKEND_EVENTS_API_URL}?${queryParams}`);
 
@@ -101,8 +99,8 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
 
     const events = parsedEventData.data.events;
     const nextPage = parsedEventData.data.nextPage;
-    console.log('events', events)
-    console.log('next page', nextPage)
+    // console.log('events', events)
+    // console.log('next page', nextPage)
     
     // When the initial data is fetched, set the appropriate amount of visible events.
     if (pageParam === 0) {
@@ -187,7 +185,7 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     }
   }, [data, numVisible]);
 
-  // Fail safe to hide the button that shows more events when fetching the next page fails.
+  // Hide the button that shows more events when fetching the next page fails.
   useEffect(() => {
     setHasMore(false)
   }, [isFetchNextPageError]);

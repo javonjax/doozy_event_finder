@@ -121,7 +121,7 @@ const RegistrationForm = (): React.JSX.Element => {
       <div className='flex flex-col text-[hsl(var(--text-color))] w-[400px] bg-[hsl(var(--background))] rounded-2xl p-4 my-4'>
         <h1 className='text-[2rem] mb-4'>Register</h1>
         {registrationError && (
-          <p className='m-0 bg-red-600 mb-4'>{registrationError}</p>
+          <p className='m-0 text-red-600 mb-4'>{registrationError}</p>
         )}
         <form
           className='flex flex-col grow text-[hsl(var(--text-color))]'
