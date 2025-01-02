@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { NavLink, useNavigate } from 'react-router-dom';;
 import { emailValidation } from './RegistrationForm';
 import Input from './Input';
 import { useToast } from '@/hooks/use-toast';
+import { AuthContext } from '../Providers/AuthContext';
+import { AuthContextHelper } from '@/schemas/schemas';
+
+
+// Environment variables.
+const LOGIN_API_URL: string = import.meta.env.VITE_BACKEND_LOGIN_API_URL;
 
 // Validation options for react-hook-forms.
-
 export const loginPasswordValidation = {
   required: 'Password is required.',
 };
@@ -14,26 +19,25 @@ export const loginPasswordValidation = {
 export type LoginPasswordValidation = typeof loginPasswordValidation;
 
 const LoginForm = (): React.JSX.Element => {
-  const SIGNIN_API_URL = import.meta.env.VITE_BACKEND_LOGIN_API_URL;
-
+  // Hooks.
   const [loginError, setLoginError] = useState<string>('');
-
   const { toast } = useToast();
-
   const navigate = useNavigate();
-
+  const authContext = useContext<AuthContextHelper | undefined>(AuthContext);
   const {
     register,
     formState: { errors, isValid },
     handleSubmit,
   } = useForm({ mode: 'onChange' });
 
+  // Event handlers.
   const onSubmit: SubmitHandler<FieldValues> = async (e) => {
-    const res = await fetch(SIGNIN_API_URL, {
+    const res: Response = await fetch(LOGIN_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(e),
     });
 
@@ -48,6 +52,9 @@ const LoginForm = (): React.JSX.Element => {
       });
     } else {
       setLoginError('');
+      if (authContext) {
+        authContext.login();
+      }
       toast({
         title: data.message,
         description: 'Enjoy your time with Doozy!',
@@ -89,7 +96,7 @@ const LoginForm = (): React.JSX.Element => {
         <div className='text-[hsl(var(--text-color))] flex flex-col'>
           <p>
             Need an account?{' '}
-            <NavLink to='/register' className='text-orange-500'>
+            <NavLink to='/register' className='text-orange-400'>
                 Register here.
             </NavLink>
           </p>

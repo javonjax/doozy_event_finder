@@ -9,9 +9,12 @@ import { useLocation } from 'react-router-dom';
 import { GenreData, GenreArraySchema } from '@/schemas/schemas';
 import CategoryFilters from './CategoryFilters';
 
+
+// Environment variables.
 const BACKEND_GENRES_API_URL: string = import.meta.env.VITE_BACKEND_GENRES_API_URL;
 
 const CategoryContent = (): React.JSX.Element => {
+  // Hooks.
   const { toast } = useToast();
   const [useLocationData, setUseLocationData] = useState<boolean>(false);
   const [selectedSubcategory, setSelectedSubcategory] = useState<GenreData | undefined>(undefined);
@@ -26,9 +29,9 @@ const CategoryContent = (): React.JSX.Element => {
   const locationContext = useContext<LocationContextHelper | undefined>(
     LocationContext
   );
-
   const path: string = useLocation().pathname.slice(1);
 
+  // Event handlers
   const handleSubcategoryChange = (subcategory?: GenreData): void => {
     if (subcategory) {
       setSelectedSubcategory(subcategory);
@@ -95,6 +98,7 @@ const CategoryContent = (): React.JSX.Element => {
     }
   };
 
+  // Query handler.
   const { data: genres } = useQuery({
     queryKey: ['fetchGenres', path],
     queryFn: fetchGenres,

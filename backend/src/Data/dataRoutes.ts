@@ -88,6 +88,7 @@ router.get(
       });
 
       console.log(numRetrieved >= 200 && currentPage < 4 ? currentPage + 1 : null)
+      console.log(request.session)
       response.json({
         events: validEvents,
         nextPage:

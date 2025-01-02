@@ -17,7 +17,7 @@ const Event = ({ event, path }: EventProps): React.JSX.Element => {
   const [dayOfWeek, monthDay] = formattedDate.split(',');
 
   return (
-    <div className='flex flex-col md:flex-row items-center rounded-2xl mb-4 w-[85%] transform transition-all duration-400 hover:scale-105'>
+    <div className='flex flex-col md:flex-row items-center rounded-2xl mb-4 w-[95%] transform transition-all duration-400 hover:scale-105'>
       <div className='bg-[hsl(var(--background))] text-[hsl(var(--text-color))] flex items-center justify-center uppercase rounded-tl-xl rounded-tr-xl md:rounded-tr-none md:rounded-bl-xl min-w-[125px] self-stretch p-4'>
         <h2>{monthDay.trim()}</h2>
       </div>

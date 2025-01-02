@@ -35,7 +35,7 @@ const DateRangePicker = ({className, date, setDate, setQueryDate}: DateRangePick
             id='date'
             variant={'outline'}
             className={cn(
-              'w-[300px] justify-start text-left font-normal',
+              'w-[300px] justify-center text-center font-normal',
               !date && 'text-muted-foreground'
             )}>
             <CalendarIcon />
@@ -49,7 +49,7 @@ const DateRangePicker = ({className, date, setDate, setQueryDate}: DateRangePick
                 format(date.from, 'LLL dd, y')
               )
             ) : (
-              <span>Pick a date</span>
+              <span>Filter by date</span>
             )}
           </Button>
         </PopoverTrigger>

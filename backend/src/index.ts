@@ -3,8 +3,9 @@ import cors from 'cors';
 import dataRoutes from './Data/dataRoutes';
 import accountRoutes from './Accounts/accountRoutes';
 import dotenv from 'dotenv';
-import { connectDB } from './Accounts/db';
+import { connectDB, pool } from './Accounts/db';
 import session from 'express-session';
+import connectPgSimple from 'connect-pg-simple';
 dotenv.config();
 
 
@@ -17,15 +18,23 @@ declare module 'express-session' {
 
 const app: Application = express();
 const port = process.env.PORT;
+const PgStore = connectPgSimple(session);
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:5173'
+}));
 app.use(express.json());
 app.use(session({
+  store: new PgStore({
+    pool,
+    createTableIfMissing: true
+  }),
   secret:'secretkey',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 300000, secure: false }
+  cookie: { maxAge: 3600000, secure: false }
 }));
 
 // Routes

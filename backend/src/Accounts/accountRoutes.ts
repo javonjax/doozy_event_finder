@@ -1,5 +1,4 @@
 import express, { Request, Response, Router } from 'express';
-import sessionq from 'express-session';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { pool } from './db';
@@ -39,7 +38,7 @@ router.post('/register', async (request: Request, response: Response): Promise<v
     if (existsUnderEmail.rowCount && existsUnderEmail.rowCount > 0) {
       throw new Error('An account is already registered with this email address.',);
     }
-
+    
     // Check if a user exists with the given username.
     console.log('Checking an account is registered with the given username.');
     query = {
@@ -98,10 +97,10 @@ router.post('/login', async (request: Request, response: Response): Promise<void
     if (!validPassword) {
       throw new Error('Invalid email or password.');
     }
-
+    console.log(request.session)
     request.session.userId = user.account.id;
     request.session.email = user.account.email;
-
+    console.log(request.session)
     response.status(200).json({message: 'Login successful.'});
   } catch (error) {
     if (error instanceof Error) {
@@ -115,7 +114,7 @@ router.post('/login', async (request: Request, response: Response): Promise<void
 /*
   Logout of an account.
 */
-router.post('/logout', (request: Request, response: Response) => {
+router.post('/logout', (request: Request, response: Response): void => {
   request.session.destroy((error) => {
     if (error) {
       return response.status(500).json({ message: 'Could not logout at this time.'});
@@ -123,6 +122,17 @@ router.post('/logout', (request: Request, response: Response) => {
       response.status(200).json({ message: 'You are now logged out.'})
     }
   });
+});
+
+/*
+  Check for an active session
+*/
+router.get('/session', (request: Request, response: Response): void => {
+  if (request.session.userId) {
+    response.status(200).json({ message: 'User is authenticated.'})
+  } else {
+    response.status(401).json({ message: 'Active session not found. Please login.'})
+  }
 });
 
 export default router;

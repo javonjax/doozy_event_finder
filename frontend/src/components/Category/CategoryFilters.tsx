@@ -23,7 +23,7 @@ const CategoryFilters = ({path, genres, selectedSubcategory, handleSubcategoryCh
   }, [path]);
 
   return (
-    <div className='flex flex-col w-[95%] items-center justify-center bg-[hsl(var(--background))] rounded-2xl py-8 my-4'>
+    <div className='flex flex-col w-full items-center justify-center bg-[hsl(var(--background))] rounded-2xl py-8 my-4'>
       <div className='flex flex-col xl:flex-row justify-evenly items-center w-full'>
         <SubCategoryDropdown 
           subcategories={genres}

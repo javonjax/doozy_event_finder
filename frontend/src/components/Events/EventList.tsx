@@ -8,23 +8,23 @@ import { Loader } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 import { addDays } from 'date-fns';
 
+
 export interface EventListProps {
   selectedSubcategory?: GenreData | undefined;
   location?: Coordinates;
   dateRange?: DateRange | undefined;
 };
 
-const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps) => {
-  // List of event objects visible on the page.
-  const [visibleEvents, setVisibleEvents] = useState<Array<EventCardData>>(); 
-  // Number of visible events.
-  const [numVisible, setNumVisible] = useState<number>(0);  
-  // Tracks if there are more events available to display from the current data.
-  const [hasMore, setHasMore] = useState<boolean>(false);
-  // The Ticketmaster API only supports retrieving up to the 1000th item (max 200 items per page, the 5th page is the last).
-  const MAX_PAGES: number = 4; 
+// Environment variables.
+const BACKEND_EVENTS_API_URL: string = import.meta.env.VITE_BACKEND_EVENTS_API_URL;
+// The Ticketmaster API only supports retrieving up to the 1000th item (max 200 items per page, the 5th page is the last).
+const MAX_PAGES: number = 4; 
 
-  const BACKEND_EVENTS_API_URL = import.meta.env.VITE_BACKEND_EVENTS_API_URL;
+const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps) => {
+  // Hooks
+  const [visibleEvents, setVisibleEvents] = useState<Array<EventCardData>>(); // List of event objects visible on the page.
+  const [numVisible, setNumVisible] = useState<number>(0);  // Number of visible events.
+  const [hasMore, setHasMore] = useState<boolean>(false); // Tracks if there are more events available to display from the current data.
   const path: string = useLocation().pathname.slice(1);
 
   const fetchEvents = async (pageParam: number): Promise<EventsAPIRes> => {
@@ -40,14 +40,12 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
         endOfStartDate = addDays(startDate, 1);
         startDate = startDate.toJSON().slice(0, -5) + 'Z';
         endOfStartDate = endOfStartDate.toJSON().slice(0, -5) + 'Z';
-        console.log(startDate, 'startdate')
       }
       if (dateRange.to) {
         endDate = dateRange.to;
         endDate.setHours(0, 0, 0, 0);
         endDate = addDays(endDate, 1);
         endDate = endDate.toJSON().slice(0, -5) + 'Z';
-        console.log(endDate, 'end date')
       }
     }
 
@@ -84,7 +82,9 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     }
     
     // Fetch data from backend API.
-    const res: globalThis.Response = await fetch(`${BACKEND_EVENTS_API_URL}?${queryParams}`);
+    const res: globalThis.Response = await fetch(`${BACKEND_EVENTS_API_URL}?${queryParams}`,
+      { credentials: 'include'}
+    );
 
     if (!res.ok) {
       throw new Error(`${res.status}: ${res.statusText}`);
@@ -125,7 +125,7 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     return parsedEventData.data;
   };
 
-  // Tanstack query to fetch data.
+  // Query handler.
   const { 
       data, 
       error, 
@@ -153,14 +153,13 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
         // If there are more than enough events, display them.
         setNumVisible(prev => prev + 10);
       } else if (numAvailable === numVisible + 10) {
-        // If we have exactly enough, display them and fetch more.
+        // If there are exactly enough, display them and fetch more.
         setNumVisible(prev => prev + 10);
         if (!isFetchingNextPage) {
           fetchNextPage();
         }
       } else {
-        // If we have less than enough, check if there is a next page, and await the results
-        // before updating the list.
+        // If there are less than enough, check if there is a next page, and await the results before updating the list.
         if (hasNextPage) {
           if (!isFetchingNextPage) {
             await fetchNextPage();
@@ -213,7 +212,6 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     );
   }
 
-  // Render an event component for each event returned from the backend API.
   return (
     <>
       <div className='flex flex-col items-center w-full'>

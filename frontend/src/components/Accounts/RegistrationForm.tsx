@@ -9,9 +9,12 @@ import {
 } from '../../../../schemas/schemas';
 import { useToast } from '@/hooks/use-toast';
 
-let passwordInput: any;
+
+// Environment variables.
+const REGISTRATION_API_URL: string = import.meta.env.VITE_BACKEND_REGISTRATION_API_URL;
 
 // Validation options for react-hook-forms.
+let passwordInput: any;
 export const emailValidation = {
   required: 'Email address is required.',
   pattern: {
@@ -70,11 +73,10 @@ export const confirmPasswordValidation = {
 export type ConfirmPasswordValidation = typeof confirmPasswordValidation;
 
 const RegistrationForm = (): React.JSX.Element => {
-  const REGISTRATION_API_URL = import.meta.env.VITE_BACKEND_REGISTRATION_API_URL;
+  // Hooks.
   const [registrationError, setRegistrationError] = useState<string>('');
   const navigate = useNavigate();
   const { toast } = useToast();
-
   const {
     register,
     formState: { errors, isValid },
@@ -82,6 +84,7 @@ const RegistrationForm = (): React.JSX.Element => {
     watch,
   } = useForm({ mode: 'onChange' });
 
+  // Event handlers.
   const onSubmit: SubmitHandler<FieldValues> = async (e) => {
     const res = await fetch(REGISTRATION_API_URL, {
       method: 'POST',
@@ -169,7 +172,7 @@ const RegistrationForm = (): React.JSX.Element => {
         <div className='text-[hsl(var(--text-color))] flex flex-col'>
           <p>
             Already have an account?{' '}
-            <NavLink to='/login' className='text-orange-500'>
+            <NavLink to='/login' className='text-orange-400'>
               Login here.
             </NavLink>
           </p>
