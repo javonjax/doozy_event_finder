@@ -14,7 +14,7 @@ import { AuthProvider } from "@/components/Providers/AuthContext";
 import EventInfo from "@/components/Events/EventInfo";
 import RegistrationForm from "@/components/Accounts/RegistrationForm";
 import LoginForm from "@/components/Accounts/LoginForm";
-import Favorites from "@/components/Favorites/Favorites";
+import PinnedEvents from "@/components/Pins/PinnedEvents";
 
 
 const App = () => {
@@ -25,57 +25,54 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <AuthProvider>
-          <LocationProvider>
-          <NavBar/>
-          <main className='grow flex flex-col items-center'>
-            <Toaster/>
-            <Routes>
-              <Route
-                path='/'
-                element={<Home/>}
-              />
-              {Categories.map((cat: string): React.JSX.Element => (
-                <Route
-                  key={cat}
-                  path={`/${cat.toLowerCase()}`}
-                  element={<CategoryLanding/>}
-                />
-              ))}
-              {Categories.map((cat: string): React.JSX.Element => (
-                <Route
-                  key={`${cat}-info`}
-                  path={`/${cat}/:id`}
-                  element={<EventInfo/>}
-                />
-              ))}
-              <Route
-                path='/popular'
-                element={<CategoryLanding/>}/>
-              <Route
-                path='/popular/:id'
-                element={<EventInfo/>}/>
-              <Route
-                path='/local'
-                element={<CategoryLanding/>}/>
-              <Route
-                path='/local/:id'
-                element={<EventInfo/>}/>
-              <Route
-                path='/register'
-                element={<RegistrationForm/>}/>
-              <Route
-                path='/login'
-                element={<LoginForm/>}/>
-              <Route
-                path='/favorites'
-                element={<Favorites />}/>
-              <Route
-                path='*'
-                element={<NotFound/>}/>
-            </Routes>
-          </main>
-          <Footer/>
-          </LocationProvider>
+            <LocationProvider>
+              <NavBar/>
+              <main className='grow flex flex-col items-center'>
+                <Toaster/>
+                <Routes>
+                  <Route
+                    path='/'
+                    element={<Home/>}/>
+                  {Categories.map((cat: string): React.JSX.Element => (
+                    <Route
+                      key={cat}
+                      path={`/${cat.toLowerCase()}`}
+                      element={<CategoryLanding/>}/>
+                  ))}
+                  {Categories.map((cat: string): React.JSX.Element => (
+                    <Route
+                      key={`${cat}-info`}
+                      path={`/${cat}/:id`}
+                      element={<EventInfo/>}/>
+                  ))}
+                  <Route
+                    path='/popular'
+                    element={<CategoryLanding/>}/>
+                  <Route
+                    path='/popular/:id'
+                    element={<EventInfo/>}/>
+                  <Route
+                    path='/local'
+                    element={<CategoryLanding/>}/>
+                  <Route
+                    path='/local/:id'
+                    element={<EventInfo/>}/>
+                  <Route
+                    path='/register'
+                    element={<RegistrationForm/>}/>
+                  <Route
+                    path='/login'
+                    element={<LoginForm/>}/>
+                  <Route
+                    path='/pins'
+                    element={<PinnedEvents />}/>
+                  <Route
+                    path='*'
+                    element={<NotFound/>}/>
+                </Routes>
+              </main>
+              <Footer/>
+            </LocationProvider>
           </AuthProvider>
         </BrowserRouter>
       </QueryClientProvider>

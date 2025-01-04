@@ -83,6 +83,9 @@ router.post('/register', async (request: Request, response: Response): Promise<v
 router.post('/login', async (request: Request, response: Response): Promise<void> => {
   try {
     const { email, password } = request.body;
+    if (!email || !password) {
+      throw new Error('Missing login parameters.');
+    }
     const user: { account: UserAccount | undefined } = await checkIfExists('email', email);
     
     if (!user.account) {
@@ -134,5 +137,24 @@ router.get('/session', (request: Request, response: Response): void => {
     response.status(401).json({ message: 'Active session not found. Please login.'})
   }
 });
+
+/*
+  Get pinned events.
+*/
+
+/*
+  Create a new pinned event.
+*/
+router.post('/pins', async (request: Request, response: Response): Promise<void> => {
+  if (!request.session.userId) {
+    response.status(401).json({ message: 'Must be logged in to pin events.'})
+  }
+  
+
+});
+
+/*
+  Delete a pinned event.
+*/
 
 export default router;

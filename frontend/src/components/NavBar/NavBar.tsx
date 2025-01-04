@@ -102,7 +102,7 @@ const NavBar = (): React.JSX.Element => {
                   <>
                   <MenubarItem>
                     <NavLink
-                      to='/favorites'
+                      to='/pins'
                       className='flex justify-between w-full'>
                       Favorites{' '}
                       <MenubarShortcut>
@@ -171,7 +171,7 @@ const NavBar = (): React.JSX.Element => {
                   <>
                   <MenubarItem>
                     <NavLink
-                      to='/favorites'
+                      to='/pins'
                       className='flex justify-between w-full'>
                       Favorites{' '}
                       <MenubarShortcut>
@@ -182,7 +182,7 @@ const NavBar = (): React.JSX.Element => {
                   <MenubarSeparator/>
                   <MenubarItem>
                       <NavLink
-                        to='/favorites'
+                        to='/pins'
                         className='flex justify-between w-full'>
                         Logout{' '}
                         <MenubarShortcut>

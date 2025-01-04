@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 import { Categories, Coordinates, GenreData } from '@/schemas/schemas';
@@ -7,6 +7,8 @@ import Event from './Event';
 import { Loader } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 import { addDays } from 'date-fns';
+import { AuthContext } from '../Providers/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 
 export interface EventListProps {
@@ -26,7 +28,10 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
   const [numVisible, setNumVisible] = useState<number>(0);  // Number of visible events.
   const [hasMore, setHasMore] = useState<boolean>(false); // Tracks if there are more events available to display from the current data.
   const path: string = useLocation().pathname.slice(1);
+  const authContext = useContext(AuthContext);
+  const { toast } = useToast();
 
+  // Query function.
   const fetchEvents = async (pageParam: number): Promise<EventsAPIRes> => {
     // Construct query params.
     let startDate = undefined;
@@ -97,8 +102,8 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
       throw new Error(`API response format was incorrect.`);
     }
 
-    const events = parsedEventData.data.events;
-    const nextPage = parsedEventData.data.nextPage;
+    const events: Array<EventCardData> = parsedEventData.data.events;
+    const nextPage: number | null = parsedEventData.data.nextPage;
     // console.log('events', events)
     // console.log('next page', nextPage)
     
@@ -144,8 +149,8 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     retry: 1
   });
 
-  // OnClick handler for the button that loads more events.
-  const handleGetNextPage = async () => {
+  // Event handlers.
+  const handleGetNextPage = async (): Promise<void> => {
     if (!isFetching && data) {  
       const numAvailable: number = data.pages.flatMap((page) => page.events).length;
       console.log('initial num available', numAvailable);
@@ -171,6 +176,24 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
           setHasMore(false);
         }
       }
+    }
+  };
+
+  const handlePin = (event: EventCardData): void => {
+    if (!authContext || !authContext.loggedIn) {
+      toast({
+        title: `Join us! ${event.name}`,
+        description: (
+          <span>
+            You need to{' '}
+            <a href='/login' className='underline'>login</a> 
+            {' '}or{' '}
+            <a href='/register' className='underline'>register</a> an account to pin events.
+          </span>
+        ),
+        className: 'bg-orange-500',
+        duration: 5000,
+      });
     }
   };
 
@@ -216,7 +239,7 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     <>
       <div className='flex flex-col items-center w-full'>
         {visibleEvents?.map((event) => (
-          <Event key={event.id} event={event} path={path}></Event>
+          <Event key={event.id} event={event} path={path} handlePin={handlePin}></Event>
         ))}
         {isFetching &&
           <div className='flex justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] w-fit p-4 rounded-2xl'>

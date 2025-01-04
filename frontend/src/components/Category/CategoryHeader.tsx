@@ -29,9 +29,9 @@ const CategoryHeader = (): React.JSX.Element => {
         className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
       />
       <div className='absolute top-4 left-4 bg-[hsl(var(--background))] p-4 rounded-2xl text-[hsl(var(--text-color))]'>
-        <NavLink to={'/'}>Home</NavLink>
+        <NavLink to={'/'} className='hover:text-orange-400'>Home</NavLink>
         <span> / </span>
-        <NavLink to={`/${path}`}>
+        <NavLink to={`/${path}`} className='hover:text-orange-400'>
           {path.charAt(0).toUpperCase() + path.slice(1)}
         </NavLink>
       </div>
