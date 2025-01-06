@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { NavLink, useNavigate } from 'react-router-dom';;
+import { NavigateFunction, NavLink, useNavigate } from 'react-router-dom';;
 import { emailValidation } from './RegistrationForm';
 import Input from './Input';
 import { useToast } from '@/hooks/use-toast';
@@ -22,7 +22,7 @@ const LoginForm = (): React.JSX.Element => {
   // Hooks.
   const [loginError, setLoginError] = useState<string>('');
   const { toast } = useToast();
-  const navigate = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
   const authContext = useContext<AuthContextHelper | undefined>(AuthContext);
   const {
     register,

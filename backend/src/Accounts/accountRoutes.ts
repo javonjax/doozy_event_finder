@@ -2,17 +2,33 @@ import express, { Request, Response, Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { pool } from './db';
-import { UserAccount } from '../../../schemas/schemas';
+import { EventCardData, UserAccount } from '../../../schemas/schemas';
+import { QueryResult } from 'pg';
 
 const JWT_SECRET = process.env.JWT_SECRET as jwt.Secret;
 const router: Router = express.Router();
-const checkIfExists = async (field: string, value: string) => {
+const checkIfUserExists = async (field: string, value: string) => {
   const query = {
     text: `SELECT * FROM users.users WHERE ${field} = $1;`,
     values: [value],
   };
-  const result = await pool.query(query);
-  return { account: result.rows[0] };
+  const queryRes = await pool.query(query);
+  return { account: queryRes.rows[0] };
+};
+
+const checkIfPinExists = async (userId: string, eventId: string): Promise<boolean> => {
+  const query = {
+    text: `SELECT * FROM users.pins WHERE user_id = $1 AND event_id = $2;`,
+    values: [userId, eventId],
+  };
+  const queryRes = await pool.query(query);
+
+  if (queryRes.rowCount) {
+    return queryRes.rowCount > 0;
+  } else {
+    return false;
+  }
+  
 };
 
 /*
@@ -61,8 +77,8 @@ router.post('/register', async (request: Request, response: Response): Promise<v
              VALUES ($1, $2, $3);`,
       values: [username, email, hashedPassword],
     };
-    const registration = await pool.query(query);
-    if (registration.rowCount === 0) {
+    const queryRes = await pool.query(query);
+    if (queryRes.rowCount === 0) {
       throw new Error('Registration failed. Please try again.',);
     }
     response.status(201).json({
@@ -86,7 +102,7 @@ router.post('/login', async (request: Request, response: Response): Promise<void
     if (!email || !password) {
       throw new Error('Missing login parameters.');
     }
-    const user: { account: UserAccount | undefined } = await checkIfExists('email', email);
+    const user: { account: UserAccount | undefined } = await checkIfUserExists('email', email);
     
     if (!user.account) {
       throw new Error('Invalid email or password.');
@@ -120,9 +136,9 @@ router.post('/login', async (request: Request, response: Response): Promise<void
 router.post('/logout', (request: Request, response: Response): void => {
   request.session.destroy((error) => {
     if (error) {
-      return response.status(500).json({ message: 'Could not logout at this time.'});
+      response.status(500).json({ message: 'Could not logout at this time.'});
     } else {
-      response.status(200).json({ message: 'You are now logged out.'})
+      response.status(200).json({ message: 'You are now logged out.'});
     }
   });
 });
@@ -132,9 +148,9 @@ router.post('/logout', (request: Request, response: Response): void => {
 */
 router.get('/session', (request: Request, response: Response): void => {
   if (request.session.userId) {
-    response.status(200).json({ message: 'User is authenticated.'})
+    response.status(200).json({ message: 'User is authenticated.'});
   } else {
-    response.status(401).json({ message: 'Active session not found. Please login.'})
+    response.status(401).json({ message: 'Active session not found. Please login.'});
   }
 });
 
@@ -146,10 +162,47 @@ router.get('/session', (request: Request, response: Response): void => {
   Create a new pinned event.
 */
 router.post('/pins', async (request: Request, response: Response): Promise<void> => {
-  if (!request.session.userId) {
-    response.status(401).json({ message: 'Must be logged in to pin events.'})
+  try {
+    if (!request.session.userId) {
+      response.status(401).json({ message: 'Must be logged in to pin events.'})
+      return;
+    }
+    
+    const {id: eventId, name, images, url, dates, category}: EventCardData & {category: string} = request.body;
+    
+    if (!eventId || !name || !images || !url || !dates || !category) {
+      throw new Error('Missing parameters. Could not create new pin.');
+    }
+
+    console.log('Checking if event is already pinned for this user.');
+    const pinExists = await checkIfPinExists(String(request.session.userId),  eventId);
+    if (pinExists) {
+      throw new Error('This event is already pinned by this user.')
+    }
+
+    console.log('Attempting to add pinned event.+');
+    const query = {
+      text: `INSERT INTO users.pins (user_id, event_id, event_name, img_url, ticket_url, event_date, event_time, event_category)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`,
+      values: [request.session.userId, eventId, name, images[0].url, url, dates.start.localDate, dates.start.localTime, category],
+    };
+
+    const queryRes: QueryResult<any> = await pool.query(query);
+
+    if (queryRes.rowCount === 0) {
+      throw new Error('Failed to pin this event. Please try again later.');
+    }
+
+    response.status(201).json({
+      message: 'Event pinned.'
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      response
+      .status(500)
+      .json({ message: error.message || 'Internal server error.' });
+    }
   }
-  
 
 });
 

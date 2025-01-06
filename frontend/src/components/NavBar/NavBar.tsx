@@ -1,6 +1,6 @@
 import { AuthContextHelper, Categories } from '@/schemas/schemas';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarShortcut, MenubarTrigger } from '@/components/ui/menubar';
-import { NavLink } from 'react-router-dom';
+import { NavigateFunction, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, UserRound, LogIn, PenLine, CalendarHeart, LogOut } from 'lucide-react';
 import NavBarItem from './NavBarItem';
 import Logo from '../Logo/Logo';
@@ -13,6 +13,8 @@ import { useToast } from '@/hooks/use-toast';
 const BACKEND_LOGOUT_API_URL: string = import.meta.env.VITE_BACKEND_LOGOUT_API_URL;
 
 const NavBar = (): React.JSX.Element => {
+  const path: string = useLocation().pathname.slice(1).toLowerCase();
+  const navigate: NavigateFunction = useNavigate();
   const { toast } = useToast();
   const authContext = useContext<AuthContextHelper | undefined>(AuthContext);
 
@@ -44,6 +46,11 @@ const NavBar = (): React.JSX.Element => {
     if (authContext) {
       authContext.logout();
     }
+    
+    if (path === 'pins') {
+      navigate('/');
+    }
+
     toast({
       title: 'Success!',
       className: 'text-[hsl(var(--text-color))] bg-green-600',
@@ -104,7 +111,7 @@ const NavBar = (): React.JSX.Element => {
                     <NavLink
                       to='/pins'
                       className='flex justify-between w-full'>
-                      Favorites{' '}
+                      Pinned Events{' '}
                       <MenubarShortcut>
                         <CalendarHeart size={16} className='text-orange-400' />
                       </MenubarShortcut>
@@ -173,7 +180,7 @@ const NavBar = (): React.JSX.Element => {
                     <NavLink
                       to='/pins'
                       className='flex justify-between w-full'>
-                      Favorites{' '}
+                      Pinned Events{' '}
                       <MenubarShortcut>
                           <CalendarHeart size={16} className='text-orange-400'/>
                         </MenubarShortcut>

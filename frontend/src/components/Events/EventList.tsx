@@ -19,6 +19,7 @@ export interface EventListProps {
 
 // Environment variables.
 const BACKEND_EVENTS_API_URL: string = import.meta.env.VITE_BACKEND_EVENTS_API_URL;
+const BACKEND_PINS_API_URL: string = import.meta.env.VITE_BACKEND_PINS_API_URL;
 // The Ticketmaster API only supports retrieving up to the 1000th item (max 200 items per page, the 5th page is the last).
 const MAX_PAGES: number = 4; 
 
@@ -179,8 +180,8 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     }
   };
 
-  const handlePin = (event: EventCardData): void => {
-    if (!authContext || !authContext.loggedIn) {
+  const handlePin = async (event: EventCardData): Promise<void> => {
+    if (!authContext?.loggedIn) {
       toast({
         title: `Join us! ${event.name}`,
         description: (
@@ -194,7 +195,43 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
         className: 'bg-orange-500',
         duration: 5000,
       });
+    }   
+
+    const res: Response = await fetch(BACKEND_PINS_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        ...event,
+        category: path
+      })
+    });
+    
+    const data = await res.json();
+    if (!res.ok) {
+      toast({
+        title: `Uh oh.`,
+        description: data.message,
+        variant: 'destructive',
+        duration: 5000,
+      });
+    } else {
+      toast({
+        title: 'Event pinned!',
+        description: (
+          <span>
+            Check out your pins on the{' '}
+            <a href='/pins' className='underline'>pinned events</a> 
+            {' '}page.
+          </span>
+        ),
+        className: 'text-[hsl(var(--text-color))] bg-green-600',
+        duration: 5000,
+      });
     }
+    
   };
 
   // Set the visible events.
