@@ -1,4 +1,4 @@
-import { Pin } from 'lucide-react';
+import { Pin, PinOff } from 'lucide-react';
 import { EventCardData } from '../../../../schemas/schemas';
 import { formatDate, formatTime } from '../utils/utils';
 import EventLink from './EventLink';
@@ -7,12 +7,13 @@ export interface EventProps {
   event: EventCardData; 
   path: string;
   handlePin: (event: EventCardData) => void;
+  handleUnpin: (event: EventCardData) => void;
+  pinned: boolean;
 };
 
-const Event = ({ event, path, handlePin }: EventProps): React.JSX.Element => {
+const Event = ({ event, path, handlePin, handleUnpin, pinned }: EventProps): React.JSX.Element => {
   const date: string = event.dates.start.localDate;
   const time: string = event.dates.start.localTime;
-
   const formattedDate = formatDate(date);
   const formattedTime = formatTime(time);
   const [dayOfWeek, monthDay] = formattedDate.split(',');
@@ -39,12 +40,13 @@ const Event = ({ event, path, handlePin }: EventProps): React.JSX.Element => {
           <div className='flex md:self-stretch items-center'>
             <EventLink event={event} path={path}></EventLink>
           </div>
-          <div className='flex md:self-stretch items-center hover:cursor-pointer'>
+          <div className={`flex md:self-stretch items-center`}>
             <button 
-              className='flex justify-center items-center mr-4 min-w-[46px] bg-[hsl(var(--background))] text-[hsl(var(--text-color))] hover:text-orange-400 transform transition-all duration-400 hover:scale-110 p-2 rounded-2xl h-fit'
-              onClick={() => handlePin(event)}
+              className={`flex justify-center items-center mr-4 min-w-[46px] bg-[hsl(var(--background))] 
+                ${pinned ? 'text-orange-400' :'text-[hsl(var(--text-color))] hover:text-orange-400 transform transition-all duration-400 hover:scale-110'} p-2 rounded-2xl h-fit`}
+              onClick={pinned ? () => handleUnpin(event) : () => handlePin(event)}
             >
-              <Pin className='-rotate-45'/>
+              {pinned ? <PinOff/>: <Pin className='-rotate-45'/>}
             </button>
           </div>
         </div>

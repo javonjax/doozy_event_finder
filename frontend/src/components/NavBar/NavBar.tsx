@@ -1,11 +1,11 @@
-import { AuthContextHelper, Categories } from '@/schemas/schemas';
+import { Categories } from '@/schemas/schemas';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarShortcut, MenubarTrigger } from '@/components/ui/menubar';
 import { NavigateFunction, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, UserRound, LogIn, PenLine, CalendarHeart, LogOut } from 'lucide-react';
 import NavBarItem from './NavBarItem';
 import Logo from '../Logo/Logo';
 import { useContext } from 'react';
-import { AuthContext } from '../Providers/AuthContext';
+import { AuthContext, AuthContextProvider } from '../Providers/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 
 
@@ -16,47 +16,53 @@ const NavBar = (): React.JSX.Element => {
   const path: string = useLocation().pathname.slice(1).toLowerCase();
   const navigate: NavigateFunction = useNavigate();
   const { toast } = useToast();
-  const authContext = useContext<AuthContextHelper | undefined>(AuthContext);
+  const authContext = useContext<AuthContextProvider | undefined>(AuthContext);
 
   const userLogout = async (): Promise<void> => {
-    if (!authContext?.loggedIn) {
+    try {  
+      if (!authContext?.loggedIn) {
+        toast({
+          title: 'Logout error.',
+          description: 'No active login session.',
+          variant: 'destructive',
+          duration: 5000,
+        });
+      }
+      const res: Response = await fetch(BACKEND_LOGOUT_API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include'
+      });
+
+      const jsonRes: { message: string } = await res.json();
+      if (!res.ok) {
+        throw new Error(jsonRes.message);
+      }
+
+      if (authContext) {
+        authContext.logout();
+      }
+      
+      if (path === 'pins') {
+        navigate('/');
+      }
+
       toast({
-        title: 'Logout error.',
-        description: 'No active login session.',
-        variant: 'destructive',
+        title: 'Success!',
+        className: 'text-[hsl(var(--text-color))] bg-green-600',
+        description: jsonRes.message,
         duration: 5000,
       });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: 'Logout error.',
+          description: error.message,
+          variant: 'destructive',
+          duration: 5000,
+        });
+     }
     }
-    const res: Response = await fetch(BACKEND_LOGOUT_API_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      credentials: 'include'
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      toast({
-        title: 'Logout error.',
-        description: data.message,
-        variant: 'destructive',
-        duration: 5000,
-      });
-    }
-
-    if (authContext) {
-      authContext.logout();
-    }
-    
-    if (path === 'pins') {
-      navigate('/');
-    }
-
-    toast({
-      title: 'Success!',
-      className: 'text-[hsl(var(--text-color))] bg-green-600',
-      description: data.message,
-      duration: 5000,
-    });
   };
   
   return (
@@ -82,10 +88,10 @@ const NavBar = (): React.JSX.Element => {
               <MenubarContent className='text-[hsl(var(--text-color))] hidden md:block'>
                 {!authContext?.loggedIn &&
                   <>
-                    <MenubarItem>
+                    <MenubarItem className='p-0'>
                       <NavLink
                         to='/login'
-                        className='flex justify-between w-full'>
+                        className='flex justify-between w-full h-full px-2 py-1.5'>
                         Login{' '}
                         <MenubarShortcut>
                           <LogIn size={16} className='text-orange-400'/>
@@ -93,10 +99,10 @@ const NavBar = (): React.JSX.Element => {
                       </NavLink>
                     </MenubarItem>
                     <MenubarSeparator/>
-                    <MenubarItem>
+                    <MenubarItem className='p-0'>
                       <NavLink
                         to='/register'
-                        className='flex justify-between w-full'>
+                        className='flex justify-between w-full h-full px-2 py-1.5'>
                         Register{' '}
                         <MenubarShortcut>
                           <PenLine size={16} className='text-orange-400'/>
@@ -107,10 +113,10 @@ const NavBar = (): React.JSX.Element => {
                 }
                 {authContext?.loggedIn && 
                   <>
-                  <MenubarItem>
+                  <MenubarItem className='p-0'>
                     <NavLink
                       to='/pins'
-                      className='flex justify-between w-full'>
+                      className='flex justify-between w-full h-full px-2 py-1.5'>
                       Pinned Events{' '}
                       <MenubarShortcut>
                         <CalendarHeart size={16} className='text-orange-400' />
@@ -118,9 +124,7 @@ const NavBar = (): React.JSX.Element => {
                     </NavLink>
                   </MenubarItem>
                   <MenubarSeparator/>
-                  <MenubarItem
-                   onClick={() => userLogout()}
-                   >
+                  <MenubarItem onClick={() => userLogout()}>
                       <div
                         className='flex justify-between w-full'>
                         Logout{' '}
@@ -144,17 +148,17 @@ const NavBar = (): React.JSX.Element => {
                 {Categories.map((cat) => {
                   return (
                     <NavLink key={`${cat}-nav`} to={`/${cat}`}>
-                      <MenubarItem>{cat}</MenubarItem>
+                      <MenubarItem className='cursor-pointer'>{cat}</MenubarItem>
                       <MenubarSeparator />
                     </NavLink>
                   );
                 })}
                 {!authContext?.loggedIn &&
                   <>
-                    <MenubarItem>
+                    <MenubarItem className='p-0'>
                       <NavLink
                         to='/login'
-                        className='flex justify-between w-full'>
+                        className='flex justify-between w-full h-full px-2 py-1.5'>
                         Login{' '}
                         <MenubarShortcut>
                           <LogIn size={16} className='text-orange-400'/>
@@ -162,10 +166,10 @@ const NavBar = (): React.JSX.Element => {
                       </NavLink>
                     </MenubarItem>
                     <MenubarSeparator />
-                    <MenubarItem>
+                    <MenubarItem className='p-0'>
                       <NavLink
                         to='/register'
-                        className='flex justify-between w-full'>
+                        className='flex justify-between w-full h-full px-2 py-1.5'>
                         Register{' '}
                         <MenubarShortcut>
                           <PenLine size={16} className='text-orange-400'/>
@@ -176,10 +180,10 @@ const NavBar = (): React.JSX.Element => {
                 }
                 {authContext?.loggedIn && 
                   <>
-                  <MenubarItem>
+                  <MenubarItem className='p-0'>
                     <NavLink
                       to='/pins'
-                      className='flex justify-between w-full'>
+                      className='flex justify-between w-full h-full px-2 py-1.5'>
                       Pinned Events{' '}
                       <MenubarShortcut>
                           <CalendarHeart size={16} className='text-orange-400'/>
@@ -187,10 +191,10 @@ const NavBar = (): React.JSX.Element => {
                     </NavLink>
                   </MenubarItem>
                   <MenubarSeparator/>
-                  <MenubarItem>
+                  <MenubarItem className='p-0'>
                       <NavLink
                         to='/pins'
-                        className='flex justify-between w-full'>
+                        className='flex justify-between w-full h-full px-2 py-1.5'>
                         Logout{' '}
                         <MenubarShortcut>
                           <LogOut size={16} className='text-orange-400' />

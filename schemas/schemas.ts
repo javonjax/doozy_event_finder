@@ -132,7 +132,7 @@ export const TicketMasterClassificationData = z.object({
 
 
 /*
-    Account object retrieved on login.
+    Account object.
     Used in:
         /login accountRoute
 */
@@ -144,6 +144,25 @@ export const UserAccountSchema = z.object({
 });
 
 export type UserAccount = z.infer<typeof UserAccountSchema>;
+
+/*
+    Pinned event object.
+    Used in: 
+        /pins
+*/
+export const PinnedEventSchema = z.object({
+    id: z.number(),
+    user_id: z.number(),
+    event_id: z.string(),
+    event_name: z.string(),
+    img_url: z.string(),
+    ticket_url: z.string(),
+    event_date: z.string(),
+    event_time: z.string(),
+    event_category: z.string()
+});
+
+export type PinnedEvent = z.infer<typeof PinnedEventSchema>;
 /******************************************************** BACKEND ********************************************************/
 
 

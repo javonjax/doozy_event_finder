@@ -9,6 +9,7 @@ import { DateRange } from 'react-day-picker';
 import { addDays } from 'date-fns';
 import { AuthContext } from '../Providers/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { PinsContextProvider, PinsContext } from '../Providers/PinsContext';
 
 
 export interface EventListProps {
@@ -30,6 +31,7 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
   const [hasMore, setHasMore] = useState<boolean>(false); // Tracks if there are more events available to display from the current data.
   const path: string = useLocation().pathname.slice(1);
   const authContext = useContext(AuthContext);
+  const pinsContext: PinsContextProvider | undefined = useContext<PinsContextProvider | undefined>(PinsContext);
   const { toast } = useToast();
 
   // Query function.
@@ -181,43 +183,42 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
   };
 
   const handlePin = async (event: EventCardData): Promise<void> => {
-    if (!authContext?.loggedIn) {
-      toast({
-        title: `Join us! ${event.name}`,
-        description: (
-          <span>
-            You need to{' '}
-            <a href='/login' className='underline'>login</a> 
-            {' '}or{' '}
-            <a href='/register' className='underline'>register</a> an account to pin events.
-          </span>
-        ),
-        className: 'bg-orange-500',
-        duration: 5000,
-      });
-    }   
+    try {  
+      if (!authContext?.loggedIn) {
+        toast({
+          title: 'Join us!',
+          description: (
+            <span>
+              You need to{' '}
+              <a href='/login' className='underline'>login</a> 
+              {' '}or{' '}
+              <a href='/register' className='underline'>register</a> an account to pin events.
+            </span>
+          ),
+          className: 'bg-orange-500',
+          duration: 5000,
+        });
+        return;
+      }   
 
-    const res: Response = await fetch(BACKEND_PINS_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        ...event,
-        category: path
-      })
-    });
-    
-    const data = await res.json();
-    if (!res.ok) {
-      toast({
-        title: `Uh oh.`,
-        description: data.message,
-        variant: 'destructive',
-        duration: 5000,
+      const res: globalThis.Response = await fetch(BACKEND_PINS_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          ...event,
+          category: path
+        })
       });
-    } else {
+      
+      const jsonRes: { message: string } = await res.json();
+      if (!res.ok) {
+        throw new Error(jsonRes.message);
+      } 
+
+      await pinsContext?.fetchPinnedEvents();
       toast({
         title: 'Event pinned!',
         description: (
@@ -230,8 +231,71 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
         className: 'text-[hsl(var(--text-color))] bg-green-600',
         duration: 5000,
       });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: `Uh oh.`,
+          description: error.message,
+          variant: 'destructive',
+          duration: 5000,
+        });
+      }
     }
-    
+  };
+
+  const handleUnpin = async (event: EventCardData): Promise<void> => {
+    try {
+      if (!authContext?.loggedIn) {
+        toast({
+          title: 'Join us!',
+          description: (
+            <span>
+              You need to{' '}
+              <a href='/login' className='underline'>login</a> 
+              {' '}or{' '}
+              <a href='/register' className='underline'>register</a> an account to pin events.
+            </span>
+          ),
+          className: 'bg-orange-500',
+          duration: 5000,
+        });
+        return;
+      }   
+      const res: globalThis.Response = await fetch(`${BACKEND_PINS_API_URL}${event.id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      const jsonRes: { message: string } = await res.json();
+
+      if (!res.ok) {
+       throw new Error(jsonRes.message);
+      }
+
+      await pinsContext?.fetchPinnedEvents();
+      toast({
+        title: 'Event un-pinned!',
+        description: `${event.name} has been removed from your pinned events.`,
+        className: 'text-[hsl(var(--text-color))] bg-green-600',
+        duration: 5000,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: `Uh oh.`,
+          description: error.message,
+          variant: 'destructive',
+          duration: 5000,
+        });
+      }
+    }
+  };
+
+  const isPinned = (eventId: string): boolean => {
+    if(!pinsContext || !pinsContext.pinnedEvents || pinsContext.pinnedEvents?.length === 0) {
+      return false;
+    }
+    return pinsContext?.pinnedEvents?.some((event) => event.event_id === eventId);
   };
 
   // Set the visible events.
@@ -248,6 +312,18 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
   useEffect(() => {
     setHasMore(false)
   }, [isFetchNextPageError]);
+
+  
+  useEffect(() => {
+    const getPinnedEvents = async () => {
+      if (!pinsContext?.pinnedEvents || pinsContext.pinnedEvents?.length === 0) {
+        await pinsContext?.fetchPinnedEvents();
+      }
+    };
+    console.log('getting events')
+    console.log(pinsContext?.pinnedEvents)
+    getPinnedEvents();
+  }, [pinsContext]);
 
   if (isLoading) {
     return (
@@ -275,9 +351,12 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
   return (
     <>
       <div className='flex flex-col items-center w-full'>
-        {visibleEvents?.map((event) => (
-          <Event key={event.id} event={event} path={path} handlePin={handlePin}></Event>
-        ))}
+        {visibleEvents?.map((event) => {
+          const pinned = isPinned(event.id);
+          return(
+            <Event key={event.id} event={event} path={path} handlePin={handlePin} handleUnpin={handleUnpin} pinned={pinned}></Event>
+          )
+        })}
         {isFetching &&
           <div className='flex justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] w-fit p-4 rounded-2xl'>
           <Loader className='text-[hsl(var(--text-color))] animate-spin'/>

@@ -4,8 +4,7 @@ import { NavigateFunction, NavLink, useNavigate } from 'react-router-dom';;
 import { emailValidation } from './RegistrationForm';
 import Input from './Input';
 import { useToast } from '@/hooks/use-toast';
-import { AuthContext } from '../Providers/AuthContext';
-import { AuthContextHelper } from '@/schemas/schemas';
+import { AuthContext, AuthContextProvider } from '../Providers/AuthContext';
 
 
 // Environment variables.
@@ -23,7 +22,7 @@ const LoginForm = (): React.JSX.Element => {
   const [loginError, setLoginError] = useState<string>('');
   const { toast } = useToast();
   const navigate: NavigateFunction = useNavigate();
-  const authContext = useContext<AuthContextHelper | undefined>(AuthContext);
+  const authContext = useContext<AuthContextProvider | undefined>(AuthContext);
   const {
     register,
     formState: { errors, isValid },
@@ -41,12 +40,12 @@ const LoginForm = (): React.JSX.Element => {
       body: JSON.stringify(e),
     });
 
-    const data = await res.json();
+    const jsonRes: { message: string } = await res.json();
     if (!res.ok) {
-      setLoginError(data.message);
+      setLoginError(jsonRes.message);
       toast({
         title: 'Login error.',
-        description: data.message,
+        description: jsonRes.message,
         variant: 'destructive',
         duration: 5000,
       });
@@ -56,7 +55,7 @@ const LoginForm = (): React.JSX.Element => {
         authContext.login();
       }
       toast({
-        title: data.message,
+        title: jsonRes.message,
         description: 'Enjoy your time with Doozy!',
         className: 'text-[hsl(var(--text-color))] bg-green-600',
         duration: 5000,

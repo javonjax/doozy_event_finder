@@ -94,13 +94,13 @@ const RegistrationForm = (): React.JSX.Element => {
       body: JSON.stringify(e),
     });
 
-    const data = await res.json();
+    const jsonRes: { message: string } = await res.json();
 
     if (!res.ok) {
-      setRegistrationError(data.message);
+      setRegistrationError(jsonRes.message);
       toast({
         title: 'Registration error.',
-        description: data.message,
+        description: jsonRes.message,
         variant: 'destructive',
         duration: 5000,
       });
@@ -109,7 +109,7 @@ const RegistrationForm = (): React.JSX.Element => {
       navigate('/login');
       toast({
         title: 'Account registered! You may now login.',
-        description: data.message,
+        description: jsonRes.message,
         className: 'text-[hsl(var(--text-color))] bg-green-600',
         duration: 5000,
       });

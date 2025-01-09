@@ -21,14 +21,13 @@ const checkIfPinExists = async (userId: string, eventId: string): Promise<boolea
     text: `SELECT * FROM users.pins WHERE user_id = $1 AND event_id = $2;`,
     values: [userId, eventId],
   };
-  const queryRes = await pool.query(query);
+  const queryRes: QueryResult<any> = await pool.query(query);
 
   if (queryRes.rowCount) {
     return queryRes.rowCount > 0;
   } else {
     return false;
   }
-  
 };
 
 /*
@@ -50,7 +49,7 @@ router.post('/register', async (request: Request, response: Response): Promise<v
       text: 'SELECT * FROM users.users WHERE email = $1;',
       values: [email],
     };
-    const existsUnderEmail = await pool.query(query);
+    const existsUnderEmail: QueryResult<any> = await pool.query(query);
     if (existsUnderEmail.rowCount && existsUnderEmail.rowCount > 0) {
       throw new Error('An account is already registered with this email address.',);
     }
@@ -61,7 +60,7 @@ router.post('/register', async (request: Request, response: Response): Promise<v
       text: 'SELECT * FROM users.users WHERE username = $1;',
       values: [username],
     };
-    const existsUnderUsername = await pool.query(query);
+    const existsUnderUsername: QueryResult<any> = await pool.query(query);
     if (existsUnderUsername.rowCount && existsUnderUsername.rowCount > 0) {
       throw new Error('An account is already registered with this username.');
      }
@@ -77,7 +76,7 @@ router.post('/register', async (request: Request, response: Response): Promise<v
              VALUES ($1, $2, $3);`,
       values: [username, email, hashedPassword],
     };
-    const queryRes = await pool.query(query);
+    const queryRes: QueryResult<any> = await pool.query(query);
     if (queryRes.rowCount === 0) {
       throw new Error('Registration failed. Please try again.',);
     }
@@ -157,6 +156,31 @@ router.get('/session', (request: Request, response: Response): void => {
 /*
   Get pinned events.
 */
+router.get('/pins', async (request: Request, response: Response): Promise<void> => {
+  try {
+    if (!request.session.userId) {
+      response.status(401).json({ message: 'Must be logged in to get pinned events.'})
+      return;
+    }
+
+    const query = {
+      text: 'SELECT * FROM users.pins WHERE user_id = $1;',
+      values: [request.session.userId]
+    };
+
+    const queryRes: QueryResult<any> = await pool.query(query);
+    
+    if (queryRes.rowCount && queryRes.rowCount > 0) {
+      response.status(200).json({ pinnedEvents: queryRes.rows});
+    } else {
+      response.status(404).json({ message: 'No pinned events found for this user.'});
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      response.status(500).json({ message: error.message || 'Internal server error.'});
+    }
+  }
+});
 
 /*
   Create a new pinned event.
@@ -175,12 +199,12 @@ router.post('/pins', async (request: Request, response: Response): Promise<void>
     }
 
     console.log('Checking if event is already pinned for this user.');
-    const pinExists = await checkIfPinExists(String(request.session.userId),  eventId);
+    const pinExists: boolean = await checkIfPinExists(String(request.session.userId),  eventId);
     if (pinExists) {
       throw new Error('This event is already pinned by this user.')
     }
 
-    console.log('Attempting to add pinned event.+');
+    console.log('Attempting to add pinned event.');
     const query = {
       text: `INSERT INTO users.pins (user_id, event_id, event_name, img_url, ticket_url, event_date, event_time, event_category)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`,
@@ -189,7 +213,7 @@ router.post('/pins', async (request: Request, response: Response): Promise<void>
 
     const queryRes: QueryResult<any> = await pool.query(query);
 
-    if (queryRes.rowCount === 0) {
+    if (queryRes.rowCount && queryRes.rowCount === 0) {
       throw new Error('Failed to pin this event. Please try again later.');
     }
 
@@ -203,11 +227,37 @@ router.post('/pins', async (request: Request, response: Response): Promise<void>
       .json({ message: error.message || 'Internal server error.' });
     }
   }
-
 });
 
 /*
   Delete a pinned event.
 */
+router.delete('/pins/:event_id', async (request: Request, response: Response): Promise<void> => {
+  try {  
+    if (!request.session.userId) {
+      response.status(401).json({ message: 'Must be logged in to delete pinned events.'})
+      return;
+    }
+
+    const eventId: string = request.params.event_id;
+    console.log(eventId)
+    const query = {
+      text: 'DELETE FROM users.pins WHERE user_id = $1 and event_id = $2;',
+      values: [request.session.userId, eventId]
+    };
+    
+    const queryRes: QueryResult<any> = await pool.query(query);
+  
+    if (queryRes.rowCount && queryRes.rowCount > 0) {
+      response.status(200).json({ message: 'Pinned event has been deleted.'});
+    } else {
+      response.status(404).json({ message: 'That event was not pinned.'});
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      response.status(500).json({ message: error.message || 'Internal server error.'});
+    }
+  }
+});
 
 export default router;

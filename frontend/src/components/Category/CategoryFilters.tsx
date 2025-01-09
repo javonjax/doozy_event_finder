@@ -36,8 +36,9 @@ const CategoryFilters = ({path, genres, selectedSubcategory, handleSubcategoryCh
           setQueryDate={setQueryDate}/>
       </div>
       {path.toLowerCase() !== 'local' && (
-        <div className='mt-4'>
+        <div className='mt-4 cursor-pointer'>
           <input
+            className='cursor-pointer'
             type='checkbox'
             id='location-checkbox'
             checked={useLocationData}
@@ -45,7 +46,7 @@ const CategoryFilters = ({path, genres, selectedSubcategory, handleSubcategoryCh
           />
           <label
             htmlFor='location-checkbox'
-            className='ml-2 text-[hsl(var(--text-color))]'
+            className='ml-2 text-[hsl(var(--text-color))] cursor-pointer'
           >
             Search near your location
           </label>

@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import EventList from '../Events/EventList';
-import { LocationContext } from '../Providers/LocationContext';
+import { LocationContext, LocationContextProvider } from '../Providers/LocationContext';
 import { useState, useContext } from 'react';
 import { DateRange } from 'react-day-picker';
 import { useToast } from '@/hooks/use-toast';
-import { Categories, LocationContextHelper } from '@/schemas/schemas';
+import { Categories } from '@/schemas/schemas';
 import { useLocation } from 'react-router-dom';
 import { GenreData, GenreArraySchema } from '@/schemas/schemas';
 import CategoryFilters from './CategoryFilters';
@@ -26,7 +26,7 @@ const CategoryContent = (): React.JSX.Element => {
     from: undefined,
     to: undefined,
   });
-  const locationContext = useContext<LocationContextHelper | undefined>(
+  const locationContext = useContext<LocationContextProvider | undefined>(
     LocationContext
   );
   const path: string = useLocation().pathname.slice(1);
@@ -73,8 +73,8 @@ const CategoryContent = (): React.JSX.Element => {
         if (!res.ok) {
           throw new Error('Error connecting to API.');
         }
-        const data: unknown = await res.json();
-        const parsedData = GenreArraySchema.safeParse(data);
+        const jsonRes: unknown = await res.json();
+        const parsedData = GenreArraySchema.safeParse(jsonRes);
         if (!parsedData.success) {
           throw new Error('Genre data is not in the correct format.');
         }

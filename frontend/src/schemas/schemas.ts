@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { USERNAME_REGEX, PASSWORD_REGEX } from '../../../schemas/schemas';
 
 
 export const Categories: Array<string> = [
@@ -26,23 +25,6 @@ export const ColorClasses: Record<string, string> = {
 */
 export type Coordinates =  Pick<GeolocationCoordinates, 'latitude' | 'longitude'>;
 
-/*
-  Used in: components/Providers/LocationContext
-*/
-export interface LocationContextHelper {
-  location?: Coordinates,
-  error?: string,
-  requestLocation: () => Promise<Coordinates>
-};
-
-/*
-
-*/
-export interface AuthContextHelper {
-  loggedIn: boolean,
-  login: () => void,
-  logout: () => void
-}
 
 export const GenreSchema = z.object({
   id: z.string(),

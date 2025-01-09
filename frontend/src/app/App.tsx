@@ -15,6 +15,7 @@ import EventInfo from "@/components/Events/EventInfo";
 import RegistrationForm from "@/components/Accounts/RegistrationForm";
 import LoginForm from "@/components/Accounts/LoginForm";
 import PinnedEvents from "@/components/Pins/PinnedEvents";
+import { PinsProvider } from "@/components/Providers/PinsContext";
 
 
 const App = () => {
@@ -26,52 +27,54 @@ const App = () => {
         <BrowserRouter>
           <AuthProvider>
             <LocationProvider>
-              <NavBar/>
-              <main className='grow flex flex-col items-center'>
-                <Toaster/>
-                <Routes>
-                  <Route
-                    path='/'
-                    element={<Home/>}/>
-                  {Categories.map((cat: string): React.JSX.Element => (
+              <PinsProvider>
+                <NavBar/>
+                <main className='grow flex flex-col items-center'>
+                  <Toaster/>
+                  <Routes>
                     <Route
-                      key={cat}
-                      path={`/${cat.toLowerCase()}`}
+                      path='/'
+                      element={<Home/>}/>
+                    {Categories.map((cat: string): React.JSX.Element => (
+                      <Route
+                        key={cat}
+                        path={`/${cat.toLowerCase()}`}
+                        element={<CategoryLanding/>}/>
+                    ))}
+                    {Categories.map((cat: string): React.JSX.Element => (
+                      <Route
+                        key={`${cat}-info`}
+                        path={`/${cat}/:id`}
+                        element={<EventInfo/>}/>
+                    ))}
+                    <Route
+                      path='/popular'
                       element={<CategoryLanding/>}/>
-                  ))}
-                  {Categories.map((cat: string): React.JSX.Element => (
                     <Route
-                      key={`${cat}-info`}
-                      path={`/${cat}/:id`}
+                      path='/popular/:id'
                       element={<EventInfo/>}/>
-                  ))}
-                  <Route
-                    path='/popular'
-                    element={<CategoryLanding/>}/>
-                  <Route
-                    path='/popular/:id'
-                    element={<EventInfo/>}/>
-                  <Route
-                    path='/local'
-                    element={<CategoryLanding/>}/>
-                  <Route
-                    path='/local/:id'
-                    element={<EventInfo/>}/>
-                  <Route
-                    path='/register'
-                    element={<RegistrationForm/>}/>
-                  <Route
-                    path='/login'
-                    element={<LoginForm/>}/>
-                  <Route
-                    path='/pins'
-                    element={<PinnedEvents />}/>
-                  <Route
-                    path='*'
-                    element={<NotFound/>}/>
-                </Routes>
-              </main>
-              <Footer/>
+                    <Route
+                      path='/local'
+                      element={<CategoryLanding/>}/>
+                    <Route
+                      path='/local/:id'
+                      element={<EventInfo/>}/>
+                    <Route
+                      path='/register'
+                      element={<RegistrationForm/>}/>
+                    <Route
+                      path='/login'
+                      element={<LoginForm/>}/>
+                    <Route
+                      path='/pins'
+                      element={<PinnedEvents />}/>
+                    <Route
+                      path='*'
+                      element={<NotFound/>}/>
+                  </Routes>
+                </main>
+                <Footer/>
+              </PinsProvider>
             </LocationProvider>
           </AuthProvider>
         </BrowserRouter>

@@ -1,14 +1,20 @@
 import { createContext, useState } from 'react';
-import { Coordinates, LocationContextHelper } from '@/schemas/schemas';
+import { Coordinates } from '@/schemas/schemas';
 
 
-export const LocationContext = createContext<LocationContextHelper | undefined>(undefined);
+export interface LocationContextProvider {
+  location?: Coordinates,
+  error?: string,
+  requestLocation: () => Promise<Coordinates>
+};
+
+export const LocationContext = createContext<LocationContextProvider | undefined>(undefined);
 
 export const LocationProvider = ({children}: {children: React.ReactNode}) => {
   const [location, setLocation] = useState<Coordinates>();
   const [error, setError] = useState<string>();
 
-  const requestLocation = (): Promise<Coordinates> => {
+  const requestLocation = async (): Promise<Coordinates> => {
     return new Promise((resolve, reject): void => {
       const handleSuccess = (position: GeolocationPosition): void => {
         const { latitude, longitude }: Coordinates = position.coords;
