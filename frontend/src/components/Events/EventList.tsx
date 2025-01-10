@@ -215,6 +215,9 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
       
       const jsonRes: { message: string } = await res.json();
       if (!res.ok) {
+        if (res.status === 401) {
+          authContext.logout();
+        }
         throw new Error(jsonRes.message);
       } 
 

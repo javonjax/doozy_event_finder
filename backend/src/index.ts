@@ -34,7 +34,7 @@ app.use(session({
   secret:'secretkey',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 3600000, secure: false }
+  cookie: { maxAge: 20000, secure: false }
 }));
 
 // Routes

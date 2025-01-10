@@ -37,13 +37,11 @@ router.post('/register', async (request: Request, response: Response): Promise<v
   try {
     const { username, email, password } = request.body;
 
-    // Ensure all params are present.
     console.log('Checking that all params are present.');
     if (!username || !password || !email) {
       throw new Error('Missing registration parameters.');
     }
 
-    // Check if a user exists under the given email.
     console.log('Checking an account is registered with the given email.');
     let query = {
       text: 'SELECT * FROM users.users WHERE email = $1;',
@@ -54,7 +52,6 @@ router.post('/register', async (request: Request, response: Response): Promise<v
       throw new Error('An account is already registered with this email address.',);
     }
     
-    // Check if a user exists with the given username.
     console.log('Checking an account is registered with the given username.');
     query = {
       text: 'SELECT * FROM users.users WHERE username = $1;',
@@ -69,7 +66,6 @@ router.post('/register', async (request: Request, response: Response): Promise<v
     const salt: string = await bcrypt.genSalt(10);
     const hashedPassword: string = await bcrypt.hash(password, salt);
 
-    // Attempt to add the new user to the database.
     console.log('Attempting to register account.');
     query = {
       text: `INSERT INTO users.users (username, email, password_hash)
@@ -115,10 +111,10 @@ router.post('/login', async (request: Request, response: Response): Promise<void
     if (!validPassword) {
       throw new Error('Invalid email or password.');
     }
-    console.log(request.session)
+    
     request.session.userId = user.account.id;
     request.session.email = user.account.email;
-    console.log(request.session)
+
     response.status(200).json({message: 'Login successful.'});
   } catch (error) {
     if (error instanceof Error) {
@@ -240,7 +236,6 @@ router.delete('/pins/:event_id', async (request: Request, response: Response): P
     }
 
     const eventId: string = request.params.event_id;
-    console.log(eventId)
     const query = {
       text: 'DELETE FROM users.pins WHERE user_id = $1 and event_id = $2;',
       values: [request.session.userId, eventId]

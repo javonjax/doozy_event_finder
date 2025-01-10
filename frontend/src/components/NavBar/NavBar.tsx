@@ -82,7 +82,9 @@ const NavBar = (): React.JSX.Element => {
               );
             })}
             <MenubarMenu>
-              <MenubarTrigger className='text-[hsl(var(--text-color))] mx-0 p-4 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground'>
+              <MenubarTrigger 
+                className='text-[hsl(var(--text-color))] mx-0 p-4 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground'
+                onClick={async () => await authContext?.getSession()}>
                 <UserRound size={20} />
               </MenubarTrigger>
               <MenubarContent className='text-[hsl(var(--text-color))] hidden md:block'>
