@@ -43,9 +43,8 @@ const Event = ({ event, path, handlePin, handleUnpin, pinned }: EventProps): Rea
           <div className={`flex md:self-stretch items-center`}>
             <button 
               className={`flex justify-center items-center mr-4 min-w-[46px] bg-[hsl(var(--background))] 
-                ${pinned ? 'text-orange-400' :'text-[hsl(var(--text-color))] hover:text-orange-400 transform transition-all duration-400 hover:scale-110'} p-2 rounded-2xl h-fit`}
-              onClick={pinned ? () => handleUnpin(event) : () => handlePin(event)}
-            >
+                ${pinned ? 'text-red-500' :'text-[hsl(var(--text-color))] hover:text-[hsl(var(--background))] hover:bg-[hsl(var(--text-color))] hover:scale-125'} p-2 rounded-2xl h-fit transform transition-all duration-400`}
+              onClick={pinned ? () => handleUnpin(event) : () => handlePin(event)}>
               {pinned ? <PinOff/>: <Pin className='-rotate-45'/>}
             </button>
           </div>

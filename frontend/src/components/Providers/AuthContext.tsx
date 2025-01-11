@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         method: 'GET',
         credentials: 'include',
       });
-      console.log('current session', res.json())
+      
       if (!res.ok) {
         throw new Error('Active session not found.');
       }

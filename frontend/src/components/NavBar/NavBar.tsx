@@ -28,7 +28,7 @@ const NavBar = (): React.JSX.Element => {
           duration: 5000,
         });
       }
-      const res: Response = await fetch(BACKEND_LOGOUT_API_URL, {
+      const res: globalThis.Response = await fetch(BACKEND_LOGOUT_API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         credentials: 'include'
@@ -131,7 +131,7 @@ const NavBar = (): React.JSX.Element => {
                         className='flex justify-between w-full'>
                         Logout{' '}
                         <MenubarShortcut>
-                          <LogOut size={16} className='text-orange-400' />
+                          <LogOut size={16} className='text-red-500' />
                         </MenubarShortcut>
                       </div>
                     </MenubarItem>
@@ -199,7 +199,7 @@ const NavBar = (): React.JSX.Element => {
                         className='flex justify-between w-full h-full px-2 py-1.5'>
                         Logout{' '}
                         <MenubarShortcut>
-                          <LogOut size={16} className='text-orange-400' />
+                          <LogOut size={16} className='text-red-500' />
                         </MenubarShortcut>
                       </NavLink>
                   </MenubarItem>

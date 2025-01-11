@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { Pool } from 'pg';
+import { Pool, QueryResult } from 'pg';
 import fs from 'fs';
 import path from 'path';
 
@@ -8,7 +8,7 @@ const pool: Pool = new Pool(JSON.parse(config));
 
 const createUsersTable = async (): Promise<void> => {
   try {
-    const res = await pool.query(`
+    const res: QueryResult<any> = await pool.query(`
       SELECT EXISTS (
           SELECT 1 
           FROM information_schema.tables
@@ -32,7 +32,7 @@ const createUsersTable = async (): Promise<void> => {
 
 const createPinsTable = async (): Promise<void> => {
   try {
-    const res = await pool.query(`
+    const res: QueryResult<any> = await pool.query(`
       SELECT EXISTS (
           SELECT 1 
           FROM information_schema.tables

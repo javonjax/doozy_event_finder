@@ -35,7 +35,7 @@ const DateRangePicker = ({className, date, setDate, setQueryDate}: DateRangePick
             id='date'
             variant={'outline'}
             className={cn(
-              'w-[300px] justify-center text-center font-normal',
+              'w-[300px] justify-center text-center font-normal border-orange-400',
               !date && 'text-muted-foreground'
             )}>
             <CalendarIcon />

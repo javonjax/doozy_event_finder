@@ -357,7 +357,13 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
         {visibleEvents?.map((event) => {
           const pinned = isPinned(event.id);
           return(
-            <Event key={event.id} event={event} path={path} handlePin={handlePin} handleUnpin={handleUnpin} pinned={pinned}></Event>
+            <Event 
+              key={event.id} 
+              event={event} 
+              path={path} 
+              handlePin={handlePin} 
+              handleUnpin={handleUnpin} 
+              pinned={pinned}/>
           )
         })}
         {isFetching &&

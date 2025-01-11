@@ -31,7 +31,7 @@ const LoginForm = (): React.JSX.Element => {
 
   // Event handlers.
   const onSubmit: SubmitHandler<FieldValues> = async (e) => {
-    const res: Response = await fetch(LOGIN_API_URL, {
+    const res: globalThis.Response = await fetch(LOGIN_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

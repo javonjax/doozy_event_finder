@@ -86,7 +86,7 @@ const RegistrationForm = (): React.JSX.Element => {
 
   // Event handlers.
   const onSubmit: SubmitHandler<FieldValues> = async (e) => {
-    const res = await fetch(REGISTRATION_API_URL, {
+    const res: globalThis.Response = await fetch(REGISTRATION_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

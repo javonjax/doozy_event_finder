@@ -22,7 +22,7 @@ const Card = ({ path, label, icon, onClick, color }: HomeCardProps): React.JSX.E
   if (color && Object.keys(ColorClasses).includes(color)) {
     colors = ColorClasses[color];
   } else {
-    colors = 'bg-neutral-500 text-neutral-400';
+    colors = 'bg-black text-white hover:bg-white hover:text-black';
   }
 
   return (
@@ -30,10 +30,10 @@ const Card = ({ path, label, icon, onClick, color }: HomeCardProps): React.JSX.E
       className={clsx('cursor-pointer min-h-[175px] border-2 h-[250px] w-[70%] md:w-[30%] md:h-full flex rounded-2xl overflow-hidden relative transform transition-all duration-400 hover:scale-105', colors)}
       onClick={handleCardClick}
       to={path}>
-      <div className='absolute top-2 left-0'>
+      <div className={`absolute top-2 left-0 ${path === '/popular' ? 'text-orange-400': ''}`}>
         {icon}
       </div>
-      <label className='text-[hsl(var(--text-color))] absolute bottom-4 right-4 text-[1.5rem] cursor-pointer'>{label}</label>
+      <label className='absolute bottom-4 right-4 text-[1.5rem] cursor-pointer'>{label}</label>
     </NavLink>
   );
 };

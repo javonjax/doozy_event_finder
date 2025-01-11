@@ -3,12 +3,12 @@ import Card from './Card';
 import { useToast } from '@/hooks/use-toast';
 import { Music, Trophy, Film, Drama, Puzzle, Flame, Radar } from 'lucide-react';
 import { useContext } from 'react';
-import { LocationContext } from '../Providers/LocationContext';
+import { LocationContext, LocationContextProvider } from '../Providers/LocationContext';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { LocationContextHelper } from '@/schemas/schemas';
+
 
 const Home = (): React.JSX.Element => {
-  const locationContext = useContext<LocationContextHelper | undefined>(
+  const locationContext = useContext<LocationContextProvider | undefined>(
     LocationContext
   );
   const navigate: NavigateFunction = useNavigate();

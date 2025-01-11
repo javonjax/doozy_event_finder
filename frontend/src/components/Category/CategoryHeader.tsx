@@ -31,7 +31,7 @@ const CategoryHeader = (): React.JSX.Element => {
       <div className='absolute top-4 left-4 bg-[hsl(var(--background))] p-4 rounded-2xl text-[hsl(var(--text-color))]'>
         <NavLink to={'/'} className='hover:text-orange-400'>Home</NavLink>
         <span> / </span>
-        <NavLink to={`/${path}`} className='hover:text-orange-400'>
+        <NavLink to={`/${path}`} className='text-orange-400'>
           {path.charAt(0).toUpperCase() + path.slice(1)}
         </NavLink>
       </div>

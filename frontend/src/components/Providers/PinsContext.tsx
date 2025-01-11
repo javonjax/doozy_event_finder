@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { PinnedEvent } from '../../../../schemas/schemas';
+import { PinnedEventData } from '../../../../schemas/schemas';
 import { AuthContext, AuthContextProvider } from './AuthContext';
 
 // Environment variables.
 const PINS_API_URL: string = import.meta.env.VITE_BACKEND_PINS_API_URL;
 
 export interface PinsContextProvider {
-  pinnedEvents?: Array<PinnedEvent>,
+  pinnedEvents?: Array<PinnedEventData>,
   fetchPinnedEvents: () => Promise<void>
 };
 
@@ -14,7 +14,7 @@ export const PinsContext = createContext<PinsContextProvider | undefined>(undefi
 
 export const PinsProvider = ({ children }: { children: React.ReactNode }) => {
   const authContext: AuthContextProvider | undefined = useContext<AuthContextProvider | undefined>(AuthContext);
-  const [pinnedEvents, setPinnedEvents] = useState<Array<PinnedEvent>>();
+  const [pinnedEvents, setPinnedEvents] = useState<Array<PinnedEventData>>();
 
   // Update pinned events when auth changes.
   useEffect(() => {
@@ -32,7 +32,7 @@ export const PinsProvider = ({ children }: { children: React.ReactNode }) => {
         credentials: 'include'
       });
 
-      const jsonRes: {message?: string, pinnedEvents?: Array<PinnedEvent>} = await res.json();
+      const jsonRes: {message?: string, pinnedEvents?: Array<PinnedEventData>} = await res.json();
       if (!res.ok) {
         if (res.status === 401) {
           authContext.logout;
@@ -40,7 +40,7 @@ export const PinsProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error(jsonRes.message);
       }
 
-      const sortedPinnedEvents: Array<PinnedEvent> | undefined = jsonRes?.pinnedEvents?.sort(
+      const sortedPinnedEvents: Array<PinnedEventData> | undefined = jsonRes?.pinnedEvents?.sort(
         (a, b) => new Date(`${a.event_date}T${a.event_time}`).getTime() - new Date(`${b.event_date}T${b.event_time}`).getTime());
       setPinnedEvents(sortedPinnedEvents);
       console.log('pinned events set')

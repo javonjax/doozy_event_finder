@@ -162,7 +162,7 @@ export const PinnedEventSchema = z.object({
     event_category: z.string()
 });
 
-export type PinnedEvent = z.infer<typeof PinnedEventSchema>;
+export type PinnedEventData = z.infer<typeof PinnedEventSchema>;
 /******************************************************** BACKEND ********************************************************/
 
 
