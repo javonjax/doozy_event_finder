@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import { connectDB, pool } from './Accounts/db';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
+import { CipherKey } from 'crypto';
 dotenv.config();
 
 
@@ -16,8 +17,10 @@ declare module 'express-session' {
   }
 };
 
+const SECRET_KEY: CipherKey = process.env.COOKIE_SECRET as CipherKey;
+
 const app: Application = express();
-const port: number = 3000;
+const PORT: number = parseInt(process.env.PORT || '3000');
 const PgStore = connectPgSimple(session);
 
 // Middleware
@@ -31,7 +34,7 @@ app.use(session({
     pool,
     createTableIfMissing: true
   }),
-  secret:'secretkey',
+  secret: SECRET_KEY,
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 3600000 * 24, secure: false }
@@ -42,7 +45,7 @@ app.use('/api', dataRoutes);
 app.use('/api', accountRoutes);
 
 // Start Server and connect to DB
-app.listen(port, async () => {
+app.listen(PORT, async () => {
   await connectDB();
-  console.log(`Server is running at http://localhost:${port}`);
+  console.log(`Server is running at http://localhost:${PORT}`);
 });
