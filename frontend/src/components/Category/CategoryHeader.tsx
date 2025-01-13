@@ -6,7 +6,7 @@ import { Skeleton } from '../ui/skeleton';
 
 const CategoryHeader = (): React.JSX.Element => {
   const path: string = useLocation().pathname.slice(1).toLowerCase();
-  const lowQualityImg: string = `${path}_header_lq.webp`;
+  // const lowQualityImg: string = `${path}_header_lq.webp`;
   const highQualityImg: string = `${path}_header.webp`;
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   

@@ -14,7 +14,7 @@ export const VenueSchema = z.object({
       name: z.string().optional(),
       stateCode: z.string().optional(),
     })
-    .refine((data) => data.name !== undefined || data.stateCode !== undefined, {
+    .refine((data: { name?: string, stateCode?: string }) => data.name !== undefined || data.stateCode !== undefined, {
       message: 'Name or state code must be present.',
     }),
 });
@@ -59,7 +59,7 @@ export const EventCardSchema = z.object({
     images: z.array(
         ImageSchema
     )
-}).refine((data) => data.description !== undefined || data.info !== undefined, {
+}).refine((data: { description?: string, info?: string }) => data.description !== undefined || data.info !== undefined, {
    message: 'Description or info must be present in this object.',
 });
 
