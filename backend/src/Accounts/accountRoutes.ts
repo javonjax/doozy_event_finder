@@ -1,11 +1,10 @@
 import express, { Request, Response, Router } from 'express';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { pool } from './db';
 import { EventCardData, UserAccount } from '../../../schemas/schemas';
 import { QueryResult } from 'pg';
 
-const JWT_SECRET = process.env.JWT_SECRET as jwt.Secret;
+
 const router: Router = express.Router();
 const checkIfUserExists = async (field: string, value: string) => {
   const query = {
