@@ -20,7 +20,7 @@ const createUsersTable = async (): Promise<void> => {
     const tableExists = res.rows[0].exists;
 
     if (!tableExists) {
-      const schemaFile: string = path.resolve(__dirname, './db_schema/user.schema.sql');
+      const schemaFile: string = path.resolve(__dirname, '../../db_schema/user.schema.sql');
       const schemaSQL: string = fs.readFileSync(schemaFile, 'utf-8');
       await pool.query(schemaSQL);
     } else {
@@ -44,7 +44,7 @@ const createPinsTable = async (): Promise<void> => {
     const tableExists = res.rows[0].exists;
 
     if (!tableExists) {
-      const schemaFile: string = path.resolve(__dirname, './db_schema/pins.schema.sql');
+      const schemaFile: string = path.resolve(__dirname, '../../db_schema/pins.schema.sql');
       const schemaSQL: string = fs.readFileSync(schemaFile, 'utf-8');
       await pool.query(schemaSQL);
     } else {
