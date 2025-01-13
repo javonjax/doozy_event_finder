@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ListFilter } from 'lucide-react';
 
 export interface SubCategoryDropdownProps {
   subcategories: Array<GenreData> | null | undefined;
@@ -19,6 +20,7 @@ const SubCategoryDropdown = ({ subcategories, selectedSubcategory, handleSubCate
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button className='text-[hsl(var(--text-color))] max-w-[60%] min-w-[300px] mb-4 xl:mb-0 border-orange-400' variant='outline'>
+            <ListFilter/>
             {selectedSubcategory ? selectedSubcategory.name : 'Filter by subcategory'}
           </Button>
         </DropdownMenuTrigger>

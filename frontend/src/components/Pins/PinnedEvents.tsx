@@ -144,7 +144,7 @@ const PinnedEvents = () => {
                     const [yearNum, monthNum]: Array<string> =
                       event.event_date.split('-');
                     if (item[1] === yearNum && item[2] === monthNum) {
-                      return <PinnedEvent event={event} handleUnpin={handleUnpin}/>;
+                      return <PinnedEvent key={event.event_id} event={event} handleUnpin={handleUnpin}/>;
                     } else {
                       return;
                     }

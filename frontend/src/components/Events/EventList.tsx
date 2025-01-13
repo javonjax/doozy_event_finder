@@ -7,7 +7,7 @@ import Event from './Event';
 import { Loader } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 import { addDays } from 'date-fns';
-import { AuthContext } from '../Providers/AuthContext';
+import { AuthContext, AuthContextProvider } from '../Providers/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { PinsContextProvider, PinsContext } from '../Providers/PinsContext';
 
@@ -30,8 +30,8 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
   const [numVisible, setNumVisible] = useState<number>(0);  // Number of visible events.
   const [hasMore, setHasMore] = useState<boolean>(false); // Tracks if there are more events available to display from the current data.
   const path: string = useLocation().pathname.slice(1);
-  const authContext = useContext(AuthContext);
-  const pinsContext: PinsContextProvider | undefined = useContext<PinsContextProvider | undefined>(PinsContext);
+  const authContext = useContext<AuthContextProvider | undefined>(AuthContext);
+  const pinsContext = useContext<PinsContextProvider | undefined>(PinsContext);
   const { toast } = useToast();
 
   // Query function.
@@ -217,6 +217,20 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
       if (!res.ok) {
         if (res.status === 401) {
           authContext.logout();
+          toast({
+            title: 'Join us!',
+            description: (
+              <span>
+                You need to{' '}
+                <a href='/login' className='underline'>login</a> 
+                {' '}or{' '}
+                <a href='/register' className='underline'>register</a> an account to pin events.
+              </span>
+            ),
+            className: 'bg-orange-500',
+            duration: 5000,
+          });
+          return;
         }
         throw new Error(jsonRes.message);
       } 
@@ -264,6 +278,7 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
         });
         return;
       }   
+
       const res: globalThis.Response = await fetch(`${BACKEND_PINS_API_URL}${event.id}`, {
         method: 'DELETE',
         credentials: 'include'
@@ -276,6 +291,7 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
       }
 
       await pinsContext?.fetchPinnedEvents();
+
       toast({
         title: 'Event un-pinned!',
         description: `${event.name} has been removed from your pinned events.`,
@@ -298,7 +314,7 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
     if(!pinsContext || !pinsContext.pinnedEvents || pinsContext.pinnedEvents?.length === 0) {
       return false;
     }
-    return pinsContext?.pinnedEvents?.some((event) => event.event_id === eventId);
+    return pinsContext.pinnedEvents.some((event) => event.event_id === eventId);
   };
 
   // Set the visible events.

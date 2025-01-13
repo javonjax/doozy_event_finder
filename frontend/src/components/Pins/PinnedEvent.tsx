@@ -6,7 +6,7 @@ import {
 import { Ticket, PinOff } from 'lucide-react';
 import { PinnedEventData } from '../../../../schemas/schemas';
 import { formatDate, formatTime } from '../utils/utils';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 
 export interface PinnedEventProps {

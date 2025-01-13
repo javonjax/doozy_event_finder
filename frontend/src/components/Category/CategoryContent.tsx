@@ -38,7 +38,6 @@ const CategoryContent = (): React.JSX.Element => {
     } else {
       setSelectedSubcategory(undefined);
     }
-
   };
 
   const onCheckBox: React.ChangeEventHandler<HTMLInputElement> = async (): Promise<void> => {
@@ -70,10 +69,17 @@ const CategoryContent = (): React.JSX.Element => {
         const res: globalThis.Response = await fetch(
           `${BACKEND_GENRES_API_URL}${path}`
         );
-        if (!res.ok) {
-          throw new Error('Error connecting to API.');
-        }
+
         const jsonRes: unknown = await res.json();
+        if (!res.ok) {
+          if (jsonRes && typeof jsonRes === 'object' && 'message' in jsonRes) {
+            if (typeof jsonRes.message === 'string' && jsonRes.message.includes('429')) {
+              return null;
+            }
+          } else {
+            throw new Error('Error connecting to API.');
+          }
+        }
         const parsedData = GenreArraySchema.safeParse(jsonRes);
         if (!parsedData.success) {
           throw new Error('Genre data is not in the correct format.');
