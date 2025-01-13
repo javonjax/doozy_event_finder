@@ -3,9 +3,11 @@ import { Pool, QueryResult } from 'pg';
 import fs from 'fs';
 import path from 'path';
 
+
+const NODE_ENV: string = process.env.NODE_ENV as string;
 const connectionString: string = process.env.PG_RENDER_URL as string;
 const dbConfig: string = process.env.PG_CONFIG as string;
-const pool: Pool = process.env.NODE_ENV === 'production' ? new Pool({connectionString}) : new Pool(JSON.parse(dbConfig));
+const pool: Pool = NODE_ENV === 'production' ? new Pool({connectionString}) : new Pool(JSON.parse(dbConfig));
 
 const createUsersTable = async (): Promise<void> => {
   try {
@@ -20,7 +22,7 @@ const createUsersTable = async (): Promise<void> => {
     const tableExists = res.rows[0].exists;
 
     if (!tableExists) {
-      const schemaFile: string = path.resolve(__dirname, '../../db_schema/user.schema.sql');
+      const schemaFile: string = NODE_ENV === 'production' ? path.resolve(__dirname, '../../../../db_schema/user.schema.sql') : path.resolve(__dirname, '../../db_schema/user.schema.sql');
       const schemaSQL: string = fs.readFileSync(schemaFile, 'utf-8');
       await pool.query(schemaSQL);
     } else {
@@ -44,7 +46,7 @@ const createPinsTable = async (): Promise<void> => {
     const tableExists = res.rows[0].exists;
 
     if (!tableExists) {
-      const schemaFile: string = path.resolve(__dirname, '../../db_schema/pins.schema.sql');
+      const schemaFile: string = NODE_ENV === 'production' ? path.resolve(__dirname, '../../../../db_schema/pins.schema.sql') : path.resolve(__dirname, '../../db_schema/pins.schema.sql');
       const schemaSQL: string = fs.readFileSync(schemaFile, 'utf-8');
       await pool.query(schemaSQL);
     } else {
