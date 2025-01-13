@@ -3,8 +3,9 @@ import { Pool, QueryResult } from 'pg';
 import fs from 'fs';
 import path from 'path';
 
-const config: string = process.env.PG_CONFIG as string;
-const pool: Pool = new Pool(JSON.parse(config));
+const connectionString: string = process.env.PG_RENDER_URL as string;
+const dbConfig: string = process.env.PG_CONFIG as string;
+const pool: Pool = process.env.NODE_ENV === 'production' ? new Pool({connectionString}) : new Pool(JSON.parse(dbConfig));
 
 const createUsersTable = async (): Promise<void> => {
   try {
