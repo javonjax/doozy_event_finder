@@ -26,7 +26,7 @@ const PgStore = connectPgSimple(session);
 // Middleware
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:5173'
+  origin: ['http://localhost:5173', 'https://doozy-hmbn.onrender.com']
 }));
 app.use(express.json());
 app.use(session({
