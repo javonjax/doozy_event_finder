@@ -5,6 +5,7 @@ import PinnedEvent from './PinnedEvent';
 import { useToast } from '@/hooks/use-toast';
 import { AuthContext, AuthContextProvider } from '../Providers/AuthContext';
 import { PinnedEventData } from '../../../../schemas/schemas';
+import { NavLink } from 'react-router-dom';
 
 
 // Environment variables.
@@ -68,14 +69,18 @@ const PinnedEvents = () => {
           description: (
             <span>
               You need to{' '}
-              <a href='/login' className='underline'>
-                login
-              </a>{' '}
-              or{' '}
-              <a href='/register' className='underline'>
-                register
-              </a>{' '}
-              an account to pin events.
+              <NavLink
+                  to='/login'
+                  className='underline'>
+                  login
+                </NavLink>
+                {' '}or{' '}
+                <NavLink
+                  to='/register'
+                  className='underline'>
+                  register
+                </NavLink>
+                {' '}an account to pin events.
             </span>
           ),
           className: 'bg-orange-500',

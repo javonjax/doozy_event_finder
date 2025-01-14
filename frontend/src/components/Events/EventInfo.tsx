@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { MapPin, CalendarDays, Tag, Ticket, PinOff, Pin, Loader } from 'lucide-react';
 import { formatDate, formatTime } from '../utils/utils';
 import { EventCardData, EventCardSchema } from '../../../../schemas/schemas';
@@ -114,9 +114,18 @@ const EventInfo = (): React.JSX.Element => {
             description: (
               <span>
                 You need to{' '}
-                <a href='/login' className='underline'>login</a> 
+                <NavLink
+                  to='/login'
+                  className='underline'>
+                  login
+                </NavLink>
                 {' '}or{' '}
-                <a href='/register' className='underline'>register</a> an account to pin events.
+                <NavLink
+                  to='/register'
+                  className='underline'>
+                  register
+                </NavLink>
+                {' '}an account to pin events.
               </span>
             ),
             className: 'bg-orange-500',
@@ -146,9 +155,18 @@ const EventInfo = (): React.JSX.Element => {
               description: (
                 <span>
                   You need to{' '}
-                  <a href='/login' className='underline'>login</a> 
-                  {' '}or{' '}
-                  <a href='/register' className='underline'>register</a> an account to pin events.
+                  <NavLink
+                  to='/login'
+                  className='underline'>
+                  login
+                </NavLink>
+                {' '}or{' '}
+                <NavLink
+                  to='/register'
+                  className='underline'>
+                  register
+                </NavLink> 
+                {' '}an account to pin events.
                 </span>
               ),
               className: 'bg-orange-500',
@@ -165,7 +183,11 @@ const EventInfo = (): React.JSX.Element => {
           description: (
             <span>
               Check out your pins on the{' '}
-              <a href='/pins' className='underline'>pinned events</a> 
+              <NavLink
+                to='/pins'
+                className='underline'>
+                  pinned events
+                </NavLink>
               {' '}page.
             </span>
           ),
@@ -192,9 +214,18 @@ const EventInfo = (): React.JSX.Element => {
             description: (
               <span>
                 You need to{' '}
-                <a href='/login' className='underline'>login</a> 
+                <NavLink
+                  to='/login'
+                  className='underline'>
+                  login
+                </NavLink>
                 {' '}or{' '}
-                <a href='/register' className='underline'>register</a> an account to pin events.
+                <NavLink
+                  to='/register'
+                  className='underline'>
+                  register
+                </NavLink>
+                {' '}an account to pin events.
               </span>
             ),
             className: 'bg-orange-500',

@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Categories, Coordinates, GenreData } from '@/schemas/schemas';
 import { EventsAPIResSchema, EventsAPIRes, EventCardData } from '../../../../schemas/schemas';
 import Event from './Event';
@@ -190,9 +190,18 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
           description: (
             <span>
               You need to{' '}
-              <a href='/login' className='underline'>login</a> 
-              {' '}or{' '}
-              <a href='/register' className='underline'>register</a> an account to pin events.
+              <NavLink
+                  to='/login'
+                  className='underline'>
+                  login
+                </NavLink>
+                {' '}or{' '}
+                <NavLink
+                  to='/register'
+                  className='underline'>
+                  register
+                </NavLink>
+                {' '}an account to pin events.
             </span>
           ),
           className: 'bg-orange-500',
@@ -222,9 +231,18 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
             description: (
               <span>
                 You need to{' '}
-                <a href='/login' className='underline'>login</a> 
+                <NavLink
+                  to='/login'
+                  className='underline'>
+                  login
+                </NavLink>
                 {' '}or{' '}
-                <a href='/register' className='underline'>register</a> an account to pin events.
+                <NavLink
+                  to='/register'
+                  className='underline'>
+                  register
+                </NavLink>
+                {' '}an account to pin events.
               </span>
             ),
             className: 'bg-orange-500',
@@ -241,7 +259,11 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
         description: (
           <span>
             Check out your pins on the{' '}
-            <a href='/pins' className='underline'>pinned events</a> 
+            <NavLink
+              to='/pins'
+              className='underline'>
+              pinned events
+            </NavLink>
             {' '}page.
           </span>
         ),
@@ -268,9 +290,18 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
           description: (
             <span>
               You need to{' '}
-              <a href='/login' className='underline'>login</a> 
-              {' '}or{' '}
-              <a href='/register' className='underline'>register</a> an account to pin events.
+              <NavLink
+                  to='/login'
+                  className='underline'>
+                  login
+                </NavLink>
+                {' '}or{' '}
+                <NavLink
+                  to='/register'
+                  className='underline'>
+                  register
+                </NavLink>
+                {' '}an account to pin events.
             </span>
           ),
           className: 'bg-orange-500',
