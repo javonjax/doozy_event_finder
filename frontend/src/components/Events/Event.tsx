@@ -11,6 +11,7 @@ export interface EventProps {
   pinned: boolean;
 };
 
+// Event cards that form the EventList.
 const Event = ({ event, path, handlePin, handleUnpin, pinned }: EventProps): React.JSX.Element => {
   const date: string = event.dates.start.localDate;
   const time: string = event.dates.start.localTime;

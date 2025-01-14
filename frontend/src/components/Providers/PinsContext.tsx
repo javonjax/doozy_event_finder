@@ -12,6 +12,7 @@ export interface PinsContextProvider {
 
 export const PinsContext = createContext<PinsContextProvider | undefined>(undefined);
 
+// Tracks and updates pinned events for the current user. 
 export const PinsProvider = ({ children }: { children: React.ReactNode }) => {
   const authContext: AuthContextProvider | undefined = useContext<AuthContextProvider | undefined>(AuthContext);
   const [pinnedEvents, setPinnedEvents] = useState<Array<PinnedEventData>>();
@@ -43,7 +44,6 @@ export const PinsProvider = ({ children }: { children: React.ReactNode }) => {
       const sortedPinnedEvents: Array<PinnedEventData> | undefined = jsonRes?.pinnedEvents?.sort(
         (a, b) => new Date(`${a.event_date}T${a.event_time}`).getTime() - new Date(`${b.event_date}T${b.event_time}`).getTime());
       setPinnedEvents(sortedPinnedEvents);
-      console.log('pinned events set')
     } catch (error) {
         setPinnedEvents(undefined);
     }

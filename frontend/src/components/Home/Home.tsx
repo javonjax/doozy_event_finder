@@ -18,13 +18,12 @@ const Home = (): React.JSX.Element => {
     async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): Promise<void> => {
         e.preventDefault();
         if (!locationContext) {
-          console.log('Location context is unavailable.');
+          console.error('Location context is unavailable.');
           return;
         }
         try {
           const { requestLocation} = locationContext;
           await requestLocation();
-          console.log(location)
           navigate('/local');
         } catch (error) {
           toast({

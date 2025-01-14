@@ -107,8 +107,6 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
 
     const events: Array<EventCardData> = parsedEventData.data.events;
     const nextPage: number | null = parsedEventData.data.nextPage;
-    // console.log('events', events)
-    // console.log('next page', nextPage)
     
     // When the initial data is fetched, set the appropriate amount of visible events.
     if (pageParam === 0) {
@@ -129,7 +127,6 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
         setHasMore(false);
       }
     }
-    console.log('length', events.length);
     return parsedEventData.data;
   };
 
@@ -156,7 +153,6 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
   const handleGetNextPage = async (): Promise<void> => {
     if (!isFetching && data) {  
       const numAvailable: number = data.pages.flatMap((page) => page.events).length;
-      console.log('initial num available', numAvailable);
       if (numAvailable > numVisible + 10) {
         // If there are more than enough events, display them.
         setNumVisible(prev => prev + 10);
@@ -351,8 +347,6 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
   // Set the visible events.
   useEffect(() => {
     if (data) {
-      console.log(numVisible, 'visible')
-      console.log(data.pages.flatMap((page) => page.events))
       const dataMap = data.pages.flatMap((page) => page.events);
       setVisibleEvents([...dataMap.slice(0, numVisible)]);
     }
@@ -370,8 +364,6 @@ const EventList = ({ selectedSubcategory, location, dateRange }: EventListProps)
         await pinsContext?.fetchPinnedEvents();
       }
     };
-    console.log('getting events')
-    console.log(pinsContext?.pinnedEvents)
     getPinnedEvents();
   }, [pinsContext]);
 

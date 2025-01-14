@@ -13,6 +13,7 @@ import CategoryFilters from './CategoryFilters';
 // Environment variables.
 const BACKEND_GENRES_API_URL: string = import.meta.env.VITE_BACKEND_GENRES_API_URL;
 
+// Parent component for CategoryFilters and EventList.
 const CategoryContent = (): React.JSX.Element => {
   // Hooks.
   const { toast } = useToast();
@@ -44,7 +45,7 @@ const CategoryContent = (): React.JSX.Element => {
     try {
       setUseLocationData((prev) => !prev);
       if (!locationContext) {
-        console.log('Location context is unavailable.');
+        console.error('Location context is unavailable.');
         return;
       }
       const { location, requestLocation } = locationContext;

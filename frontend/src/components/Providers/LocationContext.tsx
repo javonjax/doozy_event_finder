@@ -8,6 +8,7 @@ export interface LocationContextProvider {
   requestLocation: () => Promise<Coordinates>
 };
 
+// Tracks and updates location data.
 export const LocationContext = createContext<LocationContextProvider | undefined>(undefined);
 
 export const LocationProvider = ({children}: {children: React.ReactNode}) => {

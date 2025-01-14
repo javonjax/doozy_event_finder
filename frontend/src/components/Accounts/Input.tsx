@@ -12,13 +12,13 @@ export interface InputProps {
     submissionError?: string;
 };
 
+// Form input component for react-hook-forms.
 const Input = ({ register, name, label, options, validationError, submissionError }: InputProps): React.JSX.Element => {
   const inputType = ['password', 'confirmPassword'].includes(name)
     ? 'password'
     : 'text';
 
     const errorStyling = submissionError?.includes(name) ? 'border-2 border-red bg-[rgb(245, 152, 152)]' : '';
-    console.log(errorStyling, name)
   return (
     <>
       <label className='mb-2'>{label}:</label>

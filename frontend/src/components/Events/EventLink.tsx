@@ -6,6 +6,7 @@ export interface EventLinkProps {
   event: EventCardData;
 };
 
+// Passes event information from the Event component card to the EventInfo page through NavLink state.
 const EventLink = ({path, event}: EventLinkProps): React.JSX.Element => {
   return (
     <NavLink

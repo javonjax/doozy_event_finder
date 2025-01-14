@@ -46,7 +46,7 @@ router.get(
       const res: globalThis.Response = await fetch(
         `${TICKETMASTER_EVENTS_API_URL}.json?${queryParams}`
       );
-      console.log(`${TICKETMASTER_EVENTS_API_URL}.json?${queryParams}`)
+
       if (!res.ok) {
         throw new Error(
           `Internal server error ${res.status}: ${res.statusText}`
@@ -87,8 +87,6 @@ router.get(
         event.images = findImage(event.images);
       });
 
-      console.log(numRetrieved >= 200 && currentPage < 4 ? currentPage + 1 : null)
-      console.log(request.session)
       response.json({
         events: validEvents,
         nextPage:
@@ -150,7 +148,7 @@ router.get(
 
       response.json(event);
     } catch (error) {
-      console.log('Error fetching data from Ticketmaster:\n', error);
+      console.error(error);
       if (error instanceof Error) {
         response.status(500).json({ message: error.message });
       }
@@ -218,7 +216,7 @@ router.get(
 
       response.json(genres);
     } catch (error) {
-      console.log('Error fetching data from Ticketmaster:\n', error);
+      console.error(error);
       if (error instanceof Error) {
         response.status(500).json({ message: error.message });
       }

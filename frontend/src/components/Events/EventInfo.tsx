@@ -23,6 +23,7 @@ const EventInfo = (): React.JSX.Element => {
   const path: string = loc.pathname.split('/')[1];
   const { toast } = useToast();
   
+  // Events are passed through NavLink state if possible. Otherwise they are fetched from the API directly.
   useEffect(() => {
     const fetchEvent = async (): Promise<void> => {
       try {
@@ -53,7 +54,6 @@ const EventInfo = (): React.JSX.Element => {
       } catch (error) {
         if (error instanceof Error) {
           setEvent(undefined);
-          console.error(error);
           toast({
             title: `Uh oh.`,
             description: error.message,
@@ -67,30 +67,26 @@ const EventInfo = (): React.JSX.Element => {
     const parseEventState = () => {
       const parsedEvent = EventCardSchema.safeParse(data);
       if (!parsedEvent.success) {
-        console.log('parse failed')
         setEvent(undefined);
         return;
       }
       const event: EventCardData = parsedEvent.data;
       const time = event.dates.start.localTime;
       const date = event.dates.start.localDate;
-      console.log(event, 'parsed event')
       setEvent(event);
       setFormattedTime(formatTime(time));
       setFormattedDate(formatDate(date));
     };
 
     const data: unknown = loc.state;
-    console.log(path)
     if (!data) {
-      console.log('fetching event')
       fetchEvent();
     } else {
-      console.log('parsing event state')
       parseEventState();
     }
   }, []);
 
+  // Update the pin icon when the pinsContext updates.
   useEffect(() => {
     if (event) {
       checkIfPinned(event.id);

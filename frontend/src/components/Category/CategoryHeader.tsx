@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { Skeleton } from '../ui/skeleton';
 
 
+// Header image and nav links for CategoryLanding.
 const CategoryHeader = (): React.JSX.Element => {
   const path: string = useLocation().pathname.slice(1).toLowerCase();
   // const lowQualityImg: string = `${path}_header_lq.webp`;

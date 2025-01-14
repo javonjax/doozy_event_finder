@@ -10,6 +10,7 @@ export interface AuthContextProvider {
   getSession: () => Promise<void>
 };
 
+// Tracks and updates login sessions.
 export const AuthContext = createContext<AuthContextProvider | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {

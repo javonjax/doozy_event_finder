@@ -11,13 +11,13 @@ export interface HomeCardProps {
 };
 
 const Card = ({ path, label, icon, onClick, color }: HomeCardProps): React.JSX.Element => {
-
   const handleCardClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     if (onClick) {
       onClick(e);
     }
   };
 
+  // Control the card colors with props.
   let colors: string;
   if (color && Object.keys(ColorClasses).includes(color)) {
     colors = ColorClasses[color];

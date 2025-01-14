@@ -15,7 +15,6 @@ export interface PinnedEventProps {
 };
 
 const PinnedEvent = ({ event, handleUnpin }: PinnedEventProps) => {
-  
   return (
     <DropdownMenu key={event.id} modal={false}>
       <DropdownMenuTrigger className='text-[hsl(var(--text-color))] p-4 text-wrap hover:bg-white hover:text-black rounded-2xl'>
