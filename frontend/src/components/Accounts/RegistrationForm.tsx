@@ -1,72 +1,73 @@
-import { useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { NavLink, useNavigate } from 'react-router-dom';
-import Input from './Input';
+import { useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { NavLink, useNavigate } from "react-router-dom";
+import Input from "./Input";
 import {
   EMAIL_REGEX,
   USERNAME_REGEX,
   PASSWORD_REGEX,
-} from '../../../../schemas/schemas';
-import { useToast } from '@/hooks/use-toast';
-
+} from "../../../../schemas/schemas";
+import { useToast } from "@/hooks/use-toast";
 
 // Environment variables.
-const REGISTRATION_API_URL: string = import.meta.env.VITE_BACKEND_REGISTRATION_API_URL;
+const REGISTRATION_API_URL: string = import.meta.env
+  .VITE_BACKEND_REGISTRATION_API_URL;
 
 // Validation options for react-hook-forms.
 let passwordInput: any;
 export const emailValidation = {
-  required: 'Email address is required.',
+  required: "Email address is required.",
   pattern: {
     value: EMAIL_REGEX,
-    message: 'Email address is invalid.',
+    message: "Email address is invalid.",
   },
 };
 
 export type EmailValidation = typeof emailValidation;
 
 export const usernameValidation = {
-  required: 'Username is required.',
+  required: "Username is required.",
   minLength: {
     value: 4,
-    message: 'Must be at least 4 characters long.',
+    message: "Must be at least 4 characters long.",
   },
   maxLength: {
     value: 24,
-    message: 'Must be less than 24 characters long.',
+    message: "Must be less than 24 characters long.",
   },
   pattern: {
     value: USERNAME_REGEX,
-    message: 'May only contain letters, numbers, hyphens, and underscores.',
+    message: "May only contain letters, numbers, hyphens, and underscores.",
   },
 };
 
 export type UsernameValidation = typeof usernameValidation;
 
 export const registrationPasswordValidation = {
-  required: 'Password is required.',
+  required: "Password is required.",
   minLength: {
     value: 8,
-    message: 'Must be at least 8 characters long.',
+    message: "Must be at least 8 characters long.",
   },
   maxLength: {
     value: 24,
-    message: 'Must be less than 24 characters long.',
+    message: "Must be less than 24 characters long.",
   },
   pattern: {
     value: PASSWORD_REGEX,
     message:
-      'Must contain an uppercase letter, a number, and a special character [!@#$%].',
+      "Must contain an uppercase letter, a number, and a special character [!@#$%].",
   },
 };
 
-export type RegistrationPasswordValidation = typeof registrationPasswordValidation;
+export type RegistrationPasswordValidation =
+  typeof registrationPasswordValidation;
 
 export const confirmPasswordValidation = {
-  required: 'Please confirm your password.',
+  required: "Please confirm your password.",
   validate: {
     passwordMatch: (value: string) =>
-      value === passwordInput || 'Passwords must match.',
+      value === passwordInput || "Passwords must match.",
   },
 };
 
@@ -74,7 +75,7 @@ export type ConfirmPasswordValidation = typeof confirmPasswordValidation;
 
 const RegistrationForm = (): React.JSX.Element => {
   // Hooks.
-  const [registrationError, setRegistrationError] = useState<string>('');
+  const [registrationError, setRegistrationError] = useState<string>("");
   const navigate = useNavigate();
   const { toast } = useToast();
   const {
@@ -82,14 +83,14 @@ const RegistrationForm = (): React.JSX.Element => {
     formState: { errors, isValid },
     handleSubmit,
     watch,
-  } = useForm({ mode: 'onChange' });
+  } = useForm({ mode: "onChange" });
 
   // Event handlers.
   const onSubmit: SubmitHandler<FieldValues> = async (e) => {
     const res: globalThis.Response = await fetch(REGISTRATION_API_URL, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(e),
     });
@@ -99,80 +100,80 @@ const RegistrationForm = (): React.JSX.Element => {
     if (!res.ok) {
       setRegistrationError(jsonRes.message);
       toast({
-        title: 'Registration error.',
+        title: "Registration error.",
         description: jsonRes.message,
-        variant: 'destructive',
+        variant: "destructive",
         duration: 5000,
       });
     } else {
-      setRegistrationError('');
-      navigate('/login');
+      setRegistrationError("");
+      navigate("/login");
       toast({
-        title: 'Account registered! You may now login.',
+        title: "Account registered! You may now login.",
         description: jsonRes.message,
-        className: 'text-[hsl(var(--text-color))] bg-green-600',
+        className: "text-[hsl(var(--text-color))] bg-green-600",
         duration: 5000,
       });
     }
   };
 
   // Watch the 'password' field to compare with the 'confirm password' field.
-  passwordInput = watch('password');
+  passwordInput = watch("password");
 
   return (
-    <div className='flex items-center justify-center h-full w-full'>
-      <div className='flex flex-col text-[hsl(var(--text-color))] w-[400px] bg-[hsl(var(--background))] rounded-2xl p-4 my-4'>
-        <h1 className='text-[2rem] mb-4'>Register</h1>
+    <div className="flex items-center justify-center h-full w-full">
+      <div className="flex flex-col text-[hsl(var(--text-color))] w-[400px] bg-[hsl(var(--background))] rounded-2xl p-4 my-4">
+        <h1 className="text-[2rem] mb-4">Register</h1>
         {registrationError && (
-          <p className='m-0 text-red-600 mb-4'>{registrationError}</p>
+          <p className="m-0 text-red-600 mb-4">{registrationError}</p>
         )}
         <form
-          className='flex flex-col grow text-[hsl(var(--text-color))]'
+          className="flex flex-col grow text-[hsl(var(--text-color))]"
           onSubmit={handleSubmit(onSubmit)}
         >
           <Input
             register={register}
-            name='email'
-            label='Email address'
+            name="email"
+            label="Email address"
             options={emailValidation}
             validationError={errors.email}
             submissionError={registrationError}
           />
           <Input
             register={register}
-            name='username'
-            label='Username'
+            name="username"
+            label="Username"
             options={usernameValidation}
             validationError={errors.username}
             submissionError={registrationError}
           />
           <Input
             register={register}
-            name='password'
-            label='Password'
+            name="password"
+            label="Password"
             options={registrationPasswordValidation}
             validationError={errors.password}
           />
           <Input
             register={register}
-            name='confirmPassword'
-            label='Confirm password'
+            name="confirmPassword"
+            label="Confirm password"
             options={confirmPasswordValidation}
             validationError={errors.confirmPassword}
           />
           <button
-            className='mx-auto mt-1 mb-4 cursor-pointer text-[hsl(var(--text-color))] flex items-center w-fit border-2 border-orange-400 p-4 rounded-2xl hover:text-[hsl(var(--background))] 
-              hover:bg-[hsl(var(--text-color))] disabled:cursor-default disabled:hover:bg-[hsl(var(--background))] disabled:hover:text-[hsl(var(--text-color))]'
-            type='submit'
+            className="mx-auto mt-1 mb-4 cursor-pointer text-[hsl(var(--text-color))] flex items-center w-fit border-2 border-orange-400 p-4 rounded-2xl hover:text-[hsl(var(--background))] 
+              hover:bg-[hsl(var(--text-color))] disabled:cursor-default disabled:hover:bg-[hsl(var(--background))] disabled:hover:text-[hsl(var(--text-color))]"
+            type="submit"
             disabled={!isValid}
           >
             Create account
           </button>
         </form>
-        <div className='text-[hsl(var(--text-color))] flex flex-col'>
+        <div className="text-[hsl(var(--text-color))] flex flex-col">
           <p>
-            Already have an account?{' '}
-            <NavLink to='/login' className='text-orange-400'>
+            Already have an account?{" "}
+            <NavLink to="/login" className="text-orange-400">
               Login here.
             </NavLink>
           </p>

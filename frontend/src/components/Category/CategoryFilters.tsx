@@ -13,40 +13,52 @@ export interface CategoryFiltersProps {
   onCheckBox: React.ChangeEventHandler<HTMLInputElement>;
   date: DateRange | undefined;
   setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
-  setQueryDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>
-};
+  setQueryDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+}
 
-const CategoryFilters = ({path, genres, selectedSubcategory, handleSubcategoryChange, useLocationData, onCheckBox, date, setDate, setQueryDate} : CategoryFiltersProps) => {
+const CategoryFilters = ({
+  path,
+  genres,
+  selectedSubcategory,
+  handleSubcategoryChange,
+  useLocationData,
+  onCheckBox,
+  date,
+  setDate,
+  setQueryDate,
+}: CategoryFiltersProps) => {
   // Set the subcategory
   useEffect(() => {
     handleSubcategoryChange();
   }, [path]);
 
   return (
-    <div className='flex flex-col w-full items-center justify-center bg-[hsl(var(--background))] rounded-2xl py-8 my-4'>
-      <div className='flex flex-col xl:flex-row justify-evenly items-center w-full'>
-        <SubCategoryDropdown 
+    <div className="flex flex-col w-full items-center justify-center bg-[hsl(var(--background))] rounded-2xl py-8 my-4">
+      <div className="flex flex-col xl:flex-row justify-evenly items-center w-full">
+        <SubCategoryDropdown
           subcategories={genres}
           selectedSubcategory={selectedSubcategory}
-          handleSubCategoryChange={handleSubcategoryChange}/>
-        <DateRangePicker 
-          className='text-[hsl(var(--text-color))]' 
-          date={date} 
-          setDate={setDate} 
-          setQueryDate={setQueryDate}/>
+          handleSubCategoryChange={handleSubcategoryChange}
+        />
+        <DateRangePicker
+          className="text-[hsl(var(--text-color))]"
+          date={date}
+          setDate={setDate}
+          setQueryDate={setQueryDate}
+        />
       </div>
-      {path.toLowerCase() !== 'local' && (
-        <div className='mt-4 cursor-pointer'>
+      {path.toLowerCase() !== "local" && (
+        <div className="mt-4 cursor-pointer">
           <input
-            className='cursor-pointer'
-            type='checkbox'
-            id='location-checkbox'
+            className="cursor-pointer"
+            type="checkbox"
+            id="location-checkbox"
             checked={useLocationData}
             onChange={onCheckBox}
           />
           <label
-            htmlFor='location-checkbox'
-            className='ml-2 text-[hsl(var(--text-color))] cursor-pointer'
+            htmlFor="location-checkbox"
+            className="ml-2 text-[hsl(var(--text-color))] cursor-pointer"
           >
             Search near your location
           </label>

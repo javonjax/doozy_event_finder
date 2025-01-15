@@ -1,33 +1,64 @@
-import { FieldError, FieldErrorsImpl, FieldValues, Merge, UseFormRegister } from "react-hook-form";
-import { EmailValidation, UsernameValidation, RegistrationPasswordValidation, ConfirmPasswordValidation } from "./RegistrationForm";
+import {
+  FieldError,
+  FieldErrorsImpl,
+  FieldValues,
+  Merge,
+  UseFormRegister,
+} from "react-hook-form";
+import {
+  EmailValidation,
+  UsernameValidation,
+  RegistrationPasswordValidation,
+  ConfirmPasswordValidation,
+} from "./RegistrationForm";
 import clsx from "clsx";
 import { LoginPasswordValidation } from "./LoginForm";
 
 export interface InputProps {
-    register: UseFormRegister<FieldValues>;
-    name: string;
-    label: string;
-    options: EmailValidation | UsernameValidation | RegistrationPasswordValidation | LoginPasswordValidation | ConfirmPasswordValidation;
-    validationError?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
-    submissionError?: string;
-};
+  register: UseFormRegister<FieldValues>;
+  name: string;
+  label: string;
+  options:
+    | EmailValidation
+    | UsernameValidation
+    | RegistrationPasswordValidation
+    | LoginPasswordValidation
+    | ConfirmPasswordValidation;
+  validationError?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+  submissionError?: string;
+}
 
 // Form input component for react-hook-forms.
-const Input = ({ register, name, label, options, validationError, submissionError }: InputProps): React.JSX.Element => {
-  const inputType = ['password', 'confirmPassword'].includes(name)
-    ? 'password'
-    : 'text';
+const Input = ({
+  register,
+  name,
+  label,
+  options,
+  validationError,
+  submissionError,
+}: InputProps): React.JSX.Element => {
+  const inputType = ["password", "confirmPassword"].includes(name)
+    ? "password"
+    : "text";
 
-    const errorStyling = submissionError?.includes(name) ? 'border-2 border-red bg-[rgb(245, 152, 152)]' : '';
+  const errorStyling = submissionError?.includes(name)
+    ? "border-2 border-red bg-[rgb(245, 152, 152)]"
+    : "";
   return (
     <>
-      <label className='mb-2'>{label}:</label>
-      <input 
-        className={clsx('text-black h-[2rem] rounded-lg z-10 p-2', errorStyling)}
+      <label className="mb-2">{label}:</label>
+      <input
+        className={clsx(
+          "text-black h-[2rem] rounded-lg z-10 p-2",
+          errorStyling,
+        )}
         type={inputType}
-        {...register(name, options)} />
-      <div className='flex items-start text-xs min-h-4 ml-1 my-1'> 
-        <p className='text-red-600 m-0'>{validationError?.message?.toString()}</p>
+        {...register(name, options)}
+      />
+      <div className="flex items-start text-xs min-h-4 ml-1 my-1">
+        <p className="text-red-600 m-0">
+          {validationError?.message?.toString()}
+        </p>
       </div>
     </>
   );

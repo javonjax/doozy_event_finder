@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import { Skeleton } from '../ui/skeleton';
-
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Skeleton } from "../ui/skeleton";
 
 // Header image and nav links for CategoryLanding.
 const CategoryHeader = (): React.JSX.Element => {
@@ -10,7 +9,7 @@ const CategoryHeader = (): React.JSX.Element => {
   // const lowQualityImg: string = `${path}_header_lq.webp`;
   const highQualityImg: string = `${path}_header.webp`;
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  
+
   useEffect(() => {
     setIsLoaded(false);
     const img = new Image();
@@ -21,18 +20,24 @@ const CategoryHeader = (): React.JSX.Element => {
   }, [highQualityImg]);
 
   return (
-    <div className='w-full h-[250px] relative overflow-hidden rounded-2xl my-4 bg-cover bg-center'>
-      {!isLoaded && <Skeleton className={`w-full h-full bg-white/10 transition-opacity ${isLoaded ? 'opacity-0' : 'opacity-100'}`}/>}
+    <div className="w-full h-[250px] relative overflow-hidden rounded-2xl my-4 bg-cover bg-center">
+      {!isLoaded && (
+        <Skeleton
+          className={`w-full h-full bg-white/10 transition-opacity ${isLoaded ? "opacity-0" : "opacity-100"}`}
+        />
+      )}
       <img
-        loading='lazy'
+        loading="lazy"
         src={highQualityImg}
         alt={`${path} category header image.`}
-        className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? "opacity-100" : "opacity-0"}`}
       />
-      <div className='absolute top-4 left-4 bg-[hsl(var(--background))] p-4 rounded-2xl text-[hsl(var(--text-color))]'>
-        <NavLink to={'/'} className='hover:text-orange-400'>Home</NavLink>
+      <div className="absolute top-4 left-4 bg-[hsl(var(--background))] p-4 rounded-2xl text-[hsl(var(--text-color))]">
+        <NavLink to={"/"} className="hover:text-orange-400">
+          Home
+        </NavLink>
         <span> / </span>
-        <NavLink to={`/${path}`} className='text-orange-400'>
+        <NavLink to={`/${path}`} className="text-orange-400">
           {path.charAt(0).toUpperCase() + path.slice(1)}
         </NavLink>
       </div>

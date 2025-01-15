@@ -1,17 +1,22 @@
-import { createContext, useState } from 'react';
-import { Coordinates } from '@/schemas/schemas';
-
+import { createContext, useState } from "react";
+import { Coordinates } from "@/schemas/schemas";
 
 export interface LocationContextProvider {
-  location?: Coordinates,
-  error?: string,
-  requestLocation: () => Promise<Coordinates>
-};
+  location?: Coordinates;
+  error?: string;
+  requestLocation: () => Promise<Coordinates>;
+}
 
 // Tracks and updates location data.
-export const LocationContext = createContext<LocationContextProvider | undefined>(undefined);
+export const LocationContext = createContext<
+  LocationContextProvider | undefined
+>(undefined);
 
-export const LocationProvider = ({children}: {children: React.ReactNode}) => {
+export const LocationProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [location, setLocation] = useState<Coordinates>();
   const [error, setError] = useState<string>();
 
@@ -31,8 +36,8 @@ export const LocationProvider = ({children}: {children: React.ReactNode}) => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
       } else {
-        setError('Geolocation is not supported by this browser.');
-        reject(new Error('Geolocation is not supported by this browser.'));
+        setError("Geolocation is not supported by this browser.");
+        reject(new Error("Geolocation is not supported by this browser."));
       }
     });
   };
