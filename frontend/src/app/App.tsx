@@ -14,7 +14,7 @@ import { AuthProvider } from "@/components/Providers/AuthContext";
 import EventInfo from "@/components/Events/EventInfo";
 import RegistrationForm from "@/components/Accounts/RegistrationForm";
 import LoginForm from "@/components/Accounts/LoginForm";
-import PinnedEvents from "@/components/Pins/PinnedEvents";
+import PinnedEventList from "@/components/Pins/PinnedEventList";
 import { PinsProvider } from "@/components/Providers/PinsContext";
 
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
             <LocationProvider>
               <PinsProvider>
                 <NavBar />
-                <main className="grow flex flex-col items-center">
+                <main className="flex grow flex-col items-center">
                   <Toaster />
                   <Routes>
                     <Route path="/" element={<Home />} />
@@ -56,7 +56,7 @@ const App = () => {
                     <Route path="/local/:id" element={<EventInfo />} />
                     <Route path="/register" element={<RegistrationForm />} />
                     <Route path="/login" element={<LoginForm />} />
-                    <Route path="/pins" element={<PinnedEvents />} />
+                    <Route path="/pins" element={<PinnedEventList />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>

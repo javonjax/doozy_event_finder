@@ -16,7 +16,9 @@ declare module "express-session" {
   }
 }
 
+// Environment variables.
 const SECRET_KEY: CipherKey = process.env.COOKIE_SECRET as CipherKey;
+const NODE_ENV: string = process.env.NODE_ENV as string;
 
 const app: Application = express();
 const PORT: number = parseInt(process.env.PORT || "3000");
@@ -39,7 +41,10 @@ app.use(
     secret: SECRET_KEY,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 3600000 * 24, secure: false },
+    cookie: {
+      maxAge: 3600000 * 24,
+      secure: NODE_ENV === "development" ? false : true,
+    },
   }),
 );
 

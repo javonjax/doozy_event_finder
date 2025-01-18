@@ -16,21 +16,21 @@ export interface PinnedEventProps {
 const PinnedEvent = ({ event, handleUnpin }: PinnedEventProps) => {
   return (
     <DropdownMenu key={event.id} modal={false}>
-      <DropdownMenuTrigger className="text-[hsl(var(--text-color))] p-4 text-wrap hover:bg-white hover:text-black rounded-2xl">
+      <DropdownMenuTrigger className="text-wrap rounded-2xl p-4 text-[hsl(var(--text-color))] hover:bg-white hover:text-black">
         {event.event_name}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         data-state={"closed"}
-        className="z-10 text-[hsl(var(--text-color))] bg-black p-4 flex flex-col items-center w-fit max-w-[350px] border-[1px] border-white rounded-2xl"
+        className="z-10 flex w-fit max-w-[350px] flex-col items-center rounded-2xl border-[1px] border-white bg-black p-4 text-[hsl(var(--text-color))]"
       >
         <img src={event.img_url} />
-        <div className="text-center my-2">{event.event_name}</div>
+        <div className="my-2 text-center">{event.event_name}</div>
         <div>
           {formatDate(event.event_date)}, {formatTime(event.event_time)}
         </div>
-        <div className="flex m-2">
+        <div className="m-2 flex">
           <NavLink
-            className="flex justify-center items-center hover:text-black hover:bg-white p-3 rounded-2xl border-[1px] border-white min-w-[70px] m-2"
+            className="m-2 flex min-w-[70px] items-center justify-center rounded-2xl border-[1px] border-white p-3 hover:bg-white hover:text-black"
             to={`/${event.event_category.toLowerCase()}/${event.event_id}`}
           >
             Info
@@ -38,13 +38,13 @@ const PinnedEvent = ({ event, handleUnpin }: PinnedEventProps) => {
           <a
             href={event.ticket_url}
             target="_blank"
-            className="flex justify-center items-center hover:text-black hover:bg-white p-3 rounded-2xl border-[1px] border-orange-400 m-2"
+            className="m-2 flex items-center justify-center rounded-2xl border-[1px] border-orange-400 p-3 hover:bg-white hover:text-black"
           >
             <Ticket className="-rotate-45 text-orange-400" />
           </a>
         </div>
         <button
-          className="flex justify-center items-center text-red-500 hover:bg-white p-3 rounded-2xl border-[1px] border-white min-w-[70px] m-2"
+          className="m-2 flex min-w-[70px] items-center justify-center rounded-2xl border-[1px] border-white p-3 text-red-500 hover:bg-white"
           onClick={() => handleUnpin(event)}
         >
           <PinOff />

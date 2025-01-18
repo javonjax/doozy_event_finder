@@ -1,11 +1,12 @@
 # Doozy - Exploring Events Made Easy.
 
 ## Description
+
 Doozy is a powerful event finder application that helps users discover, explore, and attend events. This app was built to deliver a streamlined experience to event enthusiasts.
 
 ## Technologies Used
+
 - [Typescript](https://www.typescriptlang.org/)
-  
 - [TailwindCSS](https://tailwindcss.com/)
 
 - [PostgreSQL](https://www.postgresql.org/)
@@ -21,9 +22,11 @@ Doozy is a powerful event finder application that helps users discover, explore,
 - [Ticketmaster Discovery API](https://developer.ticketmaster.com/products-and-docs/apis/getting-started/) - Event information, images, and ticket links.
 
 The entire application is deployed through Render.
+
 - [Render](https://render.com/)
 
 ## Features
+
 - Explore events by category and by location.
 - Filter events by subcategory and date.
 - View event details including ticket pricing and venue seatmaps.
@@ -31,11 +34,13 @@ The entire application is deployed through Render.
 - Create an account to pin events so you can review them later.
 
 ## Contact Me
+
 👤 Javon Jackson  
 🔗 [LinkedIn](https://www.linkedin.com/in/javon-jackson-02585933a)  
 📫 [Email Me](mailto:javonjaxcode@gmail.com)
 
 ## Screenshots
+
 ![home](https://github.com/user-attachments/assets/f30735ca-f557-4dda-83c0-5eb1bae2fcea)  
 <br>
 ![category](https://github.com/user-attachments/assets/fd0ef1f4-1fa3-4c47-a43f-ec98a196839f)  

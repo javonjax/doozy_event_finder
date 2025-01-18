@@ -24,7 +24,7 @@ const SubCategoryDropdown = ({
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
-          className="text-[hsl(var(--text-color))] max-w-[60%] min-w-[300px] mb-4 xl:mb-0 border-orange-400"
+          className="mb-4 min-w-[300px] max-w-[60%] border-orange-400 text-[hsl(var(--text-color))] xl:mb-0"
           variant="outline"
         >
           <ListFilter />
@@ -35,7 +35,7 @@ const SubCategoryDropdown = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent
         avoidCollisions={false}
-        className="w-56 text-[hsl(var(--text-color))] max-h-[350px] overflow-y-auto"
+        className="max-h-[350px] w-56 overflow-y-auto text-[hsl(var(--text-color))]"
       >
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => handleSubCategoryChange()}>

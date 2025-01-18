@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
-import Input from "./Input";
+import FormInput from "./FormInput";
 import {
   EMAIL_REGEX,
   USERNAME_REGEX,
@@ -121,17 +121,17 @@ const RegistrationForm = (): React.JSX.Element => {
   passwordInput = watch("password");
 
   return (
-    <div className="flex items-center justify-center h-full w-full">
-      <div className="flex flex-col text-[hsl(var(--text-color))] w-[400px] bg-[hsl(var(--background))] rounded-2xl p-4 my-4">
-        <h1 className="text-[2rem] mb-4">Register</h1>
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="my-4 flex w-[400px] flex-col rounded-2xl bg-[hsl(var(--background))] p-4 text-[hsl(var(--text-color))]">
+        <h1 className="mb-4 text-[2rem]">Register</h1>
         {registrationError && (
-          <p className="m-0 text-red-600 mb-4">{registrationError}</p>
+          <p className="m-0 mb-4 text-red-600">{registrationError}</p>
         )}
         <form
-          className="flex flex-col grow text-[hsl(var(--text-color))]"
+          className="flex grow flex-col text-[hsl(var(--text-color))]"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Input
+          <FormInput
             register={register}
             name="email"
             label="Email address"
@@ -139,7 +139,7 @@ const RegistrationForm = (): React.JSX.Element => {
             validationError={errors.email}
             submissionError={registrationError}
           />
-          <Input
+          <FormInput
             register={register}
             name="username"
             label="Username"
@@ -147,14 +147,14 @@ const RegistrationForm = (): React.JSX.Element => {
             validationError={errors.username}
             submissionError={registrationError}
           />
-          <Input
+          <FormInput
             register={register}
             name="password"
             label="Password"
             options={registrationPasswordValidation}
             validationError={errors.password}
           />
-          <Input
+          <FormInput
             register={register}
             name="confirmPassword"
             label="Confirm password"
@@ -162,15 +162,14 @@ const RegistrationForm = (): React.JSX.Element => {
             validationError={errors.confirmPassword}
           />
           <button
-            className="mx-auto mt-1 mb-4 cursor-pointer text-[hsl(var(--text-color))] flex items-center w-fit border-2 border-orange-400 p-4 rounded-2xl hover:text-[hsl(var(--background))] 
-              hover:bg-[hsl(var(--text-color))] disabled:cursor-default disabled:hover:bg-[hsl(var(--background))] disabled:hover:text-[hsl(var(--text-color))]"
+            className="mx-auto mb-4 mt-1 flex w-fit cursor-pointer items-center rounded-2xl border-2 border-orange-400 p-4 text-[hsl(var(--text-color))] hover:bg-[hsl(var(--text-color))] hover:text-[hsl(var(--background))] disabled:cursor-default disabled:hover:bg-[hsl(var(--background))] disabled:hover:text-[hsl(var(--text-color))]"
             type="submit"
             disabled={!isValid}
           >
             Create account
           </button>
         </form>
-        <div className="text-[hsl(var(--text-color))] flex flex-col">
+        <div className="flex flex-col text-[hsl(var(--text-color))]">
           <p>
             Already have an account?{" "}
             <NavLink to="/login" className="text-orange-400">

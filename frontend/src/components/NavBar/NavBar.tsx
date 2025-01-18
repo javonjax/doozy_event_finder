@@ -87,7 +87,7 @@ const NavBar = (): React.JSX.Element => {
 
   return (
     <nav className="bg-[hsl(var(--background))] px-2">
-      <Menubar className="h-20 flex justify-between max-w-7xl mx-auto border-0 p-0 rounded-none">
+      <Menubar className="mx-auto flex h-20 max-w-7xl justify-between rounded-none border-0 p-0">
         <MenubarMenu>
           <div>
             <NavLink to="/">
@@ -95,7 +95,7 @@ const NavBar = (): React.JSX.Element => {
             </NavLink>
           </div>
           {/* Normal navbar for larger screens. */}
-          <div className="items-center hidden md:flex">
+          <div className="hidden items-center md:flex">
             {Categories.map((cat: string): React.JSX.Element => {
               return (
                 <NavBarItem key={`${cat}-nav`} path={`/${cat}`} label={cat} />
@@ -103,18 +103,18 @@ const NavBar = (): React.JSX.Element => {
             })}
             <MenubarMenu>
               <MenubarTrigger
-                className="text-[hsl(var(--text-color))] mx-0 p-4 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
+                className="data-[state=open]:bg-accent data-[state=open]:text-accent-foreground mx-0 p-4 text-[hsl(var(--text-color))]"
                 onClick={async () => await authContext?.getSession()}
               >
                 <UserRound size={20} />
               </MenubarTrigger>
-              <MenubarContent className="text-[hsl(var(--text-color))] hidden md:block">
+              <MenubarContent className="hidden text-[hsl(var(--text-color))] md:block">
                 {!authContext?.loggedIn && (
                   <>
                     <MenubarItem className="p-0">
                       <NavLink
                         to="/login"
-                        className="flex justify-between w-full h-full px-2 py-1.5"
+                        className="flex h-full w-full justify-between px-2 py-1.5"
                       >
                         Login{" "}
                         <MenubarShortcut>
@@ -126,7 +126,7 @@ const NavBar = (): React.JSX.Element => {
                     <MenubarItem className="p-0">
                       <NavLink
                         to="/register"
-                        className="flex justify-between w-full h-full px-2 py-1.5"
+                        className="flex h-full w-full justify-between px-2 py-1.5"
                       >
                         Register{" "}
                         <MenubarShortcut>
@@ -141,7 +141,7 @@ const NavBar = (): React.JSX.Element => {
                     <MenubarItem className="p-0">
                       <NavLink
                         to="/pins"
-                        className="flex justify-between w-full h-full px-2 py-1.5"
+                        className="flex h-full w-full justify-between px-2 py-1.5"
                       >
                         Pinned Events{" "}
                         <MenubarShortcut>
@@ -154,7 +154,7 @@ const NavBar = (): React.JSX.Element => {
                     </MenubarItem>
                     <MenubarSeparator />
                     <MenubarItem onClick={() => userLogout()}>
-                      <div className="flex justify-between w-full">
+                      <div className="flex w-full justify-between">
                         Logout{" "}
                         <MenubarShortcut>
                           <LogOut size={16} className="text-red-500" />
@@ -169,7 +169,7 @@ const NavBar = (): React.JSX.Element => {
           {/* Hamburger menu for small screens. */}
           <div className="md:hidden">
             <MenubarMenu>
-              <MenubarTrigger className="text-[hsl(var(--text-color))] mx-0 p-4 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground">
+              <MenubarTrigger className="data-[state=open]:bg-accent data-[state=open]:text-accent-foreground mx-0 p-4 text-[hsl(var(--text-color))]">
                 <Menu />
               </MenubarTrigger>
               <MenubarContent className="text-[hsl(var(--text-color))] md:hidden">
@@ -188,7 +188,7 @@ const NavBar = (): React.JSX.Element => {
                     <MenubarItem className="p-0">
                       <NavLink
                         to="/login"
-                        className="flex justify-between w-full h-full px-2 py-1.5"
+                        className="flex h-full w-full justify-between px-2 py-1.5"
                       >
                         Login{" "}
                         <MenubarShortcut>
@@ -200,7 +200,7 @@ const NavBar = (): React.JSX.Element => {
                     <MenubarItem className="p-0">
                       <NavLink
                         to="/register"
-                        className="flex justify-between w-full h-full px-2 py-1.5"
+                        className="flex h-full w-full justify-between px-2 py-1.5"
                       >
                         Register{" "}
                         <MenubarShortcut>
@@ -215,7 +215,7 @@ const NavBar = (): React.JSX.Element => {
                     <MenubarItem className="p-0">
                       <NavLink
                         to="/pins"
-                        className="flex justify-between w-full h-full px-2 py-1.5"
+                        className="flex h-full w-full justify-between px-2 py-1.5"
                       >
                         Pinned Events{" "}
                         <MenubarShortcut>
@@ -230,7 +230,7 @@ const NavBar = (): React.JSX.Element => {
                     <MenubarItem className="p-0">
                       <NavLink
                         to="/pins"
-                        className="flex justify-between w-full h-full px-2 py-1.5"
+                        className="flex h-full w-full justify-between px-2 py-1.5"
                       >
                         Logout{" "}
                         <MenubarShortcut>

@@ -33,8 +33,8 @@ const CategoryFilters = ({
   }, [path]);
 
   return (
-    <div className="flex flex-col w-full items-center justify-center bg-[hsl(var(--background))] rounded-2xl py-8 my-4">
-      <div className="flex flex-col xl:flex-row justify-evenly items-center w-full">
+    <div className="my-4 flex w-full flex-col items-center justify-center rounded-2xl bg-[hsl(var(--background))] py-8">
+      <div className="flex w-full flex-col items-center justify-evenly xl:flex-row">
         <SubCategoryDropdown
           subcategories={genres}
           selectedSubcategory={selectedSubcategory}
@@ -58,7 +58,7 @@ const CategoryFilters = ({
           />
           <label
             htmlFor="location-checkbox"
-            className="ml-2 text-[hsl(var(--text-color))] cursor-pointer"
+            className="ml-2 cursor-pointer text-[hsl(var(--text-color))]"
           >
             Search near your location
           </label>

@@ -7,10 +7,10 @@ export interface EventLinkProps {
 }
 
 // Passes event information from the Event component card to the EventInfo page through NavLink state.
-const EventLink = ({ path, event }: EventLinkProps): React.JSX.Element => {
+const EventInfoLink = ({ path, event }: EventLinkProps): React.JSX.Element => {
   return (
     <NavLink
-      className="mr-4 text-center min-w-[70px] bg-[hsl(var(--background))] text-[hsl(var(--text-color))] hover:text-[hsl(var(--background))] hover:bg-[hsl(var(--text-color))] p-2 rounded-2xl h-fit "
+      className="mr-4 h-fit min-w-[70px] rounded-2xl bg-[hsl(var(--background))] p-2 text-center text-[hsl(var(--text-color))] hover:bg-[hsl(var(--text-color))] hover:text-[hsl(var(--background))]"
       to={`/${path.toLowerCase()}/${event.id}`}
       state={event}
     >
@@ -19,4 +19,4 @@ const EventLink = ({ path, event }: EventLinkProps): React.JSX.Element => {
   );
 };
 
-export default EventLink;
+export default EventInfoLink;

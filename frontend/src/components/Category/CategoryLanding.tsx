@@ -4,7 +4,7 @@ import CategoryContent from "./CategoryContent";
 const CategoryLanding = (): React.JSX.Element => {
   return (
     <>
-      <div className="max-w-7xl w-full h-full">
+      <div className="h-full w-full max-w-7xl">
         <div className="mx-4 flex flex-col items-center">
           <CategoryHeader />
           <CategoryContent />

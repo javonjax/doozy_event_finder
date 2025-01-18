@@ -39,7 +39,7 @@ const DateRangePicker = ({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-center text-center font-normal border-orange-400",
+              "w-[300px] justify-center border-orange-400 text-center font-normal",
               !date && "text-muted-foreground",
             )}
           >
@@ -59,7 +59,7 @@ const DateRangePicker = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-0 text-[hsl(var(--text-color))] flex flex-col items-center"
+          className="flex w-auto flex-col items-center p-0 text-[hsl(var(--text-color))]"
           avoidCollisions={false}
         >
           <Calendar
@@ -72,13 +72,13 @@ const DateRangePicker = ({
           />
           <div className="flex self-start">
             <Button
-              className="ml-3 mb-3 bg-[hsl(var(--background))] border-white border-2 w-fit p-2 rounded-2xl hover:bg-white hover:text-black"
+              className="mb-3 ml-3 w-fit rounded-2xl border-2 border-white bg-[hsl(var(--background))] p-2 hover:bg-white hover:text-black"
               onClick={handleSumbmit}
             >
               Submit
             </Button>
             <Button
-              className="ml-3 mb-3 bg-[hsl(var(--background))] border-white border-2 w-fit p-2 rounded-2xl hover:bg-white hover:text-black"
+              className="mb-3 ml-3 w-fit rounded-2xl border-2 border-white bg-[hsl(var(--background))] p-2 hover:bg-white hover:text-black"
               onClick={handleReset}
             >
               Reset

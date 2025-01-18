@@ -20,19 +20,19 @@ const CategoryHeader = (): React.JSX.Element => {
   }, [highQualityImg]);
 
   return (
-    <div className="w-full h-[250px] relative overflow-hidden rounded-2xl my-4 bg-cover bg-center">
+    <div className="relative my-4 h-[250px] w-full overflow-hidden rounded-2xl bg-cover bg-center">
       {!isLoaded && (
         <Skeleton
-          className={`w-full h-full bg-white/10 transition-opacity ${isLoaded ? "opacity-0" : "opacity-100"}`}
+          className={`h-full w-full bg-white/10 transition-opacity ${isLoaded ? "opacity-0" : "opacity-100"}`}
         />
       )}
       <img
         loading="lazy"
         src={highQualityImg}
         alt={`${path} category header image.`}
-        className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+        className={`h-full w-full object-cover transition-opacity duration-500 ${isLoaded ? "opacity-100" : "opacity-0"}`}
       />
-      <div className="absolute top-4 left-4 bg-[hsl(var(--background))] p-4 rounded-2xl text-[hsl(var(--text-color))]">
+      <div className="absolute left-4 top-4 rounded-2xl bg-[hsl(var(--background))] p-4 text-[hsl(var(--text-color))]">
         <NavLink to={"/"} className="hover:text-orange-400">
           Home
         </NavLink>

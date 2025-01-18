@@ -266,10 +266,10 @@ const EventInfo = (): React.JSX.Element => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full max-w-7xl mx-4 items-center justify-center">
+    <div className="mx-4 flex h-full w-full max-w-7xl flex-col items-center justify-center">
       {!event && (
-        <div className="w-full flex justify-center">
-          <div className="flex justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] w-fit p-4 rounded-2xl mb-4">
+        <div className="flex w-full justify-center">
+          <div className="mb-4 flex w-fit justify-center rounded-2xl bg-[hsl(var(--background))] p-4 text-[hsl(var(--text-color))]">
             <Loader className="animate-spin" />
             <p id="initial-fetch-loading" className="ml-1 text-center">
               Finding event info...
@@ -278,11 +278,11 @@ const EventInfo = (): React.JSX.Element => {
         </div>
       )}
       {event && (
-        <div className="bg-[hsl(var(--background))] rounded-2xl m-4 p-8 text-[hsl(var(--text-color))] grow">
-          <div className="flex flex-col md:flex-row items-center justify-center md:justify-between">
+        <div className="m-4 grow rounded-2xl bg-[hsl(var(--background))] p-8 text-[hsl(var(--text-color))]">
+          <div className="flex flex-col items-center justify-center md:flex-row md:justify-between">
             <div className="flex flex-col items-center md:block">
               <h1 className="text-3xl">{event.name}</h1>
-              <div className="flex my-2">
+              <div className="my-2 flex">
                 <MapPin className="mr-2" />
                 <h2>
                   {`${event._embedded.venues[0].city.name}, ${
@@ -291,13 +291,13 @@ const EventInfo = (): React.JSX.Element => {
                   }`}
                 </h2>
               </div>
-              <div className="flex my-2">
+              <div className="my-2 flex">
                 <CalendarDays className="mr-2" />
                 <h2>
                   {formattedDate} - {formattedTime}
                 </h2>
               </div>
-              <div className="flex my-2">
+              <div className="my-2 flex">
                 <Tag className="mr-2" />
                 {event.priceRanges[0].min === event.priceRanges[0].max ? (
                   <h2>${event.priceRanges[0].min}</h2>
@@ -309,18 +309,18 @@ const EventInfo = (): React.JSX.Element => {
               </div>
               <div className="flex">
                 <Link
-                  className="text-[hsl(var(--text-color))] flex items-center w-fit border-[1px] border-orange-400 p-4 rounded-2xl hover:text-black hover:bg-white"
+                  className="flex w-fit items-center rounded-2xl border-[1px] border-orange-400 p-4 text-[hsl(var(--text-color))] hover:bg-white hover:text-black"
                   to={event.url || "/"}
                   target="blank"
                 >
                   <Ticket
                     size={18}
-                    className="-rotate-45 mr-1 text-orange-400"
+                    className="mr-1 -rotate-45 text-orange-400"
                   />
                   Get Tickets
                 </Link>
                 <button
-                  className={`flex justify-center items-center hover:bg-white p-3 rounded-2xl border-[1px] border-white min-w-[70px] m-2 ${
+                  className={`m-2 flex min-w-[70px] items-center justify-center rounded-2xl border-[1px] border-white p-3 hover:bg-white ${
                     isPinned
                       ? "text-red-500"
                       : "text-[hsl(var(--text-color))] hover:text-[hsl(var(--background))]"
@@ -333,9 +333,9 @@ const EventInfo = (): React.JSX.Element => {
                 </button>
               </div>
             </div>
-            <div className="flex-shrink-0 min-w-305 min-h-203 my-4 md:my-0">
+            <div className="min-w-305 min-h-203 my-4 flex-shrink-0 md:my-0">
               <img
-                className="object-cover w-305 h-203"
+                className="w-305 h-203 object-cover"
                 src={event.images[0].url}
                 alt={event.name}
               ></img>

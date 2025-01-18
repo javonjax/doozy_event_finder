@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { NavigateFunction, NavLink, useNavigate } from "react-router-dom";
 import { emailValidation } from "./RegistrationForm";
-import Input from "./Input";
+import FormInput from "./FormInput";
 import { useToast } from "@/hooks/use-toast";
 import { AuthContext, AuthContextProvider } from "../Providers/AuthContext";
 
@@ -64,22 +64,22 @@ const LoginForm = (): React.JSX.Element => {
   };
 
   return (
-    <div className="h-full w-full flex items-center justify-center">
-      <div className="text-[hsl(var(--text-color))] w-[400px] bg-[hsl(var(--background))] rounded-2xl flex flex-col p-4 my-4">
-        <h1 className="text-[2rem] mb-4">Login</h1>
-        {loginError && <p className="m-0 text-red-600 mb-4">{loginError}</p>}
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="my-4 flex w-[400px] flex-col rounded-2xl bg-[hsl(var(--background))] p-4 text-[hsl(var(--text-color))]">
+        <h1 className="mb-4 text-[2rem]">Login</h1>
+        {loginError && <p className="m-0 mb-4 text-red-600">{loginError}</p>}
         <form
-          className="flex flex-col grow text-[hsl(var(--text-color))]"
+          className="flex grow flex-col text-[hsl(var(--text-color))]"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Input
+          <FormInput
             register={register}
             name="email"
             label="Email address"
             options={emailValidation}
             validationError={errors.email}
           />
-          <Input
+          <FormInput
             register={register}
             name="password"
             label="Password"
@@ -87,15 +87,14 @@ const LoginForm = (): React.JSX.Element => {
             validationError={errors.password}
           />
           <button
-            className="mx-auto mt-1 mb-4 cursor-pointer text-[hsl(var(--text-color))] flex items-center w-fit border-2 border-orange-400 p-4 rounded-2xl hover:text-[hsl(var(--background))] 
-              hover:bg-[hsl(var(--text-color))] disabled:cursor-default disabled:hover:bg-[hsl(var(--background))] disabled:hover:text-[hsl(var(--text-color))]"
+            className="mx-auto mb-4 mt-1 flex w-fit cursor-pointer items-center rounded-2xl border-2 border-orange-400 p-4 text-[hsl(var(--text-color))] hover:bg-[hsl(var(--text-color))] hover:text-[hsl(var(--background))] disabled:cursor-default disabled:hover:bg-[hsl(var(--background))] disabled:hover:text-[hsl(var(--text-color))]"
             type="submit"
             disabled={!isValid}
           >
             Sign In
           </button>
         </form>
-        <div className="text-[hsl(var(--text-color))] flex flex-col">
+        <div className="flex flex-col text-[hsl(var(--text-color))]">
           <p>
             Need an account?{" "}
             <NavLink to="/register" className="text-orange-400">

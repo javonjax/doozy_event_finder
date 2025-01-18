@@ -29,7 +29,7 @@ export interface InputProps {
 }
 
 // Form input component for react-hook-forms.
-const Input = ({
+const FormInput = ({
   register,
   name,
   label,
@@ -49,14 +49,14 @@ const Input = ({
       <label className="mb-2">{label}:</label>
       <input
         className={clsx(
-          "text-black h-[2rem] rounded-lg z-10 p-2",
+          "z-10 h-[2rem] rounded-lg p-2 text-black",
           errorStyling,
         )}
         type={inputType}
         {...register(name, options)}
       />
-      <div className="flex items-start text-xs min-h-4 ml-1 my-1">
-        <p className="text-red-600 m-0">
+      <div className="my-1 ml-1 flex min-h-4 items-start text-xs">
+        <p className="m-0 text-red-600">
           {validationError?.message?.toString()}
         </p>
       </div>
@@ -64,4 +64,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default FormInput;

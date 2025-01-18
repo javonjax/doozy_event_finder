@@ -76,7 +76,7 @@ const EventList = ({
       }
     }
 
-    if (Categories.map((cat) => cat.toLowerCase()).includes(path)) {
+    if (Categories.some((cat) => cat.toLowerCase() === path)) {
       if (path === "misc") {
         // The Ticketmaster API requires the full word.
         queryParams += `&classificationName=miscellaneous`;
@@ -375,8 +375,8 @@ const EventList = ({
 
   if (isLoading) {
     return (
-      <div className="w-full flex justify-center">
-        <div className="flex justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] w-fit p-4 rounded-2xl mb-4">
+      <div className="flex w-full justify-center">
+        <div className="mb-4 flex w-fit justify-center rounded-2xl bg-[hsl(var(--background))] p-4 text-[hsl(var(--text-color))]">
           <Loader className="animate-spin" />
           <p id="initial-fetch-loading" className="ml-1 text-center">
             Finding events...
@@ -391,8 +391,8 @@ const EventList = ({
     (!data?.pages.flatMap((page) => page.events).length && !hasMore)
   ) {
     return (
-      <div className="w-full flex justify-center">
-        <div className="flex justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] w-fit p-4 rounded-2xl mb-4">
+      <div className="flex w-full justify-center">
+        <div className="mb-4 flex w-fit justify-center rounded-2xl bg-[hsl(var(--background))] p-4 text-[hsl(var(--text-color))]">
           <p id="initial-fetch-loading" className="ml-1 text-center">
             No Events found.
           </p>
@@ -403,7 +403,7 @@ const EventList = ({
 
   return (
     <>
-      <div className="flex flex-col items-center w-full">
+      <div className="flex w-full flex-col items-center">
         {visibleEvents?.map((event) => {
           const pinned = isPinned(event.id);
           return (
@@ -418,8 +418,8 @@ const EventList = ({
           );
         })}
         {isFetching && (
-          <div className="flex justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] w-fit p-4 rounded-2xl">
-            <Loader className="text-[hsl(var(--text-color))] animate-spin" />
+          <div className="flex w-fit justify-center rounded-2xl bg-[hsl(var(--background))] p-4 text-[hsl(var(--text-color))]">
+            <Loader className="animate-spin text-[hsl(var(--text-color))]" />
             <p className="ml-1 text-center">Loading events... </p>
           </div>
         )}
@@ -430,7 +430,7 @@ const EventList = ({
             (data.pages.flatMap((page) => page.events).length <= 10 &&
               typeof data.pages[0].nextPage !== "number")
               ? "hidden"
-              : "cursor-pointer m-4 p-4 rounded-2xl text-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))]"
+              : "m-4 cursor-pointer rounded-2xl bg-[hsl(var(--background))] p-4 text-center text-[hsl(var(--text-color))]"
           }
           onClick={handleGetNextPage}
         >

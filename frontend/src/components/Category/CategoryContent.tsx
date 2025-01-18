@@ -72,7 +72,7 @@ const CategoryContent = (): React.JSX.Element => {
   };
 
   const fetchGenres = async (): Promise<Array<GenreData> | null> => {
-    if (Categories.map((cat) => cat.toLowerCase()).includes(path)) {
+    if (Categories.some((cat) => cat.toLowerCase() === path)) {
       try {
         const res: globalThis.Response = await fetch(
           `${BACKEND_GENRES_API_URL}${path}`,

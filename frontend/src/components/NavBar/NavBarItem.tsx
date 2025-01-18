@@ -9,7 +9,7 @@ export interface NavBarItemProps {
 const NavBarItem = ({ path, label }: NavBarItemProps): React.JSX.Element => {
   return (
     <NavLink to={`${path.toLowerCase()}`}>
-      <MenubarTrigger className="text-[hsl(var(--text-color))] mx-0 p-4">
+      <MenubarTrigger className="mx-0 p-4 text-[hsl(var(--text-color))]">
         {label}
       </MenubarTrigger>
     </NavLink>

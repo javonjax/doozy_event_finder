@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom";
 // Environment variables.
 const BACKEND_PINS_API_URL: string = import.meta.env.VITE_BACKEND_PINS_API_URL;
 
-const PinnedEvents = () => {
+const PinnedEventList = () => {
   // Hooks.
   const pinsContext: PinsContextProvider | undefined = useContext<
     PinsContextProvider | undefined
@@ -117,17 +117,17 @@ const PinnedEvents = () => {
   };
 
   return (
-    <div className="max-w-7xl w-full h-full">
+    <div className="h-full w-full max-w-7xl">
       <div className="m-4">
-        <div className="flex items-center justify-center w-full p-8 bg-[hsl(var(--background))] text-[hsl(var(--text-color))] rounded-2xl text-5xl">
-          <Pin size={42} className="-rotate-45 mr-2 text-orange-400 mt-2" /> My
+        <div className="flex w-full items-center justify-center rounded-2xl bg-[hsl(var(--background))] p-8 text-5xl text-[hsl(var(--text-color))]">
+          <Pin size={42} className="mr-2 mt-2 -rotate-45 text-orange-400" /> My
           pinned events
         </div>
-        <div className="flex flex-wrap p-4 w-full h-full xl:justify-start justify-center gap-3">
+        <div className="flex h-full w-full flex-wrap justify-center gap-3 p-4 xl:justify-start">
           {!pinsContext?.pinnedEvents && (
-            <div className="flex justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] p-4 rounded-2xl w-full">
+            <div className="flex w-full justify-center rounded-2xl bg-[hsl(var(--background))] p-4 text-[hsl(var(--text-color))]">
               You have no pinned events. Click the{" "}
-              <Pin className="-rotate-45 mx-2" /> on an event to add it to your
+              <Pin className="mx-2 -rotate-45" /> on an event to add it to your
               pinned list.
             </div>
           )}
@@ -135,12 +135,12 @@ const PinnedEvents = () => {
             return (
               <div
                 key={`${item[0]}, ${item[1]} pins box}`}
-                className="bg-[hsl(var(--background))] text-[hsl(var(--text-color))] p-4 rounded-2xl flex flex-col items-center m-4 w-[80%] lg:w-[45%] xl:w-[30%] h-[350px]"
+                className="m-4 flex h-[350px] w-[80%] flex-col items-center rounded-2xl bg-[hsl(var(--background))] p-4 text-[hsl(var(--text-color))] lg:w-[45%] xl:w-[30%]"
               >
-                <div className="text-3xl m-4 self-center text-orange-400">
+                <div className="m-4 self-center text-3xl text-orange-400">
                   {item[0]} {item[1]}
                 </div>
-                <div className="flex flex-col items-center w-full overflow-y-auto">
+                <div className="flex w-full flex-col items-center overflow-y-auto">
                   {pinsContext?.pinnedEvents?.map((event) => {
                     const [yearNum, monthNum]: Array<string> =
                       event.event_date.split("-");
@@ -166,4 +166,4 @@ const PinnedEvents = () => {
   );
 };
 
-export default PinnedEvents;
+export default PinnedEventList;

@@ -41,16 +41,16 @@ const Home = (): React.JSX.Element => {
   };
 
   return (
-    <div className="max-w-7xl w-full h-full flex flex-col items-center">
-      <div className="w-full flex flex-col items-center mt-8 text-[hsl(var(--text-color))]">
-        <h1 className="text-[2rem] text-center">
+    <div className="flex h-full w-full max-w-7xl flex-col items-center">
+      <div className="mt-8 flex w-full flex-col items-center text-[hsl(var(--text-color))]">
+        <h1 className="text-center text-[2rem]">
           Finding something to do has never been easier.
         </h1>
-        <h2 className="text-[1.4rem] text-center">
+        <h2 className="text-center text-[1.4rem]">
           Pick a category to get started.
         </h2>
       </div>
-      <div className="w-full grow flex flex-col items-center gap-16 p-8">
+      <div className="flex w-full grow flex-col items-center gap-16 p-8">
         <Row>
           <Card
             path={`/popular`}

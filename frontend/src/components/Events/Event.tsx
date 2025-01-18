@@ -1,7 +1,7 @@
 import { Pin, PinOff } from "lucide-react";
 import { EventCardData } from "../../../../schemas/schemas";
 import { formatDate, formatTime } from "../utils/utils";
-import EventLink from "./EventLink";
+import EventInfoLink from "./EventInfoLink";
 
 export interface EventProps {
   event: EventCardData;
@@ -26,12 +26,12 @@ const Event = ({
   const [dayOfWeek, monthDay] = formattedDate.split(",");
 
   return (
-    <div className="flex flex-col md:flex-row items-center rounded-2xl mb-4 w-[95%]  ">
-      <div className="flex items-center justify-center bg-[hsl(var(--background))] text-[hsl(var(--text-color))] uppercase rounded-tl-xl rounded-tr-xl md:rounded-tr-none md:rounded-bl-xl min-w-[125px] self-stretch p-4">
+    <div className="mb-4 flex w-[95%] flex-col items-center rounded-2xl md:flex-row">
+      <div className="flex min-w-[125px] items-center justify-center self-stretch rounded-tl-xl rounded-tr-xl bg-[hsl(var(--background))] p-4 uppercase text-[hsl(var(--text-color))] md:rounded-bl-xl md:rounded-tr-none">
         <h2>{monthDay.trim()}</h2>
       </div>
-      <div className="flex flex-col md:flex-row items-center grow bg-neutral-500 w-full rounded-bl-xl rounded-br-xl md:rounded-bl-none md:rounded-tr-xl pb-4 md:p-0">
-        <div className="flex flex-col m-4 grow text-center md:text-start">
+      <div className="flex w-full grow flex-col items-center rounded-bl-xl rounded-br-xl bg-neutral-500 pb-4 md:flex-row md:rounded-bl-none md:rounded-tr-xl md:p-0">
+        <div className="m-4 flex grow flex-col text-center md:text-start">
           <div>
             {dayOfWeek.trim()} - {formattedTime}
           </div>
@@ -44,13 +44,12 @@ const Event = ({
           </div>
         </div>
         <div className="flex">
-          <div className="flex md:self-stretch items-center">
-            <EventLink event={event} path={path}></EventLink>
+          <div className="flex items-center md:self-stretch">
+            <EventInfoLink event={event} path={path}></EventInfoLink>
           </div>
-          <div className={`flex md:self-stretch items-center`}>
+          <div className={`flex items-center md:self-stretch`}>
             <button
-              className={`flex justify-center items-center mr-4 min-w-[46px] bg-[hsl(var(--background))] 
-                ${pinned ? "text-red-500" : "text-[hsl(var(--text-color))] hover:text-[hsl(var(--background))] hover:bg-[hsl(var(--text-color))] hover:scale-125"} p-2 rounded-2xl h-fit transform transition-all duration-400`}
+              className={`mr-4 flex min-w-[46px] items-center justify-center bg-[hsl(var(--background))] ${pinned ? "text-red-500" : "text-[hsl(var(--text-color))] hover:scale-125 hover:bg-[hsl(var(--text-color))] hover:text-[hsl(var(--background))]"} duration-400 h-fit transform rounded-2xl p-2 transition-all`}
               onClick={
                 pinned ? () => handleUnpin(event) : () => handlePin(event)
               }
