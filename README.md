@@ -33,7 +33,6 @@ The entire application is deployed through Render.
 ## Contact Me
 👤 Javon Jackson  
 🔗 [LinkedIn](https://www.linkedin.com/in/javon-jackson-02585933a)  
-🔗 <a href="https://www.linkedin.com/in/javon-jackson-02585933a" target="_blank">LinkedIn</a>  
 📫 [Email Me](mailto:javonjaxcode@gmail.com)
 
 ## Screenshots
