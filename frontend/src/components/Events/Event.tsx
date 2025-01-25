@@ -21,9 +21,9 @@ const Event = ({
 }: EventProps): React.JSX.Element => {
   const date: string = event.dates.start.localDate;
   const time: string = event.dates.start.localTime;
-  const formattedDate = formatDate(date);
-  const formattedTime = formatTime(time);
-  const [dayOfWeek, monthDay] = formattedDate.split(",");
+  const formattedDate: string = formatDate(date);
+  const formattedTime: string = formatTime(time);
+  const [dayOfWeek, monthDay]: Array<string> = formattedDate.split(",");
 
   return (
     <div className="mb-4 flex w-[95%] flex-col items-center rounded-2xl md:flex-row">
