@@ -43,7 +43,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 3600000 * 24,
-      secure: NODE_ENV === "development" ? false : true,
+      secure: false,
     },
   }),
 );
