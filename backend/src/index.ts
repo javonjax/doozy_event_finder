@@ -55,5 +55,7 @@ app.use("/api", accountRoutes);
 // Start Server and connect to DB
 app.listen(PORT, async () => {
   await connectDB();
-  console.log(`Server is running at http://localhost:${PORT}`);
+  if (NODE_ENV === 'development') {
+    console.log(`Server is running at http://localhost:${PORT}`);
+  } 
 });
