@@ -2,6 +2,7 @@ import { Pin, PinOff } from "lucide-react";
 import { EventCardData } from "../../../../schemas/schemas";
 import { formatDate, formatTime } from "../utils/utils";
 import EventInfoLink from "./EventInfoLink";
+import { DateRange } from "react-day-picker";
 
 export interface EventProps {
   event: EventCardData;
@@ -9,6 +10,7 @@ export interface EventProps {
   handlePin: (event: EventCardData) => void;
   handleUnpin: (event: EventCardData) => void;
   pinned: boolean;
+  dateRange?: DateRange | undefined;
 }
 
 // Event cards that form the EventList.
@@ -18,12 +20,31 @@ const Event = ({
   handlePin,
   handleUnpin,
   pinned,
+  dateRange,
 }: EventProps): React.JSX.Element => {
-  const date: string = event.dates.start.localDate;
+  let date: string = event.dates.start.localDate;
+  if (dateRange) {
+    if (
+      dateRange.from &&
+      new Date(event.dates.start.localDate) < dateRange.from
+    ) {
+      date = dateRange.from?.toISOString().split("T")[0];
+    }
+    if (dateRange?.from && dateRange?.to) {
+      date =
+        new Date(event.dates.start.localDate) < dateRange.from
+          ? dateRange.from?.toISOString().split("T")[0]
+          : new Date(event.dates.start.localDate) > dateRange.to
+            ? dateRange.to?.toISOString().split("T")[0]
+            : event.dates.start.localDate;
+    }
+  }
+
   const time: string = event.dates.start.localTime;
   const formattedDate: string = formatDate(date);
   const formattedTime: string = formatTime(time);
   const [dayOfWeek, monthDay]: Array<string> = formattedDate.split(",");
+  console.log(date, formattedDate);
 
   return (
     <div className="mb-4 flex w-[95%] flex-col items-center rounded-2xl md:flex-row">

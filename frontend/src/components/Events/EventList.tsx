@@ -54,6 +54,7 @@ const EventList = ({
         startDate = dateRange.from;
         startDate.setHours(0, 0, 0, 0);
         endOfStartDate = addDays(startDate, 1);
+
         startDate = startDate.toJSON().slice(0, -5) + "Z";
         endOfStartDate = endOfStartDate.toJSON().slice(0, -5) + "Z";
       }
@@ -414,6 +415,7 @@ const EventList = ({
               handlePin={handlePin}
               handleUnpin={handleUnpin}
               pinned={pinned}
+              dateRange={dateRange}
             />
           );
         })}
