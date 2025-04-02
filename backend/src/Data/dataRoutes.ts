@@ -54,7 +54,6 @@ router.get(
       }
 
       const responseData: unknown = await res.json();
-
       const parsedApiResponse = TicketmasterEventsData.safeParse(responseData);
 
       if (!parsedApiResponse.success) {
@@ -87,6 +86,7 @@ router.get(
         event.images = findImage(event.images);
       });
 
+      // response.json(parsedApiResponse);
       response.json({
         events: validEvents,
         nextPage:

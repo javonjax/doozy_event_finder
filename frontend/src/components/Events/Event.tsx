@@ -44,7 +44,6 @@ const Event = ({
   const formattedDate: string = formatDate(date);
   const formattedTime: string = formatTime(time);
   const [dayOfWeek, monthDay]: Array<string> = formattedDate.split(",");
-  console.log(date, formattedDate);
 
   return (
     <div className="mb-4 flex w-[95%] flex-col items-center rounded-2xl md:flex-row">

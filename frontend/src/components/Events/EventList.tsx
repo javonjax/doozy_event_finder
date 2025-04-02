@@ -54,7 +54,6 @@ const EventList = ({
         startDate = dateRange.from;
         startDate.setHours(0, 0, 0, 0);
         endOfStartDate = addDays(startDate, 1);
-
         startDate = startDate.toJSON().slice(0, -5) + "Z";
         endOfStartDate = endOfStartDate.toJSON().slice(0, -5) + "Z";
       }
@@ -128,7 +127,7 @@ const EventList = ({
     }
 
     // Set hasMore based on how many events are fetched
-    if (typeof nextPage === "number") {
+    if (typeof nextPage === "number" && events.length) {
       setHasMore(true);
     } else {
       if (events.length >= 10) {
@@ -429,7 +428,8 @@ const EventList = ({
           className={
             !data ||
             !hasMore ||
-            (data.pages.flatMap((page) => page.events).length <= 10 &&
+            (data &&
+              data.pages.flatMap((page) => page.events).length <= 10 &&
               typeof data.pages[0].nextPage !== "number")
               ? "hidden"
               : "m-4 cursor-pointer rounded-2xl bg-[hsl(var(--background))] p-4 text-center text-[hsl(var(--text-color))]"

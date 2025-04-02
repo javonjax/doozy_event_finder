@@ -2,11 +2,11 @@ import { NavLink, useLocation } from "react-router-dom";
 import {
   MapPin,
   CalendarDays,
-  Tag,
   Ticket,
   PinOff,
   Pin,
   Loader,
+  Tags,
 } from "lucide-react";
 import { formatDate, formatTime } from "../utils/utils";
 import { EventCardData, EventCardSchema } from "../../../../schemas/schemas";
@@ -291,13 +291,38 @@ const EventInfo = (): React.JSX.Element => {
                   }`}
                 </h2>
               </div>
-              <div className="my-2 flex">
+              <div className="my-2 flex items-center">
                 <CalendarDays className="mr-2" />
                 <h2>
                   {formattedDate} - {formattedTime}
                 </h2>
               </div>
-              <div className="my-2 flex">
+              <div className="my-2 flex items-center">
+                <Tags className="mr-2" />
+                <div className="flex gap-x-2">
+                  <NavLink
+                    className="text-orange-400 underline"
+                    to={`/${path}`}
+                  >
+                    {path[0].toUpperCase() + path.slice(1)}
+                  </NavLink>
+                  <NavLink
+                    className="text-orange-400 underline"
+                    to={`/${path}`}
+                    state={event.classifications[0].genre}
+                  >
+                    {event.classifications[0].genre.name.toLowerCase() !==
+                    "undefined"
+                      ? event.classifications[0].genre.name
+                      : null}
+                  </NavLink>
+                </div>
+              </div>
+              {/* NOTE: Ticketmaster seems to have removed price ranges from their API.
+                        The API documentation does not show that they have removed this data so
+                        it is unclear if this change is permanent.  
+              */}
+              {/* <div className="my-2 flex">
                 <Tag className="mr-2" />
                 {event.priceRanges[0].min === event.priceRanges[0].max ? (
                   <h2>${event.priceRanges[0].min}</h2>
@@ -306,10 +331,10 @@ const EventInfo = (): React.JSX.Element => {
                     ${event.priceRanges[0].min} - ${event.priceRanges[0].max}
                   </h2>
                 )}
-              </div>
-              <div className="flex">
+              </div> */}
+              <div className="flex items-center">
                 <Link
-                  className="flex w-fit items-center rounded-2xl border-[1px] border-orange-400 p-4 text-[hsl(var(--text-color))] hover:bg-white hover:text-black"
+                  className="flex h-[55px] w-fit items-center rounded-2xl border-[1px] border-orange-400 p-4 text-[hsl(var(--text-color))] hover:bg-white hover:text-black"
                   to={event.url || "/"}
                   target="blank"
                 >
@@ -320,7 +345,7 @@ const EventInfo = (): React.JSX.Element => {
                   Get Tickets
                 </Link>
                 <button
-                  className={`m-2 flex min-w-[70px] items-center justify-center rounded-2xl border-[1px] border-white p-3 hover:bg-white ${
+                  className={`m-2 flex h-[55px] w-[55px] items-center justify-center rounded-2xl border-[1px] border-white p-3 hover:bg-white ${
                     isPinned
                       ? "text-red-500"
                       : "text-[hsl(var(--text-color))] hover:text-[hsl(var(--background))]"

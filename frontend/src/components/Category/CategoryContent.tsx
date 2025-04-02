@@ -4,7 +4,7 @@ import {
   LocationContext,
   LocationContextProvider,
 } from "../Providers/LocationContext";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { DateRange } from "react-day-picker";
 import { useToast } from "@/hooks/use-toast";
 import { Categories } from "@/schemas/schemas";
@@ -35,7 +35,16 @@ const CategoryContent = (): React.JSX.Element => {
   const locationContext = useContext<LocationContextProvider | undefined>(
     LocationContext,
   );
-  const path: string = useLocation().pathname.slice(1);
+  const loc = useLocation();
+  const path: string = loc.pathname.slice(1);
+
+  useEffect(() => {
+    // For navigating to this page using a subcategory tags in the EventInfo component.
+    // Allows users to quickly find events from the same subcategory as the event they were looking at.
+    if (loc.state) {
+      setSelectedSubcategory(loc.state);
+    }
+  }, [loc.state]);
 
   // Event handlers
   const handleSubcategoryChange = (subcategory?: GenreData): void => {

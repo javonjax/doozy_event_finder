@@ -46,13 +46,32 @@ export const EventCardSchema = z
         dateTime: z.string().datetime(),
       }),
     }),
-    priceRanges: z.array(
+    classifications: z.array(
       z.object({
-        currency: z.string(),
-        min: z.number(),
-        max: z.number(),
+        segment: z.object({
+          id: z.string(),
+          name: z.string(),
+        }),
+        genre: z.object({
+          id: z.string(),
+          name: z.string(),
+        }),
+        subGenre: z.object({
+          id: z.string(),
+          name: z.string(),
+        }),
       }),
     ),
+    // NOTE: Ticketmaster seems to have removed price ranges from their API.
+    //       The API documentation does not show that they have removed this data so
+    //       it is unclear if this change is permanent.
+    // priceRanges: z.array(
+    //   z.object({
+    //     currency: z.string(),
+    //     min: z.number(),
+    //     max: z.number(),
+    //   }),
+    // ),
     _embedded: z.object({
       venues: z.array(VenueSchema),
     }),
