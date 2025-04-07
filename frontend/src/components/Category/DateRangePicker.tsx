@@ -60,7 +60,7 @@ const DateRangePicker = ({
         </PopoverTrigger>
         <PopoverContent
           className="flex w-auto flex-col items-center p-0 text-[hsl(var(--text-color))]"
-          avoidCollisions={false}
+          avoidCollisions={true}
         >
           <Calendar
             initialFocus
@@ -68,9 +68,9 @@ const DateRangePicker = ({
             defaultMonth={new Date()}
             selected={date}
             onSelect={setDate}
-            numberOfMonths={2}
+            numberOfMonths={1}
           />
-          <div className="flex self-start">
+          <div className="flex">
             <Button
               className="mb-3 ml-3 w-fit rounded-2xl border-2 border-white bg-[hsl(var(--background))] p-2 hover:bg-white hover:text-black"
               onClick={handleSumbmit}

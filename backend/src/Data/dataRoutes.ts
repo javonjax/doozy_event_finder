@@ -86,7 +86,6 @@ router.get(
         event.images = findImage(event.images);
       });
 
-      // response.json(parsedApiResponse);
       response.json({
         events: validEvents,
         nextPage:
