@@ -30,7 +30,7 @@ const CategoryFilters = ({
   // Set the subcategory
   useEffect(() => {
     handleSubcategoryChange();
-  }, [path]);
+  }, [path, handleSubcategoryChange]);
 
   return (
     <div className="my-4 flex w-full flex-col items-center justify-center rounded-2xl bg-[hsl(var(--background))] py-8">

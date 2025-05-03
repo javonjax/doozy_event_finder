@@ -69,7 +69,7 @@ const CategoryContent = (): React.JSX.Element => {
       if (!location) {
         await requestLocation();
       }
-    } catch (error) {
+    } catch {
       toast({
         title: "Location Services Required",
         description: "Please enable location services to see local events.",
@@ -129,7 +129,6 @@ const CategoryContent = (): React.JSX.Element => {
     queryKey: ["fetchGenres", path],
     queryFn: fetchGenres,
   });
-
   return (
     <>
       <CategoryFilters

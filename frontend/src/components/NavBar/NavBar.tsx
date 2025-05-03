@@ -175,7 +175,7 @@ const NavBar = (): React.JSX.Element => {
               <MenubarContent className="text-[hsl(var(--text-color))] md:hidden">
                 {Categories.map((cat) => {
                   return (
-                    <NavLink key={`${cat}-nav`} to={`/${cat}`}>
+                    <NavLink key={`${cat}-nav`} to={`/${cat.toLowerCase()}`}>
                       <MenubarItem className="cursor-pointer">
                         {cat}
                       </MenubarItem>
