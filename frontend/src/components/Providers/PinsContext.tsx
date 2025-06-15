@@ -43,7 +43,7 @@ export const PinsProvider = ({ children }: { children: React.ReactNode }) => {
       } = await res.json();
       if (!res.ok) {
         if (res.status === 401) {
-          authContext.logout;
+          authContext.logout();
         }
         throw new Error(jsonRes.message);
       }
