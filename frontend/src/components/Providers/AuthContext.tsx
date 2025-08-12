@@ -19,7 +19,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    getSession();
+    const fetchSession = async () => {
+      await getSession();
+    };
+    fetchSession();
   }, []);
 
   const getSession = async (): Promise<void> => {
